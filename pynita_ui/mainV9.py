@@ -8,6 +8,14 @@
 #
 # WARNING! All changes made in this file will be lost!
 
+"""
+Created on Fri Nov 16 16:31:28 2018
+@author: Praveen Noojipady
+@email: noojipad@american.edu
+@Project: pyNITA-GUI
+License: MIT
+Copyright (c)
+"""
 from PyQt5 import QtCore, QtGui, QtWidgets
 
 class Ui_MainWindow(object):
