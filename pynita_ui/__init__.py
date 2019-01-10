@@ -6,7 +6,7 @@ Created on Fri Nov 16 16:31:28 2018
 @author: Praveen Noojipady
 @email: noojipad@american.edu
 @Project: pyNITA-GUI
-License:  
+License: MIT
 Copyright (c)
 """
 
