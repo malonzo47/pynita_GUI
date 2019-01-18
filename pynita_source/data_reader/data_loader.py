@@ -11,7 +11,7 @@ Copyright (c)
 import pandas as pd
 import numpy as np
 from osgeo import gdal
-from pynita.utils import general 
+from pynita_source.utils import general 
 #import gdal as gdal
 
 
