@@ -1,55 +1,49 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'layouts/ui_code_popuptable.ui',
-# licensing of 'layouts/ui_code_popuptable.ui' applies.
+# Form implementation generated from reading ui file 'layouts/ui_code_popuptable_v2.ui',
+# licensing of 'layouts/ui_code_popuptable_v2.ui' applies.
 #
-# Created: Mon Jan  7 15:09:15 2019
+# Created: Fri Jan 18 10:58:12 2019
 #      by: pyside2-uic  running on PySide2 5.11.2
 #
 # WARNING! All changes made in this file will be lost!
 
-"""
-Created on Fri Nov 16 16:31:28 2018
-
-@author: Praveen Noojipady
-@email: noojipad@american.edu
-@Project: pyNITA-GUI
-License: MIT 
-Copyright (c)
-"""
 from PyQt5 import QtCore, QtGui, QtWidgets
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
-        MainWindow.resize(324, 386)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed)
-        sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(MainWindow.sizePolicy().hasHeightForWidth())
-        MainWindow.setSizePolicy(sizePolicy)
+        MainWindow.resize(320, 423)
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
-        self.gridLayout_8 = QtWidgets.QGridLayout(self.centralwidget)
-        self.gridLayout_8.setObjectName("gridLayout_8")
         self.tabWidget = QtWidgets.QTabWidget(self.centralwidget)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed)
+        self.tabWidget.setGeometry(QtCore.QRect(0, 0, 320, 389))
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Fixed)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.tabWidget.sizePolicy().hasHeightForWidth())
         self.tabWidget.setSizePolicy(sizePolicy)
-        self.tabWidget.setMinimumSize(QtCore.QSize(300, 325))
-        self.tabWidget.setMaximumSize(QtCore.QSize(300, 320))
-        self.tabWidget.setAutoFillBackground(False)
-        self.tabWidget.setUsesScrollButtons(False)
-        self.tabWidget.setMovable(True)
-        self.tabWidget.setTabBarAutoHide(False)
         self.tabWidget.setObjectName("tabWidget")
-        self.tab2 = QtWidgets.QWidget()
-        self.tab2.setObjectName("tab2")
-        self.gridLayout = QtWidgets.QGridLayout(self.tab2)
+        self.Opti = QtWidgets.QWidget()
+        self.Opti.setObjectName("Opti")
+        self.gridLayout_2 = QtWidgets.QGridLayout(self.Opti)
+        self.gridLayout_2.setObjectName("gridLayout_2")
+        self.frame = QtWidgets.QFrame(self.Opti)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Fixed)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.frame.sizePolicy().hasHeightForWidth())
+        self.frame.setSizePolicy(sizePolicy)
+        self.frame.setMinimumSize(QtCore.QSize(250, 290))
+        self.frame.setMaximumSize(QtCore.QSize(300, 290))
+        self.frame.setFrameShape(QtWidgets.QFrame.WinPanel)
+        self.frame.setFrameShadow(QtWidgets.QFrame.Raised)
+        self.frame.setObjectName("frame")
+        self.gridLayout = QtWidgets.QGridLayout(self.frame)
+        self.gridLayout.setContentsMargins(7, 7, 7, 7)
         self.gridLayout.setObjectName("gridLayout")
-        self.popup_table = QtWidgets.QTableWidget(self.tab2)
+        self.popup_table = QtWidgets.QTableWidget(self.frame)
+        self.popup_table.setEnabled(True)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Expanding)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -80,12 +74,25 @@ class Ui_MainWindow(object):
         item = QtWidgets.QTableWidgetItem()
         self.popup_table.setHorizontalHeaderItem(0, item)
         self.popup_table.horizontalHeader().setStretchLastSection(True)
+        self.popup_table.verticalHeader().setDefaultSectionSize(29)
         self.gridLayout.addWidget(self.popup_table, 0, 0, 1, 1)
-        self.tabWidget.addTab(self.tab2, "")
-        self.gridLayout_8.addWidget(self.tabWidget, 0, 0, 1, 1)
+        self.gridLayout_2.addWidget(self.frame, 0, 0, 1, 1)
+        self.horizontalLayout = QtWidgets.QHBoxLayout()
+        self.horizontalLayout.setSpacing(0)
+        self.horizontalLayout.setContentsMargins(-1, -1, -1, 0)
+        self.horizontalLayout.setObjectName("horizontalLayout")
+        spacerItem = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
+        self.horizontalLayout.addItem(spacerItem)
+        self.popup_pushButton = QtWidgets.QPushButton(self.Opti)
+        self.popup_pushButton.setObjectName("popup_pushButton")
+        self.horizontalLayout.addWidget(self.popup_pushButton)
+        spacerItem1 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
+        self.horizontalLayout.addItem(spacerItem1)
+        self.gridLayout_2.addLayout(self.horizontalLayout, 1, 0, 1, 1)
+        self.tabWidget.addTab(self.Opti, "")
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar()
-        self.menubar.setGeometry(QtCore.QRect(0, 0, 324, 22))
+        self.menubar.setGeometry(QtCore.QRect(0, 0, 320, 22))
         self.menubar.setObjectName("menubar")
         MainWindow.setMenuBar(self.menubar)
         self.statusbar = QtWidgets.QStatusBar(MainWindow)
@@ -107,5 +114,6 @@ class Ui_MainWindow(object):
         self.popup_table.verticalHeaderItem(6).setText(QtWidgets.QApplication.translate("MainWindow", "min_complex", None, -1))
         self.popup_table.verticalHeaderItem(7).setText(QtWidgets.QApplication.translate("MainWindow", "filter_opt", None, -1))
         self.popup_table.horizontalHeaderItem(0).setText(QtWidgets.QApplication.translate("MainWindow", "Optimized Parameters", None, -1))
-        self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab2), QtWidgets.QApplication.translate("MainWindow", "Optimized Parameters", None, -1))
+        self.popup_pushButton.setText(QtWidgets.QApplication.translate("MainWindow", "Save to Configuration File", None, -1))
+        self.tabWidget.setTabText(self.tabWidget.indexOf(self.Opti), QtWidgets.QApplication.translate("MainWindow", "Optimized Parameters", None, -1))
 

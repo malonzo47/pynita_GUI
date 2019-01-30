@@ -433,7 +433,7 @@ def viewNITA(px, date_vec, doy_vec,
         xticks_lables = [str(xticks_label)[0:4] for xticks_label in xticks_lables]
         ax.set_xticklabels(xticks_lables)
         if colorbar:
-            fig.colorbar(mappable)
+            fig.colorbar(mappable, label = 'Day of year')
         print('bail_cut = {0} \nfit_count = {1}'.format(bail_cut, fit_count))
     except TypeError:
         plt.cla()
