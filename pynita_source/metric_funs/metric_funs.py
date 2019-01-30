@@ -218,12 +218,17 @@ def stretchMI(vals_1d, low_high=[2, 98]):
     return vals_1d_adj
 
 #%%
-def plotMI(MI_2d, title, label): 
-    fig, ax = plt.subplots()  
-    mappable = ax.matshow(MI_2d)
-    fig.suptitle(title)
-    fig.colorbar(mappable, label=label)
+#def plotMI(MI_2d, title, label): 
+#    fig, ax = plt.subplots()  
+#    mappable = ax.matshow(MI_2d)
+#    fig.suptitle(title)
+#    fig.colorbar(mappable, label=label)
 
+def plotMI(MI_2d, title, label):
+    mappable = plt.matshow(MI_2d,fignum=title)
+    plt.colorbar(mappable, label=label)
+    plt.suptitle(title)
+    plt.tight_layout()
 
 #%%          
 def MI_complexity(results_dics):

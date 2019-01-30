@@ -3,10 +3,10 @@
 """
 Created on Fri Nov 16 16:31:28 2018
 
-@author: Praveen Noojipady
+@author: pnoojipa
 @email: noojipad@american.edu
 @Project: pyNITA-GUI
-License: MIT 
+License:  
 Copyright (c)
 """
 import sys
@@ -15,32 +15,35 @@ import shutil
 import numpy as np
 from os.path import expanduser
 from configobj import ConfigObj
+from matplotlib import pyplot
 #
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
 #
-from pynita_ui import mainV9, popup
+from pynita_ui import mainV12, popup3, resource_logos
 from pynita_source import *
 #
 
-class popWindow(popup.Ui_MainWindow, QtWidgets.QMainWindow):
+class popWindow(QtWidgets.QMainWindow, popup3.Ui_MainWindow):
     def __init__(self, parent=None):
         super(popWindow,self).__init__()
         self.setupUi(self)
-        self.setWindowTitle('pyNITA - Optimization')
-        
-class MyQtApp(mainV9.Ui_MainWindow, QtWidgets.QMainWindow):
+        self.setWindowTitle('pyNITA - Optimization') 
+
+class MyQtApp(QtWidgets.QMainWindow, mainV12.Ui_MainWindow):
     def __init__(self, parent=None):
         super(MyQtApp,self).__init__()
         self.setupUi(self)
         self.setWindowTitle('pyNITA - Version 1.0')
         #
+        self.popwin = popWindow(self)
+        #
         self.Step1a_lineEdit.textChanged.connect(lambda: self.Step1a_pushButton.setEnabled(True))
         self.Step1a_toolButton.clicked.connect(self.step1a_selectWD)
         self.Step1a_pushButton.clicked.connect(self.step1a_loadWD)
         #
-        self.Step1b_toolButton.released.connect(lambda: self.Step1b_pushButton.setEnabled(True))
+        self.Step1b_lineEdit.textChanged.connect(lambda: self.Step1b_pushButton.setEnabled(True))
         self.Step1b_toolButton.clicked.connect(self.step1b_selectUserConfigFile)
         self.Step1b_pushButton.clicked.connect(self.step1b_loadUserConfigFile)
         self.Step1b_pushButton.released.connect(lambda: self.Step1c_tableWidget.setEnabled(True))
@@ -52,15 +55,20 @@ class MyQtApp(mainV9.Ui_MainWindow, QtWidgets.QMainWindow):
         self.Step2a_lineEdit.textChanged.connect(lambda: self.Step2a_pushButton.setEnabled(True))
         self.Step2a_toolButton.clicked.connect(self.step2a_selectPointsFile)
         self.Step2a_pushButton.clicked.connect(self.step2a_loadPointsFile)
+        self.Step2a_pushButton.released.connect(lambda: self.objectid_radioButton.setEnabled(True))
         self.Step2a_pushButton.released.connect(lambda: self.Step2b_lineEdit.setEnabled(True))
+        self.Step2a_pushButton.released.connect(lambda: self.Step2b_pushButton.setEnabled (True))
         #
         self.Step2b_lineEdit.textChanged.connect(lambda: self.Visualize_radioButton.setEnabled(True))
         self.Step2b_lineEdit.textChanged.connect(lambda: self.DrawTraj_radioButton.setEnabled(True))
+        self.Visualize_radioButton.toggled.connect(lambda: self.Step2b_pushButton.setEnabled (True))
+        self.DrawTraj_radioButton.toggled.connect(lambda: self.Step2b_pushButton.setEnabled(True))
+        self.DrawTraj_radioButton.toggled.connect(lambda: self.Step2d_pushButton.setEnabled(True))
+        #
         self.Step2b_pushButton.released.connect(lambda: self.Step2c_commandLinkButton.setEnabled(True))
-        self.Visualize_radioButton.toggled.connect(self.Step2b_pushButton.setEnabled)
-        self.DrawTraj_radioButton.toggled.connect(self.Step2b_pushButton.setEnabled)
         self.Step2b_pushButton.clicked.connect(self.step2b_plotNITApoints_drawTraj)
         #
+        self.Step2c_commandLinkButton.released.connect(lambda: self.Step2c_tableWidget.setEnabled(True))
         self.Step2c_tableWidget.cellChanged.connect(lambda: self.Step2c_buttonBox.setEnabled(True))
         self.Step2c_commandLinkButton.clicked.connect(self.step2c_loadParameterSet)
         self.Step2c_buttonBox.accepted.connect(lambda: self.Step2d_pushButton.setEnabled(True))
@@ -68,7 +76,7 @@ class MyQtApp(mainV9.Ui_MainWindow, QtWidgets.QMainWindow):
         self.Step2c_buttonBox.rejected.connect(self.step2c_restoreDefaults)
         #
         self.Step2d_pushButton.clicked.connect(self.step2d_runParameterOptimization)
-        self.Step2d_pushButton.clicked.connect(lambda: self.Step2d_pushButton.setEnabled(False))
+        self.popwin.popup_pushButton.clicked.connect(self.Step2d_popup_saveToConfigFile)  
         #
         self.Step3a_toolButton.clicked.connect(self.step3a_selectImageStackFile) 
         self.Step3a_lineEdit.textChanged.connect(lambda: self.Step3ab_pushButton.setEnabled(True))
@@ -81,9 +89,9 @@ class MyQtApp(mainV9.Ui_MainWindow, QtWidgets.QMainWindow):
         #
         self.Step3c_radioButton.toggled.connect(lambda: self.Step3c_lineEdit.setEnabled(True))
         self.Step3c_pushButton.clicked.connect(self.step3c_runImageStackMetrics)
-        self.Step3c_pushButton.released.connect(lambda: self.Step4_pushButton.setEnabled(True))
+        self.Step3c_pushButton.released.connect(lambda: self.Step4a_pushButton.setEnabled(True))
         #
-        self.Step4_pushButton.clicked.connect(self.step4_PlotAndSave)
+        self.Step4a_pushButton.clicked.connect(self.step4_PlotAndSave)
         #
         self.plotAll.setChecked(False) 
         self.plotAll.stateChanged.connect(self.onState1ChangePrincipal)
@@ -100,8 +108,7 @@ class MyQtApp(mainV9.Ui_MainWindow, QtWidgets.QMainWindow):
                                self.save13, self.save14, self.save15, self.save16]
         for saveCheckbox in self.saveCheckboxes:
             saveCheckbox.stateChanged.connect(self.onState2Change)
-
-    
+           
     def step1a_selectWD(self):
         options = QFileDialog.Options()
         options |= QFileDialog.DontUseNativeDialog
@@ -131,11 +138,11 @@ class MyQtApp(mainV9.Ui_MainWindow, QtWidgets.QMainWindow):
     def step1b_loadUserConfigFile(self):
         name = self.Step1b_lineEdit.text()
         if name:
-            config = ConfigObj(name)
+            config_name = self.Step1b_lineEdit.text()
+            config = ConfigObj(config_name)
             #
             np = config['NITAParameters']
             mp = config['MetricsParameters']
-            #
             TW_Item = QtWidgets.QTableWidgetItem
             self.Step1c_tableWidget.setItem(0, 0, TW_Item(config['Project']['ProjectName']))
             self.Step1c_tableWidget.setItem(1, 0, TW_Item(config['VI']['user_vi'].lower()))
@@ -153,22 +160,22 @@ class MyQtApp(mainV9.Ui_MainWindow, QtWidgets.QMainWindow):
             self.Step1c_tableWidget.setItem(13, 0, TW_Item(mp['vi_change_thresh']))
             self.Step1c_tableWidget.setItem(14, 0, TW_Item(mp['run_thresh']))
             #
+            config['Project']['RootDir'] = self.Step1a_lineEdit.text()
+            config.write()
             self.Step1b_pushButton.setEnabled(False)
             self.Step1c_buttonBox.setEnabled(False)
-            #
-            config['Project']['RootDir'] = self.Step1a_lineEdit.text()
-            config['Project']['OutputFolder'] = 'output'
-            config.write()
     
     def step1c_saveChanges(self):
         name = self.Step1b_lineEdit.text()
         #
         options = QFileDialog.Options()
         options |= QFileDialog.DontUseNativeDialog
-        fileName, _ = QFileDialog.getSaveFileName(self,"Save User Configuration File","user_configs.ini",'*.ini', options=options)
+        fileName, _ = QFileDialog.getSaveFileName(self,"Save User Configuration File",name,'*.ini', options=options)
         #
         if name != fileName:
             shutil.copy(name, fileName)
+        else: 
+            fileName = name
         #
         config = ConfigObj(fileName)
         np = config['NITAParameters']
@@ -197,13 +204,13 @@ class MyQtApp(mainV9.Ui_MainWindow, QtWidgets.QMainWindow):
         mp['vi_change_thresh'] = self.Step1c_tableWidget.item(13, 0).text()
         mp['run_thresh'] = self.Step1c_tableWidget.item(14, 0).text() 
         config.write()
-        #
+        # 
         self.Step1b_lineEdit.setText(fileName)
         self.step1b_loadUserConfigFile()
         self.Step1c_buttonBox.setEnabled(False)
         #
         QtWidgets.QMessageBox.about(self, 'text','Wohooo!..Parameters Saved to User Configuration File')
-    
+        
     def step1c_restoreDefaults(self):
         self.step1b_loadUserConfigFile()
         self.Step1c_buttonBox.setEnabled(False)
@@ -230,31 +237,40 @@ class MyQtApp(mainV9.Ui_MainWindow, QtWidgets.QMainWindow):
             QtWidgets.QMessageBox.about(self, 'text','Points Extraction File: '+name)
             #
             self.Step2a_pushButton.setEnabled(False)
-            #
-            global nita
-            nita = nitaObj(config_name)
     
     def step2b_plotNITApoints_drawTraj(self):
-        obj_ids = self.Step2b_lineEdit.text()
-        if obj_ids:
+        IDs = self.Step2b_lineEdit.text()
+        IDs = [x.strip(' ') for x in IDs.split(",")]
+        global nita
+        config_name = self.Step1b_lineEdit.text()
+        nita = nitaObj(config_name)
+        #
+        if IDs:
             #
+            obj_ids=[]
+            #
+            for i in IDs:
+                if ':' in i:
+                    print(i)
+                    temp=i.split(':')
+                    obj_ids.extend(list(range(int(temp[0]), int(temp[1]) + 1)))
+                else:
+                    print(i)
+                    obj_ids.append(int(i))
+            obj_ids = list(set(obj_ids))
+            print(obj_ids)         
             nita.startLog()
             #
             if self.Visualize_radioButton.isChecked() == True:
                 # Load NITA points
                 nita.loadPts(info_column='Name')
                 # Plot for selected OBJECTIDs 
-                test = [x.strip(' ') for x in obj_ids.split(",")]
-                nita.runPts([int(item) for item in test], plot=True, max_plot=25, showdata='fit', colorbar=False, plot_title=True)
-                nita.stopLog()
-                self.Step2b_pushButton.setEnabled(False)
+                nita.runPts([int(item) for item in obj_ids], plot=True, max_plot=50, showdata='fit', colorbar=False, plot_title=True)
             if self.DrawTraj_radioButton.isChecked() == True:
                 nita.loadPts(info_column='Name')
                 # Plot trajectories for selected OBJECTIDs 
-                test = [x.strip(' ') for x in obj_ids.split(",")]
-                nita.drawPts([int(item) for item in test], plot_title=True)
-                self.Step2b_pushButton.setEnabled(False)
-                self.Step2d_pushButton.setEnabled(True)
+                nita.drawPts([int(item) for item in obj_ids], plot_title=True)
+            #
             nita.stopLog()
         else:
             QtWidgets.QMessageBox.about(self, 'text','Error! Enter OBJECTIDs')
@@ -275,7 +291,7 @@ class MyQtApp(mainV9.Ui_MainWindow, QtWidgets.QMainWindow):
             self.Step2c_tableWidget.setItem(4, 0, TW_Item(", ".join(po['pct_set'])))
             self.Step2c_tableWidget.setItem(5, 0, TW_Item(", ".join(po['max_complex_set'])))
             self.Step2c_tableWidget.setItem(6, 0, TW_Item(", ".join(po['min_complex_set'])))
-            self.Step2c_tableWidget.setItem(7, 0, TW_Item(", ".join(list(po['filter_opt_set']))))
+            self.Step2c_tableWidget.setItem(7, 0, TW_Item(po['filter_opt_set']))
             self.Step2c_buttonBox.setEnabled(False)
         else:
             QtWidgets.QMessageBox.about(self, 'text','Oops!..Select User Config File (Step1)')
@@ -283,7 +299,7 @@ class MyQtApp(mainV9.Ui_MainWindow, QtWidgets.QMainWindow):
     def tableList(self,row,col):
         cell = self.Step2c_tableWidget.item(row,col).text()
         return [x.strip(' ') for x in cell.split(",")]
-        
+    
     def step2c_saveChanges(self):
         name = self.Step1b_lineEdit.text()
         if not name:
@@ -294,7 +310,7 @@ class MyQtApp(mainV9.Ui_MainWindow, QtWidgets.QMainWindow):
             fileName, _ = QFileDialog.getSaveFileName(self,"Save User Configuration File",name,'*.ini', options=options)
             if name != fileName:
                 shutil.copy(name, fileName)
-            
+            #
             config = ConfigObj(fileName)
             po = config['ParameterOpmSet']
             #
@@ -304,8 +320,8 @@ class MyQtApp(mainV9.Ui_MainWindow, QtWidgets.QMainWindow):
             po['filt_dist_set']     = self.tableList(3,0)     
             po['pct_set']           = self.tableList(4,0)     
             po['max_complex_set']   = self.tableList(5,0)     
-            po['min_complex_set']   = self.tableList(6,0)     
-            po['filter_opt_set']    = self.tableList(7,0)  
+            po['min_complex_set']   = self.tableList(6,0)   
+            po['filter_opt_set'] = self.Step2c_tableWidget.item(7, 0).text()
             #
             config.write()
             #   
@@ -322,12 +338,13 @@ class MyQtApp(mainV9.Ui_MainWindow, QtWidgets.QMainWindow):
             self.Step2c_buttonBox.setEnabled(False)
     
     def step2d_runParameterOptimization(self):
+        self.Step2d_pushButton.setEnabled(False)
+        #
         nita.startLog()
         nita.setOpmParams()
 #        nita.paramOpm()
         opt_out = nita.paramOpm()
         #
-        self.popwin = popWindow(self)
         TW_Item = QtWidgets.QTableWidgetItem
         self.popwin.popup_table.setItem(0, 0, TW_Item(str(opt_out['bail_thresh'])))
         self.popwin.popup_table.setItem(1, 0, TW_Item(str(opt_out['noise_thresh'])))
@@ -340,7 +357,24 @@ class MyQtApp(mainV9.Ui_MainWindow, QtWidgets.QMainWindow):
         self.popwin.show()
         #
         nita.stopLog()
-        
+    
+    def Step2d_popup_saveToConfigFile(self):
+        name = self.Step1b_lineEdit.text()
+        config = ConfigObj(name)
+        np = config['NITAParameters']
+        np['bail_thresh'] = self.popwin.popup_table.item(0, 0).text()
+        np['noise_thresh'] = self.popwin.popup_table.item(1, 0).text()
+        np['penalty'] = self.popwin.popup_table.item(2, 0).text()
+        np['filt_dist'] = self.popwin.popup_table.item(3, 0).text()
+        np['pct'] = self.popwin.popup_table.item(4, 0).text()
+        np['max_complex'] = self.popwin.popup_table.item(5, 0).text()
+        np['min_complex'] = self.popwin.popup_table.item(6, 0).text()
+        np['filter_opt'] = self.popwin.popup_table.item(7, 0).text()
+        config.write()
+        self.step1b_loadUserConfigFile()
+        #        
+        QtWidgets.QMessageBox.about(self, 'text','Wohooo!..Optimized Parameters Saved to User Configuration File')
+            
     def step3a_selectImageStackFile(self):
         name = self.Step1b_lineEdit.text()
         if name:
@@ -384,6 +418,9 @@ class MyQtApp(mainV9.Ui_MainWindow, QtWidgets.QMainWindow):
             QtWidgets.QMessageBox.about(self, 'text','Oops! Select Image Stack and Dates File')
     
     def step3c_runImageStackMetrics(self):
+        config_name = self.Step1b_lineEdit.text()
+        global nita
+        nita = nitaObj(config_name)
         nita.startLog()
         # load image stack 
         nita.loadStack()
@@ -405,13 +442,22 @@ class MyQtApp(mainV9.Ui_MainWindow, QtWidgets.QMainWindow):
         nita.stopLog()
     
     @QtCore.pyqtSlot(int)
+    def onclick(self,event):
+        global ix, iy
+        ix, iy = event.xdata, event.ydata
+        print('x = %d, y = %d'%(ix, iy))
+        results_dic = nita.getPixelResults([int(ix), int(iy)])
+        results_dic = nita.runPixel([int(ix), int(iy)], use_compute_mask=False, plot=True, showdata='fit', colorbar=True)
+
+    
+    @QtCore.pyqtSlot(int)
     def onState1ChangePrincipal(self, state):
         if state == QtCore.Qt.Checked:
             for plotCheckbox in self.plotCheckboxes:
                 plotCheckbox.blockSignals(True)
                 plotCheckbox.setCheckState(state)
                 plotCheckbox.blockSignals(False)
-                
+#                
     @QtCore.pyqtSlot(int)
     def onState2ChangePrincipal(self, state):
         if state == QtCore.Qt.Checked:
@@ -419,13 +465,13 @@ class MyQtApp(mainV9.Ui_MainWindow, QtWidgets.QMainWindow):
                 saveCheckbox.blockSignals(True)
                 saveCheckbox.setCheckState(state)
                 saveCheckbox.blockSignals(False)
-
+#
     @QtCore.pyqtSlot(int)
     def onState1Change(self, state):
         self.plotAll.blockSignals(True)
         self.plotAll.setChecked(QtCore.Qt.Unchecked)
         self.plotAll.blockSignals(False)
-    
+#    
     @QtCore.pyqtSlot(int)
     def onState2Change(self, state):
         self.saveAll.blockSignals(True)
@@ -441,6 +487,7 @@ class MyQtApp(mainV9.Ui_MainWindow, QtWidgets.QMainWindow):
             if valChange_date1 and valChange_date2:
                 nita.MI_valueChange(start_date=int(valChange_date1), end_date=int(valChange_date2), option='diff', plot=self.plot10.isChecked(), 
                                     save=self.save10.isChecked(), fn='valuechange2.tif', title = title, label=label)
+                plt.figure(title).canvas.mpl_connect('button_press_event', self.onclick)
             else:
                 QtWidgets.QMessageBox.about(self, 'text','Error!..10)Specify Date Range')            
         if self.plot11.isChecked() == True or self.save11.isChecked() == True:
@@ -449,45 +496,55 @@ class MyQtApp(mainV9.Ui_MainWindow, QtWidgets.QMainWindow):
                 title = 'Date Value - '+spec_date
                 label = 'VI Units'
                 nita.MI_dateValue(int(spec_date), plot=self.plot11.isChecked(), save=self.save11.isChecked(), fn='datevalue.tif', title = title, label=label)
+                plt.figure(title).canvas.mpl_connect('button_press_event', self.onclick)
             else:
                 QtWidgets.QMessageBox.about(self,'text','Error!..11)Specify Date')   
         if self.plot2.isChecked() == True or self.save2.isChecked() == True:
             title = 'Complexity'
             label = 'Low < -- Complexity -- > High'
             nita.MI_complexity(plot=self.plot2.isChecked(), save=self.save2.isChecked(), fn='complexity.tiff', title = title, label=label)
+            plt.figure(title).canvas.mpl_connect('button_press_event', self.onclick)
         if self.plot3.isChecked() == True or self.save3.isChecked() == True:
             title = 'Disturbance Date'
             label = 'Year of disturbance'
             nita.MI_distDate(option='middle', plot=self.plot3.isChecked(), save=self.save3.isChecked(), fn='distdate.tiff', title = title, label=label)
+            plt.figure(title).canvas.mpl_connect('button_press_event', self.onclick)
         if self.plot4.isChecked() == True or self.save4.isChecked() == True:
             title = 'Disturbance Duration'
             label = 'Number of days'
             nita.MI_distDuration(plot=self.plot4.isChecked(), save=self.save4.isChecked(), fn='distduration.tiff', title = title, label=label)                            
+            plt.figure(title).canvas.mpl_connect('button_press_event', self.onclick)
         if self.plot5.isChecked() == True or self.save5.isChecked() == True:   
             title = 'Disturbance Magnitude'
             label = 'VI Units'
-            nita.MI_distMag(plot=self.plot5.isChecked(), save=self.save5.isChecked(), fn='distMag.tif', title = title, label=label)                           
+            nita.MI_distMag(plot=self.plot5.isChecked(), save=self.save5.isChecked(), fn='distMag.tif', title = title, label=label)    
+            plt.figure(title).canvas.mpl_connect('button_press_event', self.onclick)                       
         if self.plot6.isChecked() == True or self.save6.isChecked() == True:
             title = 'Disturbance Slope'
             label = 'Slope (degrees)'
             nita.MI_distSlope(plot=self.plot6.isChecked(), save=self.save6.isChecked(), fn='distSlope.tif', title = title, label=label)
+            plt.figure(title).canvas.mpl_connect('button_press_event', self.onclick)
         if self.plot7.isChecked() == True or self.save7.isChecked() == True:
             title = 'Post-Disturbance Slope'
             label = 'Slope (degrees)'
-            nita.MI_postDistSlope(plot=self.plot7.isChecked(), save=self.save7.isChecked(), fn='postdistslope.tif', title = title, label=label)                             
+            nita.MI_postDistSlope(plot=self.plot7.isChecked(), save=self.save7.isChecked(), fn='postdistslope.tif', title = title, label=label)
+            plt.figure(title).canvas.mpl_connect('button_press_event', self.onclick)                             
         if self.plot8.isChecked() == True or self.save8.isChecked() == True:
             title = 'Post-Disturbance Magnitude'
             label = 'VI Units'
             nita.MI_postDistMag(plot=self.plot8.isChecked(), save=self.save8.isChecked(), fn='postdistmag.tif', title = title, label=label)
+            plt.figure(title).canvas.mpl_connect('button_press_event', self.onclick)
         if self.plot9.isChecked() == True or self.save9.isChecked() == True:
             title = 'Value Change - Entire time period'
             label = 'VI Units'
             nita.MI_valueChange(start_date=-9999, end_date=9999, option='diff', plot=self.plot9.isChecked(), 
                                 save=self.save9.isChecked(), fn='valuechange1.tif', title = title, label=label)
+            plt.figure(title).canvas.mpl_connect('button_press_event', self.onclick)
         if self.plot12.isChecked() == True or self.save12.isChecked() == True:
             title = 'Recovery'
             label = 'VI Units'
-            nita.MI_recovery(1, option='diff', plot=self.plot12.isChecked(), save=self.save12.isChecked(), fn='recovery.tif', title = title, label=label)                          
+            nita.MI_recovery(1, option='diff', plot=self.plot12.isChecked(), save=self.save12.isChecked(), fn='recovery.tif', title = title, label=label)
+            plt.figure(title).canvas.mpl_connect('button_press_event', self.onclick)                          
         if self.plot13.isChecked() == True or self.save13.isChecked() == True:
             title = 'RecoverCmp'
             label = 'VI Units'
@@ -496,14 +553,17 @@ class MyQtApp(mainV9.Ui_MainWindow, QtWidgets.QMainWindow):
             title = 'Linear Error'
             label = 'Mean Absolute Error'
             nita.MI_linearError(plot=self.plot14.isChecked(), save=self.save14.isChecked(), fn='linerror.tif', title = title, label=label)
+            plt.figure(title).canvas.mpl_connect('button_press_event', self.onclick)
         if self.plot15.isChecked() == True or self.save15.isChecked() == True:
             title = 'Noise'
             label = 'Forward Finite Difference'
             nita.MI_noise(plot=self.plot15.isChecked(), save=self.save15.isChecked(), fn='noise.tif', title = title, label=label)
+            plt.figure(title).canvas.mpl_connect('button_press_event', self.onclick)
         if self.plot16.isChecked() == True or self.save16.isChecked() == True:
             title = 'Bailcut'
             label = 'Noise Normalized Linear Error'
             nita.MI_bailcut(plot=self.plot16.isChecked(), save=self.save16.isChecked(), fn='bailcut.tif', title = title, label=label)
+            plt.figure(title).canvas.mpl_connect('button_press_event', self.onclick)
         
 if __name__ == '__main__':
     import sys

@@ -106,7 +106,8 @@ class nitaObj:
         if OBJECTIDs == [9999]:
             OBJECTIDs = list(set(self.pts['OBJECTID']))
         
-        OBJECTIDs = OBJECTIDs[0:max_plot]
+#        OBJECTIDs = OBJECTIDs[0:max_plot]
+        OBJECTIDs = OBJECTIDs[0:]
         
         subplots_ncol = int(min(np.ceil(np.sqrt(len(OBJECTIDs))),5))
         subplots_nrow = int(min(np.ceil(len(OBJECTIDs)/subplots_ncol),5))
@@ -878,6 +879,9 @@ class nitaObj:
 #            self.logger.info('drawPts start...')
     
         user_vi = self.cfg.user_vi
+        doy_limits = self.cfg.param_nita['doy_limits']
+        value_limits = self.cfg.param_nita['value_limits']
+        date_limits = self.cfg.param_nita['date_limits']
         
         if OBJECTIDs == [9999]:
             OBJECTIDs = list(set(self.pts['OBJECTID']))
@@ -898,12 +902,21 @@ class nitaObj:
                 title = ''.join([str(item)+' ' for item in list(info_line.values.flatten())])
             else:
                 title = ''
-            
-            mappable = ax.scatter(plot_x, plot_y, c=plot_doy)
+                
+            plot_x, plot_y, plot_doy = nf.filterLimits(plot_x, plot_y, plot_doy, value_limits, date_limits, doy_limits)
+
+            doy_limit =  doy_limits[0]
+            mappable = ax.scatter(plot_x, plot_y, c=plot_doy, vmin=doy_limit[0], vmax=doy_limit[1])
             ax.set_xlim([plot_x.min(), plot_x.max()])
             ax.set_ylim([plot_y.min(), plot_y.max()])
             ax.set_title(title)
-            fig.colorbar(mappable)
+            plt.ylabel('VI Units')
+            #
+            xticks_lables = ax.get_xticks().tolist()
+            xticks_lables = [str(xticks_label)[0:4] for xticks_label in xticks_lables]
+            ax.set_xticklabels(xticks_lables)
+            #
+            fig.colorbar(mappable, label = 'Day of year')
             ginput_res = plt.ginput(n=-1, timeout=0)
             handdraw_traj = {'OBJECTID': OBJECTID,
                              'traj': ginput_res}
