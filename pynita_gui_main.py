@@ -3,7 +3,11 @@
 """
 Created on Fri Nov 16 16:31:28 2018
 
-@author: pnoojipa
+@author: Praveen Noojipady
+@email: noojipad@american.edu
+@Project: pyNITA-GUI
+License: MIT
+Copyright (c)
 """
 import sys
 import os
