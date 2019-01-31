@@ -4,10 +4,6 @@
 Created on Fri Nov 16 16:31:28 2018
 
 @author: pnoojipa
-@email: noojipad@american.edu
-@Project: pyNITA-GUI
-License:  
-Copyright (c)
 """
 import sys
 import os
@@ -56,25 +52,26 @@ class MyQtApp(QtWidgets.QMainWindow, mainV12.Ui_MainWindow):
         self.Step2a_toolButton.clicked.connect(self.step2a_selectPointsFile)
         self.Step2a_pushButton.clicked.connect(self.step2a_loadPointsFile)
         self.Step2a_pushButton.released.connect(lambda: self.objectid_radioButton.setEnabled(True))
-        self.Step2a_pushButton.released.connect(lambda: self.Step2b_lineEdit.setEnabled(True))
-        self.Step2a_pushButton.released.connect(lambda: self.Step2b_pushButton.setEnabled (True))
         #
-        self.Step2b_lineEdit.textChanged.connect(lambda: self.Visualize_radioButton.setEnabled(True))
-        self.Step2b_lineEdit.textChanged.connect(lambda: self.DrawTraj_radioButton.setEnabled(True))
-        self.Visualize_radioButton.toggled.connect(lambda: self.Step2b_pushButton.setEnabled (True))
-        self.DrawTraj_radioButton.toggled.connect(lambda: self.Step2b_pushButton.setEnabled(True))
-        self.DrawTraj_radioButton.toggled.connect(lambda: self.Step2d_pushButton.setEnabled(True))
+        self.objectid_radioButton.toggled.connect(self.Step2b_lineEdit.setEnabled)
+        self.objectid_radioButton.toggled.connect(self.Visualize_radioButton.setEnabled)
+        self.objectid_radioButton.toggled.connect(self.DrawTraj_radioButton.setEnabled)
+        self.objectid_radioButton.toggled.connect(self.Step2b_pushButton.setEnabled) 
         #
         self.Step2b_pushButton.released.connect(lambda: self.Step2c_commandLinkButton.setEnabled(True))
         self.Step2b_pushButton.clicked.connect(self.step2b_plotNITApoints_drawTraj)
         #
         self.Step2c_commandLinkButton.released.connect(lambda: self.Step2c_tableWidget.setEnabled(True))
+        self.Step2c_commandLinkButton.released.connect(lambda: self.Step2d_radioButton.setEnabled(True))
         self.Step2c_tableWidget.cellChanged.connect(lambda: self.Step2c_buttonBox.setEnabled(True))
         self.Step2c_commandLinkButton.clicked.connect(self.step2c_loadParameterSet)
         self.Step2c_buttonBox.accepted.connect(lambda: self.Step2d_pushButton.setEnabled(True))
         self.Step2c_buttonBox.accepted.connect(self.step2c_saveChanges)
         self.Step2c_buttonBox.rejected.connect(self.step2c_restoreDefaults)
         #
+        self.Step2d_radioButton.toggled.connect(self.Step2d_lineEdit.setEnabled)
+        self.Step2d_radioButton.toggled.connect(self.Step2d_pushButton.setEnabled)
+        self.Step2d_lineEdit.textChanged.connect(lambda: self.Step2d_pushButton.setEnabled(True))
         self.Step2d_pushButton.clicked.connect(self.step2d_runParameterOptimization)
         self.popwin.popup_pushButton.clicked.connect(self.Step2d_popup_saveToConfigFile)  
         #
@@ -85,9 +82,10 @@ class MyQtApp(QtWidgets.QMainWindow, mainV12.Ui_MainWindow):
         self.Step3b_toolButton.released.connect(lambda: self.Step3ab_pushButton.setEnabled(True))
         self.Step3ab_pushButton.clicked.connect(self.step3ab_loadImageStackAndDatesFile)
         self.Step3ab_pushButton.released.connect(lambda: self.Step3c_radioButton.setEnabled(True))
-        self.Step3ab_pushButton.released.connect(lambda: self.Step3c_pushButton.setEnabled(True))
         #
-        self.Step3c_radioButton.toggled.connect(lambda: self.Step3c_lineEdit.setEnabled(True))
+        self.Step3c_radioButton.toggled.connect(self.Step3c_lineEdit.setEnabled)
+        self.Step3c_radioButton.toggled.connect(self.Step3c_pushButton.setEnabled)
+        self.Step3c_lineEdit.textChanged.connect(lambda: self.Step3c_pushButton.setEnabled(True))
         self.Step3c_pushButton.clicked.connect(self.step3c_runImageStackMetrics)
         self.Step3c_pushButton.released.connect(lambda: self.Step4a_pushButton.setEnabled(True))
         #
@@ -125,7 +123,7 @@ class MyQtApp(QtWidgets.QMainWindow, mainV12.Ui_MainWindow):
         else:
             os.chdir(name)
             self.Step1a_pushButton.setEnabled(False)
-            QtWidgets.QMessageBox.about(self, 'text','Working Directory: '+name)
+            QtWidgets.QMessageBox.about(self, 'text','Working Directory: '+'<br>'+name)
         
     def step1b_selectUserConfigFile(self):
         options = QFileDialog.Options()
@@ -234,7 +232,7 @@ class MyQtApp(QtWidgets.QMainWindow, mainV12.Ui_MainWindow):
             config = ConfigObj(config_name)
             config['Project']['ptsFn'] = name
             config.write()
-            QtWidgets.QMessageBox.about(self, 'text','Points Extraction File: '+name)
+            QtWidgets.QMessageBox.about(self, 'text','Points Extraction File: '+'<br>'+name)
             #
             self.Step2a_pushButton.setEnabled(False)
     
@@ -258,7 +256,7 @@ class MyQtApp(QtWidgets.QMainWindow, mainV12.Ui_MainWindow):
                     print(i)
                     obj_ids.append(int(i))
             obj_ids = list(set(obj_ids))
-            print(obj_ids)         
+            #   
             nita.startLog()
             #
             if self.Visualize_radioButton.isChecked() == True:
@@ -342,20 +340,25 @@ class MyQtApp(QtWidgets.QMainWindow, mainV12.Ui_MainWindow):
         #
         nita.startLog()
         nita.setOpmParams()
-#        nita.paramOpm()
-        opt_out = nita.paramOpm()
         #
-        TW_Item = QtWidgets.QTableWidgetItem
-        self.popwin.popup_table.setItem(0, 0, TW_Item(str(opt_out['bail_thresh'])))
-        self.popwin.popup_table.setItem(1, 0, TW_Item(str(opt_out['noise_thresh'])))
-        self.popwin.popup_table.setItem(2, 0, TW_Item(str(opt_out['penalty'])))
-        self.popwin.popup_table.setItem(3, 0, TW_Item(str(opt_out['filt_dist'])))
-        self.popwin.popup_table.setItem(4, 0, TW_Item(str(opt_out['pct'])))
-        self.popwin.popup_table.setItem(5, 0, TW_Item(str(opt_out['max_complex'])))
-        self.popwin.popup_table.setItem(6, 0, TW_Item(str(opt_out['min_complex'])))
-        self.popwin.popup_table.setItem(7, 0, TW_Item(opt_out['filter_opt']))
-        self.popwin.show()
-        #
+        if self.Step2d_lineEdit.text() == '' or int(self.Step2d_lineEdit.text()) < 2:
+            QtWidgets.QMessageBox.about(self, 'text','Error!'+'<br> Minimum = 2'+'<br>Maximum = Check number of cores available on your computer and specify accordingly')
+        else:
+            n_workers = int(self.Step2d_lineEdit.text())
+            #
+            opt_out = nita.paramOpm(parallel=True, workers=n_workers)
+            #
+            TW_Item = QtWidgets.QTableWidgetItem
+            self.popwin.popup_table.setItem(0, 0, TW_Item(str(opt_out['bail_thresh'])))
+            self.popwin.popup_table.setItem(1, 0, TW_Item(str(opt_out['noise_thresh'])))
+            self.popwin.popup_table.setItem(2, 0, TW_Item(str(opt_out['penalty'])))
+            self.popwin.popup_table.setItem(3, 0, TW_Item(str(opt_out['filt_dist'])))
+            self.popwin.popup_table.setItem(4, 0, TW_Item(str(opt_out['pct'])))
+            self.popwin.popup_table.setItem(5, 0, TW_Item(str(opt_out['max_complex'])))
+            self.popwin.popup_table.setItem(6, 0, TW_Item(str(opt_out['min_complex'])))
+            self.popwin.popup_table.setItem(7, 0, TW_Item(opt_out['filter_opt']))
+            self.popwin.show()
+            #
         nita.stopLog()
     
     def Step2d_popup_saveToConfigFile(self):
@@ -408,7 +411,7 @@ class MyQtApp(QtWidgets.QMainWindow, mainV12.Ui_MainWindow):
             config['Project']['stackFn'] = name1
             config['Project']['stackdateFn'] = name2
             config.write()
-            QtWidgets.QMessageBox.about(self, 'text','Stack File: '+name1+'<br>;-----------------------;'+'<br>Dates File: '+name2)
+            QtWidgets.QMessageBox.about(self, 'text','Stack File:'+'<br>'+name1+'<br>;----------'+'<br>Dates File: '+'<br>'+name2)
             #
             self.Step3ab_pushButton.setEnabled(False)
             #
@@ -418,6 +421,7 @@ class MyQtApp(QtWidgets.QMainWindow, mainV12.Ui_MainWindow):
             QtWidgets.QMessageBox.about(self, 'text','Oops! Select Image Stack and Dates File')
     
     def step3c_runImageStackMetrics(self):
+        self.Step3c_pushButton.setEnabled(False)
         config_name = self.Step1b_lineEdit.text()
         global nita
         nita = nitaObj(config_name)
@@ -425,20 +429,14 @@ class MyQtApp(QtWidgets.QMainWindow, mainV12.Ui_MainWindow):
         # load image stack 
         nita.loadStack()
         #
-        if self.Step3c_radioButton.isChecked() == True:
-            # run stack  
+        if self.Step3c_lineEdit.text() == '' or int(self.Step3c_lineEdit.text()) < 2:
+            QtWidgets.QMessageBox.about(self, 'text','Error!'+'<br> Minimum = 2'+'<br>Maximum = Check number of cores available on your computer and specify accordingly')
+        else:
             n_workers = int(self.Step3c_lineEdit.text())
             nita.runStack(parallel=True, workers=n_workers)
-            #run compute metrics
             nita.computeStackMetrics(parallel=True, workers=n_workers)
-        else:
-            # run stack  
-            nita.runStack(parallel=False)
-            #run compute metrics
-            nita.computeStackMetrics(parallel=False)
-            
-        QtWidgets.QMessageBox.about(self, 'Metrics','Image Metrics Created!')
-        #
+            QtWidgets.QMessageBox.about(self, 'Metrics','Image Metrics Created!')
+        #    
         nita.stopLog()
     
     @QtCore.pyqtSlot(int)
@@ -457,7 +455,7 @@ class MyQtApp(QtWidgets.QMainWindow, mainV12.Ui_MainWindow):
                 plotCheckbox.blockSignals(True)
                 plotCheckbox.setCheckState(state)
                 plotCheckbox.blockSignals(False)
-#                
+                
     @QtCore.pyqtSlot(int)
     def onState2ChangePrincipal(self, state):
         if state == QtCore.Qt.Checked:
@@ -465,13 +463,13 @@ class MyQtApp(QtWidgets.QMainWindow, mainV12.Ui_MainWindow):
                 saveCheckbox.blockSignals(True)
                 saveCheckbox.setCheckState(state)
                 saveCheckbox.blockSignals(False)
-#
+
     @QtCore.pyqtSlot(int)
     def onState1Change(self, state):
         self.plotAll.blockSignals(True)
         self.plotAll.setChecked(QtCore.Qt.Unchecked)
         self.plotAll.blockSignals(False)
-#    
+    
     @QtCore.pyqtSlot(int)
     def onState2Change(self, state):
         self.saveAll.blockSignals(True)
