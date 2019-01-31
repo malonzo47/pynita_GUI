@@ -1,13 +1,14 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-Created on Thu Jan 31 2019
+Created on Thu Jan 31 11:39:17 2019
 
 @author: Praveen Noojipady
 @email: noojipad@american.edu
 @Project: pyNITA-GUI
 License: MIT
 Copyright (c)
+
 """
 import sys
 import os
@@ -481,6 +482,13 @@ class MyQtApp(QtWidgets.QMainWindow, mainV12.Ui_MainWindow):
         self.saveAll.blockSignals(False)
         
     def step4_PlotAndSave(self):
+        name = self.Step1b_lineEdit.text()
+        if name:
+            config = ConfigObj(name)
+            cp = config['Project']
+            outfile = os.path.join(cp['OutputFolder'],cp['ProjectName'], cp['ProjectName']+'_metadata'+'.ini')
+            shutil.copy(name, outfile)
+        #
         if self.plot10.isChecked() == True or self.save10.isChecked() == True:
             valChange_date1 = self.Step4_ValueChange_Date1.text()
             valChange_date2 = self.Step4_ValueChange_Date2.text()

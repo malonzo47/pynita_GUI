@@ -25,6 +25,9 @@ class ConfigReader:
         self.ptsFn = p['ptsFn']
         self.stackdateFn = p['stackdateFn']
         self.stackFn = p['stackFn']
+        if p['OutputFolder'] == '': 
+            p['OutputFolder'] = 'output'
+            c.write()
         self.OutDir = self.createDir(os.path.join(self.root, p['OutputFolder']))
         self.OutputFolder = self.createDir(os.path.join(self.OutDir, self.ProjectName))
 
