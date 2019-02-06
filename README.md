@@ -1,10 +1,5 @@
-# pynita_GUI installation and requirements
-
-Note: List of packages necessary for pynita_GUI are listed in "requirements.txt"
-
-Install packages on Linux/Mac: 
-- From terminal type, "cat requirements.txt | while read PACKAGE; do pip install "$PACKAGE"; done"
-- From terminal navigate to pynita_source/nita_funs/distance_funs and type, "python setup.py build_ext --inplace"
+# pynita_GUI Installation and Requirements
+ **pyNITA_GUI** is the python implementation of Noise Insensitive Trajectory Algorithm (NITA). Please refer to the [Scientific Reports](https://www.nature.com/articles/srep35129) article for detailed description of NITA and its application. The below steps here will walk you through the installation procedure and package requirements necessary for pynita_GUI. 
 
 ## Python Installation: Windows/Mac/Linux
 
