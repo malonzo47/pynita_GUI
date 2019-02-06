@@ -1,14 +1,9 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-Created on Thu Jan 31 11:39:17 2019
+Created on Fri Nov 16 16:31:28 2018
 
-@author: Praveen Noojipady
-@email: noojipad@american.edu
-@Project: pyNITA-GUI
-License: MIT
-Copyright (c)
-
+@author: pnoojipa
 """
 import sys
 import os
@@ -57,11 +52,19 @@ class MyQtApp(QtWidgets.QMainWindow, mainV12.Ui_MainWindow):
         self.Step2a_toolButton.clicked.connect(self.step2a_selectPointsFile)
         self.Step2a_pushButton.clicked.connect(self.step2a_loadPointsFile)
         self.Step2a_pushButton.released.connect(lambda: self.objectid_radioButton.setEnabled(True))
+#        self.Step2a_pushButton.released.connect(lambda: self.Step2b_lineEdit.setEnabled(True))
+#        self.Step2a_pushButton.released.connect(lambda: self.Step2b_pushButton.setEnabled (True))
         #
         self.objectid_radioButton.toggled.connect(self.Step2b_lineEdit.setEnabled)
         self.objectid_radioButton.toggled.connect(self.Visualize_radioButton.setEnabled)
         self.objectid_radioButton.toggled.connect(self.DrawTraj_radioButton.setEnabled)
-        self.objectid_radioButton.toggled.connect(self.Step2b_pushButton.setEnabled) 
+        self.objectid_radioButton.toggled.connect(self.Step2b_pushButton.setEnabled)
+#        self.Step2b_lineEdit.textChanged.connect(lambda: self.Visualize_radioButton.setEnabled(True))
+#        self.Step2b_lineEdit.textChanged.connect(lambda: self.DrawTraj_radioButton.setEnabled(True))
+#        self.Visualize_radioButton.toggled.connect(lambda: self.Step2b_pushButton.setEnabled (True))
+#        self.DrawTraj_radioButton.toggled.connect(lambda: self.Step2b_pushButton.setEnabled(True))
+#        self.DrawTraj_radioButton.toggled.connect(lambda: self.Step2d_pushButton.setEnabled(True))
+#        self.DrawTraj_radioButton.toggled.connect(self.Step2d_radioButton.setEnabled)  
         #
         self.Step2b_pushButton.released.connect(lambda: self.Step2c_commandLinkButton.setEnabled(True))
         self.Step2b_pushButton.clicked.connect(self.step2b_plotNITApoints_drawTraj)
@@ -87,7 +90,9 @@ class MyQtApp(QtWidgets.QMainWindow, mainV12.Ui_MainWindow):
         self.Step3b_toolButton.released.connect(lambda: self.Step3ab_pushButton.setEnabled(True))
         self.Step3ab_pushButton.clicked.connect(self.step3ab_loadImageStackAndDatesFile)
         self.Step3ab_pushButton.released.connect(lambda: self.Step3c_radioButton.setEnabled(True))
+#        self.Step3ab_pushButton.released.connect(lambda: self.Step3c_pushButton.setEnabled(True))
         #
+#        self.Step3c_radioButton.toggled.connect(lambda: self.Step3c_lineEdit.setEnabled(True))
         self.Step3c_radioButton.toggled.connect(self.Step3c_lineEdit.setEnabled)
         self.Step3c_radioButton.toggled.connect(self.Step3c_pushButton.setEnabled)
         self.Step3c_lineEdit.textChanged.connect(lambda: self.Step3c_pushButton.setEnabled(True))
@@ -261,7 +266,7 @@ class MyQtApp(QtWidgets.QMainWindow, mainV12.Ui_MainWindow):
                     print(i)
                     obj_ids.append(int(i))
             obj_ids = list(set(obj_ids))
-            #   
+            print(obj_ids)         
             nita.startLog()
             #
             if self.Visualize_radioButton.isChecked() == True:
@@ -345,7 +350,7 @@ class MyQtApp(QtWidgets.QMainWindow, mainV12.Ui_MainWindow):
         #
         nita.startLog()
         nita.setOpmParams()
-        #
+#        nita.paramOpm()
         if self.Step2d_lineEdit.text() == '' or int(self.Step2d_lineEdit.text()) < 2:
             QtWidgets.QMessageBox.about(self, 'text','Error!'+'<br> Minimum = 2'+'<br>Maximum = Check number of cores available on your computer and specify accordingly')
         else:
@@ -441,7 +446,22 @@ class MyQtApp(QtWidgets.QMainWindow, mainV12.Ui_MainWindow):
             nita.runStack(parallel=True, workers=n_workers)
             nita.computeStackMetrics(parallel=True, workers=n_workers)
             QtWidgets.QMessageBox.about(self, 'Metrics','Image Metrics Created!')
-        #    
+            
+            
+#        if self.Step3c_radioButton.isChecked() == True:
+#            # run stack  
+#            n_workers = int(self.Step3c_lineEdit.text())
+#            nita.runStack(parallel=True, workers=n_workers)
+            #run compute metrics
+#            nita.computeStackMetrics(parallel=True, workers=n_workers)
+#        else:
+            # run stack  
+#            nita.runStack(parallel=False)
+            #run compute metrics
+#            nita.computeStackMetrics(parallel=False)
+            
+#        QtWidgets.QMessageBox.about(self, 'Metrics','Image Metrics Created!')
+        #
         nita.stopLog()
     
     @QtCore.pyqtSlot(int)
@@ -460,7 +480,7 @@ class MyQtApp(QtWidgets.QMainWindow, mainV12.Ui_MainWindow):
                 plotCheckbox.blockSignals(True)
                 plotCheckbox.setCheckState(state)
                 plotCheckbox.blockSignals(False)
-                
+#                
     @QtCore.pyqtSlot(int)
     def onState2ChangePrincipal(self, state):
         if state == QtCore.Qt.Checked:
@@ -468,13 +488,13 @@ class MyQtApp(QtWidgets.QMainWindow, mainV12.Ui_MainWindow):
                 saveCheckbox.blockSignals(True)
                 saveCheckbox.setCheckState(state)
                 saveCheckbox.blockSignals(False)
-
+#
     @QtCore.pyqtSlot(int)
     def onState1Change(self, state):
         self.plotAll.blockSignals(True)
         self.plotAll.setChecked(QtCore.Qt.Unchecked)
         self.plotAll.blockSignals(False)
-    
+#    
     @QtCore.pyqtSlot(int)
     def onState2Change(self, state):
         self.saveAll.blockSignals(True)
@@ -482,13 +502,6 @@ class MyQtApp(QtWidgets.QMainWindow, mainV12.Ui_MainWindow):
         self.saveAll.blockSignals(False)
         
     def step4_PlotAndSave(self):
-        name = self.Step1b_lineEdit.text()
-        if name:
-            config = ConfigObj(name)
-            cp = config['Project']
-            outfile = os.path.join(cp['OutputFolder'],cp['ProjectName'], cp['ProjectName']+'_metadata'+'.ini')
-            shutil.copy(name, outfile)
-        #
         if self.plot10.isChecked() == True or self.save10.isChecked() == True:
             valChange_date1 = self.Step4_ValueChange_Date1.text()
             valChange_date2 = self.Step4_ValueChange_Date2.text()
