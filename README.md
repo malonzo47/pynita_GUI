@@ -5,7 +5,7 @@
 
 The Python installation instructions here are under Anaconda environment. Anaconda is a free open-source distribution for Python and R, most importantly it simplifies package management. 
 
-**1. Download and unpack the git repository:**. You can either download as .zip file or use the git clone option if you are familiar using git. 
+**1. Download and unpack the git repository:** You can either download as .zip file or use the git clone option if you are familiar using git. 
 
 **2. Ananconda (Python distribution):**
 
