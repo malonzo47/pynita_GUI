@@ -48,9 +48,11 @@ Link: https://www.anaconda.com/distribution/
          - **a.**	Compiler, build tools, and runtimes
            - C# and Visual Basic Roslyn compilers
            - VC++ 2017 version 15.9 v14.16 latest v141 tools (Note: Automatically adds another requirement, “Static analysis tools”)
+           
            **b.**	Development activities
            -	C# and Visual Basic
            -	Visual Studio C++ core features
+           
            **c.**	SDKs, libraries, and frameworks
            - Windows 10 SDK (10.0.17763.0)
            - Windows Universal C Runtime
