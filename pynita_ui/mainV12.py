@@ -3,7 +3,7 @@
 # Form implementation generated from reading ui file 'layouts/ui_code_tab_v6.ui',
 # licensing of 'layouts/ui_code_tab_v6.ui' applies.
 #
-# Created: Wed Jan 30 23:14:44 2019
+# Created: Wed Feb  6 14:41:59 2019
 #      by: pyside2-uic  running on PySide2 5.11.2
 #
 # WARNING! All changes made in this file will be lost!
@@ -84,7 +84,8 @@ class Ui_MainWindow(object):
         self.label_2.setFrameShape(QtWidgets.QFrame.WinPanel)
         self.label_2.setFrameShadow(QtWidgets.QFrame.Raised)
         self.label_2.setWordWrap(True)
-        self.label_2.setMargin(1)
+        self.label_2.setMargin(10)
+        self.label_2.setIndent(-1)
         self.label_2.setOpenExternalLinks(True)
         self.label_2.setObjectName("label_2")
         self.gridLayout_48.addWidget(self.label_2, 0, 0, 1, 1)
@@ -98,7 +99,7 @@ class Ui_MainWindow(object):
         spacerItem1 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
         self.horizontalLayout_11.addItem(spacerItem1)
         self.gridLayout_48.addLayout(self.horizontalLayout_11, 2, 0, 1, 1)
-        spacerItem2 = QtWidgets.QSpacerItem(20, 150, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.MinimumExpanding)
+        spacerItem2 = QtWidgets.QSpacerItem(20, 162, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
         self.gridLayout_48.addItem(spacerItem2, 3, 0, 1, 1)
         self.tabWidget.addTab(self.tab, "")
         self.tab1 = QtWidgets.QWidget()
@@ -1255,7 +1256,7 @@ class Ui_MainWindow(object):
 
     def retranslateUi(self, MainWindow):
         MainWindow.setWindowTitle(QtWidgets.QApplication.translate("MainWindow", "MainWindow", None, -1))
-        self.label_2.setText(QtWidgets.QApplication.translate("MainWindow", "<html><head/><body><p align=\"center\"><span style=\" font-size:24pt; font-weight:600; text-decoration: underline; color:#0f80ff;\">pyNITA</span></p><p><span style=\" font-size:18pt;\">Welcome to pyNITA user interface(UI), a python implementation of Noise Insensitive Trajectory Algorithm (NITA). The pyNITA UI enables a step-by-step approach to parameterize NITA input parameters, hand draw phenological trajectories, optimize input parameters, and compute image stack metrics for time-series satellite remote sensing data. </span></p><p><span style=\" font-size:14pt; font-weight:600;\">Reference: </span><span style=\" font-size:14pt;\">Scientific Reports </span><a href=\"https://www.nature.com/articles/srep35129\"><span style=\" font-size:14pt; text-decoration: underline; color:#0000ff;\">Article</span></a></p><p><span style=\" font-size:14pt; font-weight:600;\">Source Code:</span><span style=\" font-size:14pt;\"> Available from GitHub, </span><a href=\"https://github.com/pytoPN/pynita_GUI/tree/master/pynita_source\"><span style=\" font-size:14pt; text-decoration: underline; color:#0000ff;\">Click here</span></a></p></body></html>", None, -1))
+        self.label_2.setText(QtWidgets.QApplication.translate("MainWindow", "<html><head/><body><p align=\"center\"><span style=\" font-size:24pt; font-weight:600; text-decoration: underline; color:#0f80ff;\">pyNITA</span></p><p><span style=\" font-size:14pt;\">Welcome to pyNITA user interface(UI), a python implementation of Noise Insensitive Trajectory Algorithm (NITA). The pyNITA UI enables a step-by-step approach to parameterize NITA input parameters, hand draw phenological trajectories, optimize input parameters, and compute image stack metrics for time-series satellite remote sensing data. </span></p><p><span style=\" font-size:14pt; font-weight:600;\">Reference: </span><span style=\" font-size:14pt;\">Scientific Reports </span><a href=\"https://www.nature.com/articles/srep35129\"><span style=\" font-size:14pt; text-decoration: underline; color:#0000ff;\">Article</span></a></p><p><span style=\" font-size:14pt; font-weight:600;\">Source Code:</span><span style=\" font-size:14pt;\"> Available from GitHub, </span><a href=\"https://github.com/pytoPN/pynita_GUI/tree/master/pynita_source\"><span style=\" font-size:14pt; text-decoration: underline; color:#0000ff;\">Click here</span></a></p></body></html>", None, -1))
         self.label_35.setText(QtWidgets.QApplication.translate("MainWindow", "<html><head/><body><p align=\"center\"><span style=\" font-family:\'Arial\'; font-size:11pt;\">© 2018-2019 American University. All Rights Reserved</span></p></body></html>", None, -1))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab), QtWidgets.QApplication.translate("MainWindow", "pyNITA", None, -1))
         self.Step2_label_5.setText(QtWidgets.QApplication.translate("MainWindow", "<html><head/><body><p><span style=\" font-weight:600;\">Step1b: Select User Configuration File</span></p></body></html>", None, -1))
@@ -1288,7 +1289,7 @@ class Ui_MainWindow(object):
         self.Step1c_tableWidget.verticalHeaderItem(11).setText(QtWidgets.QApplication.translate("MainWindow", "12. min_complex", None, -1))
         self.Step1c_tableWidget.verticalHeaderItem(12).setText(QtWidgets.QApplication.translate("MainWindow", "13. filter_opt", None, -1))
         self.Step1c_tableWidget.verticalHeaderItem(13).setText(QtWidgets.QApplication.translate("MainWindow", "14. vi_change_thresh", None, -1))
-        self.Step1c_tableWidget.verticalHeaderItem(14).setText(QtWidgets.QApplication.translate("MainWindow", "15. time_step", None, -1))
+        self.Step1c_tableWidget.verticalHeaderItem(14).setText(QtWidgets.QApplication.translate("MainWindow", "15. run_thesh", None, -1))
         self.Step1c_tableWidget.horizontalHeaderItem(0).setText(QtWidgets.QApplication.translate("MainWindow", "Parameters", None, -1))
         self.Step1_label_3.setText(QtWidgets.QApplication.translate("MainWindow", "<html><head/><body><p><span style=\" font-size:14pt; font-weight:600; color:#0f80ff;\">Step1: Configure NITA Parameters</span></p></body></html>", None, -1))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab1), QtWidgets.QApplication.translate("MainWindow", "Step1", None, -1))
@@ -1361,8 +1362,10 @@ class Ui_MainWindow(object):
         self.label_12.setText(QtWidgets.QApplication.translate("MainWindow", "4. Dist Duration", None, -1))
         self.label_18.setText(QtWidgets.QApplication.translate("MainWindow", "<html><head/><body><p><span style=\" color:#0f80ff;\">Start Date:</span></p></body></html>", None, -1))
         self.label_33.setText(QtWidgets.QApplication.translate("MainWindow", "<html><head/><body><p><span style=\" color:#0f80ff;\">End Date:</span></p></body></html>", None, -1))
-        self.Step4_ValueChange_Date1.setPlaceholderText(QtWidgets.QApplication.translate("MainWindow", "2002000", None, -1))
-        self.Step4_ValueChange_Date2.setPlaceholderText(QtWidgets.QApplication.translate("MainWindow", "2016900", None, -1))
+        self.Step4_ValueChange_Date1.setToolTip(QtWidgets.QApplication.translate("MainWindow", "<html><head/><body><p>Enter the beginning of your value_change range in the form of yyyyddd. For example, &quot;2015100&quot;, for the 100th day of 2015. You can also do -9999 but note that this will allow the ranges to vary, pixel to pixel depending on early-range image availability</p></body></html>", None, -1))
+        self.Step4_ValueChange_Date1.setPlaceholderText(QtWidgets.QApplication.translate("MainWindow", "yyyyddd", None, -1))
+        self.Step4_ValueChange_Date2.setToolTip(QtWidgets.QApplication.translate("MainWindow", "<html><head/><body><p>Enter the end of your value_change range in the form of yyyyddd. For example, &quot;2015100&quot;, for the 100th day of 2015. You can also do 9999 but note that this will allow the ranges to vary, pixel to pixel depending on late-range image availability</p></body></html>", None, -1))
+        self.Step4_ValueChange_Date2.setPlaceholderText(QtWidgets.QApplication.translate("MainWindow", "yyyyddd", None, -1))
         self.label_38.setToolTip(QtWidgets.QApplication.translate("MainWindow", "<html><head/><body><p>Select to save image metric outputs in .tif format</p></body></html>", None, -1))
         self.label_38.setText(QtWidgets.QApplication.translate("MainWindow", "<html><head/><body><p align=\"center\"><span style=\" font-weight:600;\">Save</span></p></body></html>", None, -1))
         self.label_37.setToolTip(QtWidgets.QApplication.translate("MainWindow", "<html><head/><body><p>Select to plot image metric outputs</p></body></html>", None, -1))
@@ -1377,7 +1380,8 @@ class Ui_MainWindow(object):
         self.label_30.setText(QtWidgets.QApplication.translate("MainWindow", "14. Linear Error", None, -1))
         self.label_31.setText(QtWidgets.QApplication.translate("MainWindow", "15. Noise", None, -1))
         self.label_34.setText(QtWidgets.QApplication.translate("MainWindow", "<html><head/><body><p><span style=\" color:#0f80ff;\">Date:</span></p></body></html>", None, -1))
-        self.Step4_DateValue.setPlaceholderText(QtWidgets.QApplication.translate("MainWindow", "2002000", None, -1))
+        self.Step4_DateValue.setToolTip(QtWidgets.QApplication.translate("MainWindow", "<html><head/><body><p>Enter the date for which you\'d like to see the VI value at each pixel, in the form of yyyyddd. For example, &quot;2015100&quot;, for the 100th day of 2015</p></body></html>", None, -1))
+        self.Step4_DateValue.setPlaceholderText(QtWidgets.QApplication.translate("MainWindow", "yyyyddd", None, -1))
         self.label_9.setText(QtWidgets.QApplication.translate("MainWindow", "3. Dist Date", None, -1))
         self.label_32.setText(QtWidgets.QApplication.translate("MainWindow", "16. Bailcut", None, -1))
         self.label_29.setText(QtWidgets.QApplication.translate("MainWindow", "13. Recovery CMP", None, -1))
