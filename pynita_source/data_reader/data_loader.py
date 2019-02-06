@@ -12,7 +12,6 @@ import pandas as pd
 import numpy as np
 from osgeo import gdal
 from pynita_source.utils import general 
-#import gdal as gdal
 
 
 class dataLoader:
