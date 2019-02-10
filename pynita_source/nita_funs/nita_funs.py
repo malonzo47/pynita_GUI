@@ -522,3 +522,11 @@ def paramcomboCmp(param_combo, OBJECTIDs, handdraw_trajs, pts, user_vi, compute_
         OBJECTID_pct95_err.append(pct95_err)
     
     return np.mean(OBJETID_rmse), np.median(OBJETID_rmse), np.mean(OBJETID_rmse)
+
+def nita_stack_tuple_wrapper(input_tuple):
+    stack_2d, compute_mask_1d, param_dic, i = input_tuple
+    return nita_stack_wrapper(stack_2d, compute_mask_1d, param_dic, i)
+
+def paramcomboCmp_wrapper(inpute_tuple):
+    param_combo, OBJECTIDs, handdraw_trajs, pts, user_vi, compute_mask = inpute_tuple
+    return paramcomboCmp(param_combo, OBJECTIDs, handdraw_trajs, pts, user_vi, compute_mask)
