@@ -12,6 +12,11 @@ import numpy as np
 from scipy import ndimage
 import matplotlib.pyplot as plt
 
+def computMetrics_wrapper(tuple_input_args):
+    results_dic, vi_change_thresh, run_thresh, time_step = tuple_input_args
+    return computeMetrics(results_dic, vi_change_thresh, run_thresh, time_step)
+
+
 def computeMetrics(results_dic, vi_change_thresh, run_thresh, time_step):
     
     # ---
