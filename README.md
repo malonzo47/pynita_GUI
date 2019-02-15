@@ -68,6 +68,14 @@ Link: https://www.anaconda.com/distribution/
   
   **c.** Once installed, click Launch to open Spyder
   
-**5. Launch pynita_gui:** – From Spyder, navigate to downloaded git folder and select “pynita_gui_main.py”.  Click “Run” to launch pynita_gui
+**5. Launch pynita_gui:** – From Spyder, navigate to downloaded git folder and select “pynita_gui_main.py”.
+
+- **a.** Click "Run" in the taskbar and select "Configuration per file..." or alternatively press Ctrl + F6.
+  
+  **b.** In the console option, select "Execute in a external system terminal." Click OK.
+  
+  **c.** Run "pynita_gui_main.py".
   
 **Note:** Everytime you want to launch pynita_gui, remember to activate the environment (e.g., “pynita_gui_py36”) from Anaconda Navigator and then launch “Spyder”.
+
+**Note:** Issue with "Spyder" and a python library "multiprocessing" has been identified. If steps 5a-c are not followed correctly, it may lead to code hanging in the parallelization run phase.
