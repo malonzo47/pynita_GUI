@@ -70,7 +70,7 @@ Link: https://www.anaconda.com/distribution/
   
 **5. Launch pynita_gui:** – From Spyder, navigate to downloaded git folder and select “pynita_gui_main.py”.
 
-- **a.** Click "Run" in the taskbar and select "Configuration per file..." or alternatively press Ctrl + F6.
+- **a.** From the "Run" menu (NOT the green button) in the taskbar and select "Configuration per file..." or alternatively press Ctrl + F6.
   
   **b.** In the console option, select "Execute in a external system terminal." Click OK.
   
