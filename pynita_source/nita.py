@@ -116,6 +116,7 @@ class nitaObj:
             fig, ax = plt.subplots(nrows=subplots_nrow, ncols=subplots_ncol)
             ax = np.array(ax)
             plt.tight_layout()
+            plt.show()
         
         for OBJECTID in OBJECTIDs:
             
