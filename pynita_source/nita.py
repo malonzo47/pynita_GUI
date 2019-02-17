@@ -147,7 +147,8 @@ class nitaObj:
                     title = ''
                     
                 nf.viewNITA(px, date_vec, doy_vec, results_dic, showdata=showdata, colorbar=colorbar, title = title, fig=fig, ax=ax.flatten()[i])               
-
+        if plot:
+            plt.show()
         if self.log:
             self.logger.info('runPts start...')
             self.logger.info('OBJECTIDs run: ' + str(OBJECTIDs))
