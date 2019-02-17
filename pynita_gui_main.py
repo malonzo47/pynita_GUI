@@ -575,7 +575,14 @@ class MyQtApp(QtWidgets.QMainWindow, mainV12.Ui_MainWindow):
             label = 'Noise Normalized Linear Error'
             nita.MI_bailcut(plot=self.plot16.isChecked(), save=self.save16.isChecked(), fn='bailcut.tif', title = title, label=label)
             plt.figure(title).canvas.mpl_connect('button_press_event', self.onclick)
-        
+        # Check if any of the plot buttons is selected and display the figures for all the radio buttons pressed.
+        plot_flag = False
+        for i in range(2, 17):
+            if eval('self.plot'+str(i)+'.isChecked()')==True:
+                plot_flag = True
+                break
+        if plot_flag:
+            plt.show()
 if __name__ == '__main__':
     import sys
     app = QtWidgets.QApplication(sys.argv)
