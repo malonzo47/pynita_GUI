@@ -116,7 +116,7 @@ class nitaObj:
             fig, ax = plt.subplots(nrows=subplots_nrow, ncols=subplots_ncol)
             ax = np.array(ax)
             plt.tight_layout()
-            plt.show()
+
         
         for OBJECTID in OBJECTIDs:
             
@@ -147,7 +147,8 @@ class nitaObj:
                     title = ''
                     
                 nf.viewNITA(px, date_vec, doy_vec, results_dic, showdata=showdata, colorbar=colorbar, title = title, fig=fig, ax=ax.flatten()[i])               
-
+        if plot:
+            plt.show()
         if self.log:
             self.logger.info('runPts start...')
             self.logger.info('OBJECTIDs run: ' + str(OBJECTIDs))

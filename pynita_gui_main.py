@@ -58,6 +58,7 @@ class MyQtApp(QtWidgets.QMainWindow, mainV12.Ui_MainWindow):
         self.Step2a_pushButton.clicked.connect(self.step2a_loadPointsFile)
         self.Step2a_pushButton.released.connect(lambda: self.objectid_radioButton.setEnabled(True))
         #
+        self.Visualize_radioButton.setChecked(True)
         self.objectid_radioButton.toggled.connect(self.Step2b_lineEdit.setEnabled)
         self.objectid_radioButton.toggled.connect(self.Visualize_radioButton.setEnabled)
         self.objectid_radioButton.toggled.connect(self.DrawTraj_radioButton.setEnabled)
