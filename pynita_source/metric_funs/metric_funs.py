@@ -234,6 +234,7 @@ def plotMI(MI_2d, title, label):
     plt.colorbar(mappable, label=label)
     plt.suptitle(title)
     plt.tight_layout()
+    plt.show()
 
 #%%          
 def MI_complexity(results_dics):
