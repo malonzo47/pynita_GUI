@@ -435,6 +435,7 @@ def viewNITA(px, date_vec, doy_vec,
         if colorbar:
             fig.colorbar(mappable, label = 'Day of year')
         print('bail_cut = {0} \nfit_count = {1}'.format(bail_cut, fit_count))
+
     except TypeError:
         plt.cla()
         ax.set_xlim([0, 1])
