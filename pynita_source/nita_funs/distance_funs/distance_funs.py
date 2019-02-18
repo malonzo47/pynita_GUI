@@ -1,5 +1,5 @@
 import numpy as np
-from .distance_funs_cython import distancePointEdge_cy
+from distance_funs_cython import distancePointEdge_cy
 
 def distancePointEdge_py(points, edge):
     # Python implementation of MATLAB function distancePointEdge created by David Legland
