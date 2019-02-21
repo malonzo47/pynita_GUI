@@ -68,7 +68,14 @@ Link: https://www.anaconda.com/distribution/
   
   **c.** Once installed, click Launch to open Spyder
   
-**5. Launch pynita_gui:** – From Spyder, navigate to downloaded git folder and select “pynita_gui_main.py”.
+ **5.	Install this .whl file**
+- **a.**	Open Anaconda terminal (if it's not already) in your homemade environment as in step 2c
+
+  **b.** Navigate to the ./pynita_source/nita_funs/distance_funs directory
+
+  **c.** Run this code:   pip install UNKNOWN-0.0.0-cp36-cp36m-win_amd64.whl
+  
+**6. Launch pynita_gui:** – From Spyder, navigate to downloaded git folder and select “pynita_gui_main.py”.
 
 - **a.** From the "Run" menu (NOT the green button) in the taskbar and select "Configuration per file..." or alternatively press Ctrl + F6.
   
