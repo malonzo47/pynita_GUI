@@ -230,7 +230,7 @@ def stretchMI(vals_1d, low_high=[2, 98]):
 #    fig.colorbar(mappable, label=label)
 
 def plotMI(MI_2d, title, label):
-    mappable = plt.matshow(MI_2d,fignum=title)
+    mappable = plt.matshow(MI_2d,fignum=title, extent=[0, MI_2d.shape[1], MI_2d.shape[0], 0])
     plt.colorbar(mappable, label=label)
     plt.suptitle(title)
     plt.tight_layout()
