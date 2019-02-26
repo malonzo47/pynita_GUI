@@ -42,6 +42,8 @@ Link: https://www.anaconda.com/distribution/
    
      **b.** Windows users: For windows users, we have provided compiled "C" code directly, since windows doesn't have an in-built compiler. However, if at the end of the steps, you encounter `distance_funs_cython module not found` error, you will need to compile the "C" code. If you encounter this error, please follow the instructions at the end, to compile "C" code on windows.
 
+     **Caution**: The compiled “C” code in Mac/Linux/Windows is **OS** and **Python version** specific. 
+
 **4.	Install Spyder (python editor)**
 - **a.**	Open Anaconda Navigator and select “Home”
 
@@ -62,20 +64,31 @@ Link: https://www.anaconda.com/distribution/
 **Note:** Issue with "Spyder" and a python library "multiprocessing" has been identified. If steps 5a-c are not followed correctly, it may lead to code hanging in the parallelization run phase.
 
 
-**Note:** If windows users have encountered the `distance_funs_cython module not found` error, please follow the instructions below. **If PyNita launched successfuly, you should ignore the instructions below**. 
+**Note:** If windows users have encountered the `distance_funs_cython module not found` error, please follow the instructions below. 
 
-Unlike Mac/Linux, windows do not have an in-built C compiler. Download Visual Studio 2017 from here, https://visualstudio.microsoft.com/downloads/. Use the Community version, which is free. After installation, follow the instructions below, 
-       - **i.**	Open the Visual Studio Installer       
-        **ii.**	Under “Visual Studio Community 2017”, click “Modify”  
-        **iii.**	Select Individual Components from the top bar. From the subsection listed below, select the following components (7 components) and click “Modify” (bottom right corner)
-         - **a.**	Compiler, build tools, and runtimes
-           - C# and Visual Basic Roslyn compilers
-           - VC++ 2017 version 15.9 v14.16 latest v141 tools (Note: Automatically adds another requirement, “Static analysis tools”) 
-           **b.**	Development activities
-           -	C# and Visual Basic
-           -	Visual Studio C++ core features           
-           **c.**	SDKs, libraries, and frameworks
-           - Windows 10 SDK (10.0.17763.0)
-           - Windows Universal C Runtime
-     **c.**	Once installation is complete, from terminal, navigate to `pynita_source/nita_funs/distance_funs` folder and type `python setup.py build_ext --inplace` to compile the “C” code
-     **Caution**: The compiled “C” code in Mac/Linux/Windows is **OS** and **Python version** specific. 
+**If PyNita launched successfuly, you should ignore the instructions below**. 
+
+**Following instructions are for windows users only.**
+
+Unlike Mac/Linux, windows do not have an in-built C compiler. Download Visual Studio 2017 from here, https://visualstudio.microsoft.com/downloads/. Use the Community version, which is free. After installation, follow the instructions below,
+
+   - **i.**	Open the Visual Studio Installer.
+       
+   - **ii.**	Under “Visual Studio Community 2017”, click “Modify”
+        
+   - **iii.**	Select Individual Components from the top bar. From the subsection listed below, select the following components (7 components) and click “Modify” (bottom right corner)
+         
+       - **a.**	Compiler, build tools, and runtimes
+              - C# and Visual Basic Roslyn compilers
+              - VC++ 2017 version 15.9 v14.16 latest v141 tools (Note: Automatically adds another requirement, “Static analysis tools”) 
+         
+       - **b.**	Development activities
+             -	C# and Visual Basic
+             -	Visual Studio C++ core features 
+            
+        - **c.**	SDKs, libraries, and frameworks
+              - Windows 10 SDK (10.0.17763.0)
+              - Windows Universal C Runtime
+           
+   - **iv.**	Once installation is complete, from **anaconda terminal of your environment** (see step 3c for the terminal), navigate to `pynita_source/nita_funs/distance_funs` folder and type `python setup.py build_ext --inplace` to compile the “C” code
+     
