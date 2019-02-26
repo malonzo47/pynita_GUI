@@ -58,13 +58,17 @@ Link: https://www.anaconda.com/distribution/
   **b.** In the console option, select "Execute in a external system terminal." Click OK.
   
   **c.** Run "pynita_gui_main.py".
+  
+**6. Start using pyNITA.** - The window may not pop up on top of other windows so you may have to find it.
+
 
 **Note 1:** Everytime you want to launch pynita_gui, remember to activate the environment (e.g., “pynita_gui_py36”) from Anaconda Navigator and then launch “Spyder”.
 
 **Note 2:** Issue with "Spyder" and a python library "multiprocessing" has been identified. If steps 5a-c are not followed correctly, it may lead to code hanging in the parallelization run phase.
 
 
-
+____________________________________________________________________________________________________________________
+____________________________________________________________________________________________________________________
 
 **Below here only if you are a Windows user who has encountered the `distance_funs_cython module not found` error**
  
