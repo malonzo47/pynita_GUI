@@ -36,18 +36,44 @@ Link: https://www.anaconda.com/distribution/
             for /f %i in (requirements.txt) do conda install --yes %i
 
 
+
 **3.**	Compile C code:
    - **a.** Mac/Linux users: From terminal, navigate to `pynita_source/nita_funs/distance_funs` folder  and type, `python setup.py build_ext --inplace` to compile the “C” code
    
-     **b.** Windows users: Unlike Mac/Linux, windows do not have an in-built C compiler. Download Visual Studio 2017 from here, https://visualstudio.microsoft.com/downloads/. Use the Community version, which is free. After installation, follow the instructions below, 
+     **b.** Windows users: For windows users, we have provided compiled "C" code directly, since windows doesn't have an in-built compiler. However, if at the end of the steps, you encounter `distance_funs_cython module not found` error, you will need to compile the "C" code. If you encounter this error, please follow the instructions at the end, to compile "C" code on windows.
+
+**4.	Install Spyder (python editor)**
+- **a.**	Open Anaconda Navigator and select “Home”
+
+  **b.** On the Applications listed, install “Spyder”
+  
+  **c.** Once installed, click Launch to open Spyder
+    
+**5. Launch pynita_gui:** – From Spyder, navigate to downloaded git folder and select “pynita_gui_main.py”.
+
+- **a.** From the "Run" menu (NOT the green button) in the taskbar and select "Configuration per file..." or alternatively press Ctrl + F6.
+  
+  **b.** In the console option, select "Execute in a external system terminal." Click OK.
+  
+  **c.** Run "pynita_gui_main.py".
+
+**Note:** Everytime you want to launch pynita_gui, remember to activate the environment (e.g., “pynita_gui_py36”) from Anaconda Navigator and then launch “Spyder”.
+
+**Note:** Issue with "Spyder" and a python library "multiprocessing" has been identified. If steps 5a-c are not followed correctly, it may lead to code hanging in the parallelization run phase.
+
+
+**Note:** If windows users have encountered the `distance_funs_cython module not found` error, please follow the instructions below. **If PyNita launched successfuly, you should ignore the instructions below**. 
+
+Unlike Mac/Linux, windows do not have an in-built C compiler. Download Visual Studio 2017 from here, https://visualstudio.microsoft.com/downloads/. Use the Community version, which is free. After installation, follow the instructions below, 
        - **i.**	Open the Visual Studio Installer
-       
-         **ii.**	Under “Visual Studio Community 2017”, click “Modify”
+        
+        **ii.**	Under “Visual Studio Community 2017”, click “Modify”  
+        
+        **iii.**	Select Individual Components from the top bar. From the subsection listed below, select the following components (7 components) and click “Modify” (bottom right corner)
          
-         **iii.**	Select Individual Components from the top bar. From the subsection listed below, select the following components (7 components) and click “Modify” (bottom right corner)
          - **a.**	Compiler, build tools, and runtimes
            - C# and Visual Basic Roslyn compilers
-           - VC++ 2017 version 15.9 v14.16 latest v141 tools (Note: Automatically adds another requirement, “Static analysis tools”)
+           - VC++ 2017 version 15.9 v14.16 latest v141 tools (Note: Automatically adds another requirement, “Static analysis tools”) 
            
            **b.**	Development activities
            -	C# and Visual Basic
@@ -60,29 +86,3 @@ Link: https://www.anaconda.com/distribution/
      **c.**	Once installation is complete, from terminal, navigate to `pynita_source/nita_funs/distance_funs` folder and type `python setup.py build_ext --inplace` to compile the “C” code
      
      **Caution**: The compiled “C” code in Mac/Linux/Windows is **OS** and **Python version** specific. 
-
-**4.	Install Spyder (python editor)**
-- **a.**	Open Anaconda Navigator and select “Home”
-
-  **b.** On the Applications listed, install “Spyder”
-  
-  **c.** Once installed, click Launch to open Spyder
-  
- **5.	Install this .whl file**
-- **a.**	Open Anaconda terminal (if it's not already) in your homemade environment as in step 2c
-
-  **b.** Navigate to the ./pynita_source/nita_funs/distance_funs directory
-
-  **c.** Run this code:   pip install UNKNOWN-0.0.0-cp36-cp36m-win_amd64.whl
-  
-**6. Launch pynita_gui:** – From Spyder, navigate to downloaded git folder and select “pynita_gui_main.py”.
-
-- **a.** From the "Run" menu (NOT the green button) in the taskbar and select "Configuration per file..." or alternatively press Ctrl + F6.
-  
-  **b.** In the console option, select "Execute in a external system terminal." Click OK.
-  
-  **c.** Run "pynita_gui_main.py".
-  
-**Note:** Everytime you want to launch pynita_gui, remember to activate the environment (e.g., “pynita_gui_py36”) from Anaconda Navigator and then launch “Spyder”.
-
-**Note:** Issue with "Spyder" and a python library "multiprocessing" has been identified. If steps 5a-c are not followed correctly, it may lead to code hanging in the parallelization run phase.
