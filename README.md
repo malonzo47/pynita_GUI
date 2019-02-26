@@ -59,17 +59,15 @@ Link: https://www.anaconda.com/distribution/
   
   **c.** Run "pynita_gui_main.py".
 
-**Note:** Everytime you want to launch pynita_gui, remember to activate the environment (e.g., “pynita_gui_py36”) from Anaconda Navigator and then launch “Spyder”.
+**Note 1:** Everytime you want to launch pynita_gui, remember to activate the environment (e.g., “pynita_gui_py36”) from Anaconda Navigator and then launch “Spyder”.
 
-**Note:** Issue with "Spyder" and a python library "multiprocessing" has been identified. If steps 5a-c are not followed correctly, it may lead to code hanging in the parallelization run phase.
+**Note 2:** Issue with "Spyder" and a python library "multiprocessing" has been identified. If steps 5a-c are not followed correctly, it may lead to code hanging in the parallelization run phase.
 
 
-**Note:** If windows users have encountered the `distance_funs_cython module not found` error, please follow the instructions below. 
 
-**If PyNita launched successfuly, you should ignore the instructions below**. 
 
-**Following instructions are for windows users only.**
-
+**Below here only if you are a Windows user who has encountered the `distance_funs_cython module not found` error**
+ 
 Unlike Mac/Linux, windows do not have an in-built C compiler. Download Visual Studio 2017 from here, https://visualstudio.microsoft.com/downloads/. Use the Community version, which is free. After installation, follow the instructions below,
 
    - **i.**	Open the Visual Studio Installer.
