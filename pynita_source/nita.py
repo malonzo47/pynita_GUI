@@ -240,7 +240,7 @@ class nitaObj:
             param_dic['date_vec'] = self.stack_dates
             param_dic['doy_vec'] = self.stack_doy
         
-            iterable = [(stack_2d, compute_mask_1d, param_dic, i) for i in range(stack_2d_shape[1])]
+            iterable = [(stack_2d[:, i], compute_mask_1d[i], param_dic, i) for i in range(stack_2d_shape[1])]
         
             pool = Pool(workers)
             results_dics_1d = []
