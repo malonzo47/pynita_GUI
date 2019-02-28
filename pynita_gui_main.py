@@ -25,6 +25,12 @@ from PyQt5.QtCore import *
 from pynita_ui import mainV12, popup3, resource_logos
 from pynita_source import *
 #
+if hasattr(QtCore.Qt, 'AA_EnableHighDpiScaling'):
+    QtWidgets.QApplication.setAttribute(QtCore.Qt.AA_EnableHighDpiScaling, True)
+
+if hasattr(QtCore.Qt, 'AA_UseHighDpiPixmaps'):
+    QtWidgets.QApplication.setAttribute(QtCore.Qt.AA_UseHighDpiPixmaps, True)
+
 
 class popWindow(QtWidgets.QMainWindow, popup3.Ui_MainWindow):
     def __init__(self, parent=None):
