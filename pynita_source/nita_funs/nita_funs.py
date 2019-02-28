@@ -453,7 +453,7 @@ def viewNITA(px, date_vec, doy_vec,
         ax.set_title(title)    
         plt.show()
 #%%           
-def nita_stack_wrapper(stack_2d, compute_mask_1d, param_dic, i):
+def nita_stack_wrapper(pix, compute_mask_1d, param_dic, i):
     
     # unpack the param_dic
     date_vec     = param_dic['date_vec']     
@@ -471,13 +471,13 @@ def nita_stack_wrapper(stack_2d, compute_mask_1d, param_dic, i):
     filter_opt   = param_dic['filter_opt']   
     
     # decide the value of compute mask 
-    compute_mask = compute_mask_1d[i]
-    compute_mask = compute_mask == 1
+    # compute_mask = compute_mask_1d[i]
+    compute_mask = compute_mask_1d == 1
     
     # get the value of px
-    px = stack_2d[:,i]
+    # px = stack_2d[:,i]
     
-    results_dic = nita_px(px, date_vec, doy_vec, 
+    results_dic = nita_px(pix, date_vec, doy_vec,
                           value_limits, doy_limits, date_limits,
                           bail_thresh, noise_thresh,
                           penalty, filt_dist, pct, max_complex, min_complex,
@@ -528,8 +528,8 @@ def paramcomboCmp(param_combo, OBJECTIDs, handdraw_trajs, pts, user_vi, compute_
     return np.mean(OBJETID_rmse), np.median(OBJETID_rmse), np.mean(OBJETID_rmse)
 
 def nita_stack_tuple_wrapper(input_tuple):
-    stack_2d, compute_mask_1d, param_dic, i = input_tuple
-    return nita_stack_wrapper(stack_2d, compute_mask_1d, param_dic, i)
+    pix, compute_mask_1d, param_dic, i = input_tuple
+    return nita_stack_wrapper(pix, compute_mask_1d, param_dic, i)
 
 def paramcomboCmp_wrapper(inpute_tuple):
     param_combo, OBJECTIDs, handdraw_trajs, pts, user_vi, compute_mask = inpute_tuple
