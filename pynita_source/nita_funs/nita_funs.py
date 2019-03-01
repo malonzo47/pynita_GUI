@@ -242,11 +242,7 @@ def nita_px(px, date_vec, doy_vec,
 
     # ---
     # 0. check the inputs 
-    unq_idx = np.unique(date_vec,return_index=True)[1]
-    px = px[unq_idx] 
-    date_vec = date_vec[unq_idx]
-    doy_vec = doy_vec[unq_idx]
-    
+   
     try:
         
     #---
@@ -257,6 +253,15 @@ def nita_px(px, date_vec, doy_vec,
         y = copy.deepcopy(px) 
     
         x, y, doy_vec = filterLimits(x, y, doy_vec, value_limits, date_limits, doy_limits)
+        
+        #moved filtering of unique dates down here from line 244. The purpose
+        #is to remove redundant observations in overlap zones that are measured 
+        #twice on the same day
+        unq_idx = np.unique(x,return_index=True)[1]
+        y = y[unq_idx] 
+        x = x[unq_idx]
+        doy_vec = doy_vec[unq_idx]
+    
         
         # warning will be raised by numpy when len(y) == 1
         noise = np.median(np.absolute(np.diff(y)))
