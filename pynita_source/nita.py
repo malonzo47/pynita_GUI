@@ -124,8 +124,10 @@ class nitaObj:
               
             pt_OBJECTID = copy.deepcopy(self.pts.loc[self.pts['OBJECTID'] == OBJECTID])
             pt_OBJECTID = pt_OBJECTID.sort_values(by=['date_dist'])
-            
-            px = pt_OBJECTID[user_vi].values
+            try:
+                px = pt_OBJECTID[user_vi].values
+            except IndexError:
+                raise RuntimeError("Selected user_vi doesn't exist in your data.")
             date_vec = pt_OBJECTID['date_dist'].values
             doy_vec = pt_OBJECTID['doy'].values
             
@@ -900,11 +902,18 @@ class nitaObj:
         for OBJECTID in OBJECTIDs:
             
             fig, ax = plt.subplots()
-                    
-            plot_y = self.pts.loc[self.pts['OBJECTID'] == OBJECTID][user_vi].values
-            plot_x = self.pts.loc[self.pts['OBJECTID'] == OBJECTID]['date_dist'].values
-            plot_doy = self.pts.loc[self.pts['OBJECTID'] == OBJECTID]['doy'].values
-
+            try:
+                plot_y = self.pts.loc[self.pts['OBJECTID'] == OBJECTID][user_vi].values
+            except IndexError:
+                raise RuntimeError("Selected user_vi doesn't exist in the data.")
+            try:
+                plot_x = self.pts.loc[self.pts['OBJECTID'] == OBJECTID]['date_dist'].values
+            except IndexError:
+                raise RuntimeError("Selected date_dist values are invalid.")
+            try:
+                plot_doy = self.pts.loc[self.pts['OBJECTID'] == OBJECTID]['doy'].values
+            except IndexError:
+                raise RuntimeError("Selected doy values are invalid.")
             if plot_title:
                 info_line = self.ref_pts.loc[self.ref_pts['OBJECTID'] == OBJECTID]
                 title = ''.join([str(item)+' ' for item in list(info_line.values.flatten())])
@@ -976,11 +985,18 @@ class nitaObj:
                     
                     pt_OBJECTID = copy.deepcopy(self.pts.loc[self.pts['OBJECTID'] == OBJECTID])
                     pt_OBJECTID = pt_OBJECTID.sort_values(by=['date_dist'])
-            
-                    px = pt_OBJECTID[user_vi].values
-                    date_vec = pt_OBJECTID['date_dist'].values
-                    doy_vec = pt_OBJECTID['doy'].values
-                    
+                    try:
+                        px = pt_OBJECTID[user_vi].values
+                    except IndexError:
+                        raise RuntimeError("Selected user_vi doesn't exist in the data.")
+                    try:
+                        date_vec = pt_OBJECTID['date_dist'].values
+                    except IndexError:
+                        raise RuntimeError("Selected date_dist values are invalid.")
+                    try:
+                        doy_vec = pt_OBJECTID['doy'].values
+                    except IndexError:
+                        raise RuntimeError("Selected doy_vec values are invalid.")
                     if len(px) == 0:
                         raise RuntimeError('in-valid one or more OBJECTID(s)') 
                 

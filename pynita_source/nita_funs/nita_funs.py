@@ -497,11 +497,18 @@ def paramcomboCmp(param_combo, OBJECTIDs, handdraw_trajs, pts, user_vi, compute_
     for OBJECTID in OBJECTIDs:
                 
         handdraw_traj = [dic['traj'] for dic in handdraw_trajs if dic['OBJECTID'] == OBJECTID][0]
-                
-        px = pts.loc[pts['OBJECTID'] == OBJECTID][user_vi].values
-        date_vec = pts.loc[pts['OBJECTID'] == OBJECTID]['date_dist'].values
-        doy_vec = pts.loc[pts['OBJECTID'] == OBJECTID]['doy'].values
-            
+        try:
+            px = pts.loc[pts['OBJECTID'] == OBJECTID][user_vi].values
+        except IndexError:
+            raise RuntimeError("Selected user_vi doesn't exist in the data.")
+        try:
+            date_vec = pts.loc[pts['OBJECTID'] == OBJECTID]['date_dist'].values
+        except IndexError:
+            raise RuntimeError("Selected date_dist values are invalid.")
+        try:
+            doy_vec = pts.loc[pts['OBJECTID'] == OBJECTID]['doy'].values
+        except:
+            raise RuntimeError("Selected doy_vec values are invalid.")
         if len(px) == 0:
             raise RuntimeError('in-valid one or more OBJECTID(s)') 
             

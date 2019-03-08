@@ -274,12 +274,18 @@ class MyQtApp(QtWidgets.QMainWindow, mainV12.Ui_MainWindow):
             if self.Visualize_radioButton.isChecked() == True:
                 # Load NITA points
                 nita.loadPts(info_column='Name')
-                # Plot for selected OBJECTIDs 
-                nita.runPts([int(item) for item in obj_ids], plot=True, max_plot=50, showdata='fit', colorbar=False, plot_title=True)
+                # Plot for selected OBJECTIDs
+                try:
+                    nita.runPts([int(item) for item in obj_ids], plot=True, max_plot=50, showdata='fit', colorbar=False, plot_title=True)
+                except Exception as e:
+                    QtWidgets.QMessageBox.about(self, 'text', str(e))
             if self.DrawTraj_radioButton.isChecked() == True:
                 nita.loadPts(info_column='Name')
-                # Plot trajectories for selected OBJECTIDs 
-                nita.drawPts([int(item) for item in obj_ids], plot_title=True)
+                # Plot trajectories for selected OBJECTIDs
+                try:
+                    nita.drawPts([int(item) for item in obj_ids], plot_title=True)
+                except Exception as e:
+                    QtWidgets.QMessageBox.about(self, 'text', str(e))
             #
             nita.stopLog()
         else:
@@ -358,7 +364,10 @@ class MyQtApp(QtWidgets.QMainWindow, mainV12.Ui_MainWindow):
         else:
             n_workers = int(self.Step2d_lineEdit.text())
             #
-            opt_out = nita.paramOpm(parallel=True, workers=n_workers)
+            try:
+                opt_out = nita.paramOpm(parallel=True, workers=n_workers)
+            except Exception as e:
+                QtWidgets.QMessageBox.about(self, 'text', str(e))
             #
             TW_Item = QtWidgets.QTableWidgetItem
             self.popwin.popup_table.setItem(0, 0, TW_Item(str(opt_out['bail_thresh'])))
