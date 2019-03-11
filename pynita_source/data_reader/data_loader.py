@@ -43,9 +43,10 @@ class dataLoader:
         
         pts_path = self.ptsFn
         pts_tb_raw = pd.read_csv(pts_path)
-     
-        pts_tb = pts_tb_raw[col_names]
-  
+        try:
+            pts_tb = pts_tb_raw[col_names]
+        except KeyError:
+            raise RuntimeError("Required column names were not found in the csv {0} , please check the csv.".format(col_names))
         sis = list(pts_tb['system:index']) # system_index_s       
         all_info = [general.SystemIndexBreaker(si) for si in sis]  
         
