@@ -1066,7 +1066,22 @@ class nitaObj:
 #            print(k + ': ' + str(v))
             
         return best_paramcombo
-        
+
+    def leastCloudy(self, title):
+        stack_shape = self.stack.shape
+        image_size_xy = stack_shape[1]*stack_shape[2]
+        good_px_percent = [None]*stack_shape[0]
+
+        for i in range(stack_shape[0]):
+            good_px_count = np.sum(self.stack[i, :, :] > 0)
+            good_px_percent[i] = good_px_count/image_size_xy
+
+        best_index = np.argmax(good_px_percent)
+        plt.matshow(self.stack[best_index, :, :], fignum=title, extent=[0, stack_shape[2], stack_shape[1], 0])
+        plt.suptitle(title)
+        plt.tight_layout()
+        plt.show()
+
     def addLog(self, message=''):
         if self.log:
             self.logger.info(message)
