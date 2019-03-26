@@ -95,6 +95,9 @@ class MyQtApp(QtWidgets.QMainWindow, mainV12.Ui_MainWindow):
         self.Step3ab_pushButton.clicked.connect(self.step3ab_loadImageStackAndDatesFile)
         self.Step3ab_pushButton.released.connect(lambda: self.Step3c_radioButton.setEnabled(True))
         #
+        self.Step3op_subsetButton.clicked.connect(self.step3opt_subsetData)
+        self.Step3op_subsetButton.released.connect(lambda: self.Step3op_subsetButton.setEnabled(True))
+        #
         self.Step3c_radioButton.toggled.connect(self.Step3c_lineEdit.setEnabled)
         self.Step3c_radioButton.toggled.connect(self.Step3c_pushButton.setEnabled)
         self.Step3c_lineEdit.textChanged.connect(lambda: self.Step3c_pushButton.setEnabled(True))
@@ -452,11 +455,12 @@ class MyQtApp(QtWidgets.QMainWindow, mainV12.Ui_MainWindow):
         nita = nitaObj(config_name)
         nita.startLog()
         # load image stack
-        try:
-            nita.loadStack()
-        except Exception as e:
-            QtWidgets.QMessageBox.about(self, 'Error', str(e))
-            return
+        if not nita.stack:
+            try:
+                nita.loadStack()
+            except Exception as e:
+                QtWidgets.QMessageBox.about(self, 'Error', str(e))
+                return
         #
         if self.Step3c_lineEdit.text() == '' or int(self.Step3c_lineEdit.text()) < 2:
             QtWidgets.QMessageBox.about(self, 'text','Error!'+'<br> Minimum = 2'+'<br>Maximum = Check number of cores available on your computer and specify accordingly')
@@ -467,7 +471,33 @@ class MyQtApp(QtWidgets.QMainWindow, mainV12.Ui_MainWindow):
             QtWidgets.QMessageBox.about(self, 'Metrics','Image Metrics Created!')
         #    
         nita.stopLog()
-    
+
+    def step3opt_subsetData(self):
+
+        config_name = self.Step1b_lineEdit.text()
+        global nita
+        nita = nitaObj(config_name)
+        nita.startLog()
+        # load image stack
+        if not nita.stack:
+            try:
+                nita.loadStack()
+            except Exception as e:
+                QtWidgets.QMessageBox.about(self, 'Error', str(e))
+                return
+        title = 'Select top-left and bottom-right co-ordinate.'
+        nita.leastCloudy(title)
+        plt.figure(title).canvas.mpl_connect('button_press_event', self.subsetClick)
+        QtWidgets.QMessageBox.about(self, 'Subset Co-ordinates', 'Data will be subsetted from ({0}, {1}) and ({2}, {3})',
+                                    self.subset_x1, self.subset_y1, self.subset_x2, self.subset_y2)
+
+    @QtCore.pyqtSlot(int)
+    def subsetClick(self, event):
+        if 'self.subset_x1' not in locals():
+            self.subset_x1, self.subset_y1 = event.xdata, event.ydata
+        else:
+            self.subset_x2, self.subset_y2 = event.xdata, event.ydata
+
     @QtCore.pyqtSlot(int)
     def onclick(self,event):
         global ix, iy
