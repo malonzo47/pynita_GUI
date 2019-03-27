@@ -17,6 +17,7 @@ import numpy as np
 from os.path import expanduser
 from configobj import ConfigObj
 from matplotlib import pyplot
+from matplotlib.widgets import RectangleSelector, Button
 #
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import *
@@ -97,6 +98,11 @@ class MyQtApp(QtWidgets.QMainWindow, mainV12.Ui_MainWindow):
         #
         self.Step3op_subsetButton.clicked.connect(self.step3opt_subsetData)
         self.Step3op_subsetButton.released.connect(lambda: self.Step3op_subsetButton.setEnabled(True))
+        global subset_x1, subset_y1, subset_y2, subset_x2
+        subset_x1 = None
+        subset_y1 = None
+        subset_x2 = None
+        subset_y2 = None
         #
         self.Step3c_radioButton.toggled.connect(self.Step3c_lineEdit.setEnabled)
         self.Step3c_radioButton.toggled.connect(self.Step3c_pushButton.setEnabled)
@@ -462,6 +468,14 @@ class MyQtApp(QtWidgets.QMainWindow, mainV12.Ui_MainWindow):
                 QtWidgets.QMessageBox.about(self, 'Error', str(e))
                 return
         #
+        global subset_x1, subset_x2, subset_y1, subset_y2
+        if subset_x2:
+            subset_x1 = int(subset_x1)
+            subset_x2 = int(subset_x2)
+            subset_y1 = int(subset_y1)
+            subset_y2 = int(subset_y2)
+            nita.subsetStack((subset_x1, subset_y1, subset_x2, subset_y2))
+        #
         if self.Step3c_lineEdit.text() == '' or int(self.Step3c_lineEdit.text()) < 2:
             QtWidgets.QMessageBox.about(self, 'text','Error!'+'<br> Minimum = 2'+'<br>Maximum = Check number of cores available on your computer and specify accordingly')
         else:
@@ -485,18 +499,32 @@ class MyQtApp(QtWidgets.QMainWindow, mainV12.Ui_MainWindow):
             except Exception as e:
                 QtWidgets.QMessageBox.about(self, 'Error', str(e))
                 return
-        title = 'Select top-left and bottom-right co-ordinate.'
+        nita.stopLog()
+        fig, current_ax = plt.subplots()
+        plt.subplots_adjust(bottom=0.4)
+        title = 'Drag and select a rectangle to subset, then click Done.'
         nita.leastCloudy(title)
-        plt.figure(title).canvas.mpl_connect('button_press_event', self.subsetClick)
-        QtWidgets.QMessageBox.about(self, 'Subset Co-ordinates', 'Data will be subsetted from ({0}, {1}) and ({2}, {3})',
-                                    self.subset_x1, self.subset_y1, self.subset_x2, self.subset_y2)
+        toggle_selector.RS = RectangleSelector(current_ax, subsetClick,
+                                               drawtype='box', useblit=True,
+                                               button=[1, 3],  # don't use middle button
+                                               minspanx=5, minspany=5,
+                                               spancoords='pixels',
+                                               interactive=True)
+        plt.connect('key_press_event', toggle_selector)
+        axdone = plt.axes([0.7, 0.05, 0.1, 0.075])
+        axclear = plt.axes([0.85, 0.05, 0.1, 0.075])
 
-    @QtCore.pyqtSlot(int)
-    def subsetClick(self, event):
-        if 'self.subset_x1' not in locals():
-            self.subset_x1, self.subset_y1 = event.xdata, event.ydata
-        else:
-            self.subset_x2, self.subset_y2 = event.xdata, event.ydata
+        b_done = Button(axdone, 'Done')
+        b_clear = Button(axclear, 'Clear')
+
+        b_done.on_clicked(subsetClose)
+        b_clear.on_clicked(subsetClear)
+
+        axdone._button = b_done
+        axclear._button = b_clear
+
+        plt.show()
+
 
     @QtCore.pyqtSlot(int)
     def onclick(self,event):
@@ -636,6 +664,45 @@ class MyQtApp(QtWidgets.QMainWindow, mainV12.Ui_MainWindow):
                 break
         if plot_flag:
             plt.show()
+
+def toggle_selector(event):
+    print(' Key pressed.')
+    if event.key in ['Q', 'q'] and toggle_selector.RS.active:
+        print(' RectangleSelector deactivated.')
+        toggle_selector.RS.set_active(False)
+    if event.key in ['A', 'a'] and not toggle_selector.RS.active:
+        print(' RectangleSelector activated.')
+        toggle_selector.RS.set_active(True)
+
+def subsetClose(self):
+    plt.close('all')
+    print('Closing all plots')
+    msgbox = QMessageBox()
+    global subset_x1, subset_y1, subset_x2, subset_y2
+    if subset_y2:
+        msgbox.setText('({0}, {1}), ({2},{3}) are selected co-ordinates.'.format(int(subset_x1), int(subset_y1), int(subset_x2),
+                                                                                 int(subset_y2)))
+    else:
+        msgbox.setText('Points were not selected, no subsetting will be done.')
+    msgbox.exec()
+
+
+def subsetClear(self):
+    plt.close('all')
+    print('Closing all plots')
+    msgbox = QMessageBox()
+    msgbox.setText('Cleared the co-ordinates')
+    global subset_x1, subset_y1, subset_x2, subset_y2
+    subset_x1 = subset_y1 = subset_y2 = subset_x2 = None
+    msgbox.exec()
+
+def subsetClick(eclick, erelease):
+    global subset_x1, subset_y1, subset_x2, subset_y2
+    subset_x1, subset_y1 = eclick.xdata, eclick.ydata
+    subset_x2, subset_y2 = erelease.xdata, erelease.ydata
+    # print("(%3.2f, %3.2f) --> (%3.2f, %3.2f)" % (x1, y1, x2, y2))
+    # print(" The button you used were: %s %s" % (eclick.button, erelease.button))
+
 if __name__ == '__main__':
     import sys
     app = QtWidgets.QApplication(sys.argv)
