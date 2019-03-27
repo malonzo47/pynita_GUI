@@ -247,7 +247,7 @@ class nitaObj:
             pool = Pool(workers)
             results_dics_1d = []
             max_len = len(iterable)
-            for iter in tqdm(pool.imap(nf.nita_stack_tuple_wrapper, iterable, chunksize=3000), total = max_len):
+            for iter in tqdm(pool.imap(nf.nita_stack_tuple_wrapper, iterable, chunksize=1000), total = max_len):
                 results_dics_1d.append(iter)
             pool.close()
             pool.join()
@@ -1067,6 +1067,12 @@ class nitaObj:
             
         return best_paramcombo
 
+    def subsetStack(self, tuple_pts):
+        x1, y1, x2, y2 = tuple_pts
+        self.stack = self.stack[:, y1:y2, x1:x2]
+        self.stack_shape = self.stack.shape
+
+
     def leastCloudy(self, title):
         stack_shape = self.stack.shape
         image_size_xy = stack_shape[1]*stack_shape[2]
@@ -1077,10 +1083,11 @@ class nitaObj:
             good_px_percent[i] = good_px_count/image_size_xy
 
         best_index = np.argmax(good_px_percent)
-        plt.matshow(self.stack[best_index, :, :], fignum=title, extent=[0, stack_shape[2], stack_shape[1], 0])
+        plt.imshow(self.stack[best_index, :, :])
+        # plt.matshow(self.stack[best_index, :, :], fignum=title, extent=[0, stack_shape[2], stack_shape[1], 0])
         plt.suptitle(title)
         plt.tight_layout()
-        plt.show()
+
 
     def addLog(self, message=''):
         if self.log:
