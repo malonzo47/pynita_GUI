@@ -41,3 +41,4 @@ def setupLogger(cfg):
 def closeLogger(logger):
     for handler in logger.handlers:
         handler.close()
+        logger.removeHandler(handler)
