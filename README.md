@@ -8,10 +8,18 @@
 **2. Miniconda (Python distribution):** 
  - **a.** Download and install the miniconda distribution for your operating system. Miniconda is a free open-source distribution for Python for package management. Link: https://repo.continuum.io/miniconda/
  - **b.** Launch the windows_install.bat file. It'll create a new miniconda environment under the name pynita_env and do the required package installation.
- 
+
+**NOTE:** If you run into 'conda' is not an external or internal command error. Please launch the .bat file from anaconda prompt. Details below - 
+ - **1.** From startup menu, launch anaconda prompt.
+ - **2.** Inside the prompt, navigate to folder where you installed pynita.
+ - **3.** Type windows_install.bat and run.
+
+
  **3. Launch Pynita** 
- - **a.** Launch the pynita_run.bat to launch pynita_gui_main.py in your python environment.
+ - **a.** Launch the pynita_run.bat to launch pynita_gui_main.py in your python environment. 
  
+ **NOTE:** If your program doesn't launch, you'll again need to launch pynita_run.bat from your anaconda prompt.
+  
  
 
 ## Old Instructions
