@@ -469,12 +469,11 @@ class MyQtApp(QtWidgets.QMainWindow, mainV12.Ui_MainWindow):
             nita = nitaObj(config_name)
         nita.startLog()
         # load image stack
-        if not nita.stack:
-            try:
-                nita.loadStack()
-            except Exception as e:
-                QtWidgets.QMessageBox.about(self, 'Error', str(e))
-                return
+        try:
+            nita.loadStack()
+        except Exception as e:
+            QtWidgets.QMessageBox.about(self, 'Error', str(e))
+            return
         #
         global subset_x1, subset_x2, subset_y1, subset_y2
         if subset_x2:
@@ -502,12 +501,11 @@ class MyQtApp(QtWidgets.QMainWindow, mainV12.Ui_MainWindow):
             nita = nitaObj(config_name)
         nita.startLog()
         # load image stack
-        if not nita.stack:
-            try:
-                nita.loadStack()
-            except Exception as e:
-                QtWidgets.QMessageBox.about(self, 'Error', str(e))
-                return
+        try:
+            nita.loadStack()
+        except Exception as e:
+            QtWidgets.QMessageBox.about(self, 'Error', str(e))
+            return
         nita.stopLog()
         fig, current_ax = plt.subplots()
         plt.subplots_adjust(bottom=0.4)

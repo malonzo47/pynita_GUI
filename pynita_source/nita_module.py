@@ -249,7 +249,7 @@ class nitaObj:
             max_len = len(iterable)
             for iter in tqdm(pool.imap(nf.nita_stack_tuple_wrapper, iterable, chunksize=1000), total = max_len):
                 results_dics_1d.append(iter)
-            pool.cl
+            pool.close()
             pool.join()
         
         # ---
