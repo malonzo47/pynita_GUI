@@ -24,7 +24,7 @@
 
 ## Old Instructions 
 
-### Note -  Windows users, use only if above instructions did not work
+### Note -  Windows users, use these only if above instructions did not work
 
 ## Python Installation: Windows/Mac/Linux
 
