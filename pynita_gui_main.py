@@ -248,11 +248,13 @@ class MyQtApp(QtWidgets.QMainWindow, mainV12.Ui_MainWindow):
             
     def step2a_loadPointsFile(self):
         name = self.Step2a_lineEdit.text()
+        global nita
         if name:
             config_name = self.Step1b_lineEdit.text()
             config = ConfigObj(config_name)
             config['Project']['ptsFn'] = name
             config.write()
+            nita = nitaObj(config_name)
             QtWidgets.QMessageBox.about(self, 'text','Points Extraction File: '+'<br>'+name)
             #
             self.Step2a_pushButton.setEnabled(False)
@@ -262,7 +264,8 @@ class MyQtApp(QtWidgets.QMainWindow, mainV12.Ui_MainWindow):
         IDs = [x.strip(' ') for x in IDs.split(",")]
         global nita
         config_name = self.Step1b_lineEdit.text()
-        nita = nitaObj(config_name)
+        if 'nita' not in globals():
+            nita = nitaObj(config_name)
         #
         if IDs:
             #
@@ -330,6 +333,7 @@ class MyQtApp(QtWidgets.QMainWindow, mainV12.Ui_MainWindow):
     
     def step2c_saveChanges(self):
         name = self.Step1b_lineEdit.text()
+        global nita
         if not name:
             self.Step1c_buttonBox.setEnabled(False)
         else:
@@ -352,6 +356,7 @@ class MyQtApp(QtWidgets.QMainWindow, mainV12.Ui_MainWindow):
             po['filter_opt_set'] = self.Step2c_tableWidget.item(7, 0).text()
             #
             config.write()
+            nita = nitaObj(fileName)
             #   
             self.Step1b_lineEdit.setText(fileName)
             self.step1b_loadUserConfigFile()
@@ -408,6 +413,8 @@ class MyQtApp(QtWidgets.QMainWindow, mainV12.Ui_MainWindow):
         np['min_complex'] = self.popwin.popup_table.item(6, 0).text()
         np['filter_opt'] = self.popwin.popup_table.item(7, 0).text()
         config.write()
+        global nita
+        nita = nitaObj(name)
         self.step1b_loadUserConfigFile()
         #        
         QtWidgets.QMessageBox.about(self, 'text','Wohooo!..Optimized Parameters Saved to User Configuration File')
@@ -458,15 +465,15 @@ class MyQtApp(QtWidgets.QMainWindow, mainV12.Ui_MainWindow):
         self.Step3c_pushButton.setEnabled(False)
         config_name = self.Step1b_lineEdit.text()
         global nita
-        nita = nitaObj(config_name)
+        if 'nita' not in globals():
+            nita = nitaObj(config_name)
         nita.startLog()
         # load image stack
-        if not nita.stack:
-            try:
-                nita.loadStack()
-            except Exception as e:
-                QtWidgets.QMessageBox.about(self, 'Error', str(e))
-                return
+        try:
+            nita.loadStack()
+        except Exception as e:
+            QtWidgets.QMessageBox.about(self, 'Error', str(e))
+            return
         #
         global subset_x1, subset_x2, subset_y1, subset_y2
         if subset_x2:
@@ -490,15 +497,15 @@ class MyQtApp(QtWidgets.QMainWindow, mainV12.Ui_MainWindow):
 
         config_name = self.Step1b_lineEdit.text()
         global nita
-        nita = nitaObj(config_name)
+        if 'nita' not in globals():
+            nita = nitaObj(config_name)
         nita.startLog()
         # load image stack
-        if not nita.stack:
-            try:
-                nita.loadStack()
-            except Exception as e:
-                QtWidgets.QMessageBox.about(self, 'Error', str(e))
-                return
+        try:
+            nita.loadStack()
+        except Exception as e:
+            QtWidgets.QMessageBox.about(self, 'Error', str(e))
+            return
         nita.stopLog()
         fig, current_ax = plt.subplots()
         plt.subplots_adjust(bottom=0.4)

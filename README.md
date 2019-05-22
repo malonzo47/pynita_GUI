@@ -1,6 +1,31 @@
 # pynita_GUI Installation and Requirements
  **pyNITA_GUI** is the python implementation of Noise Insensitive Trajectory Algorithm (NITA). Please refer to the [Scientific Reports](https://www.nature.com/articles/srep35129) article for detailed description of NITA and its application. The below steps here will walk you through the installation procedure and package requirements necessary for pynita_GUI. 
 
+## Python Installation: Windows
+
+**1. Download and unpack the git repository:** You can either download as .zip file or use the git clone option if you are familiar using git. 
+
+**2. Miniconda (Python distribution):** 
+ - **a.** Download and install the miniconda distribution for your operating system. Miniconda is a free open-source distribution for Python for package management. Link: https://repo.continuum.io/miniconda/
+ - **b.** Launch the windows_install.bat file. It'll create a new miniconda environment under the name pynita_env and do the required package installation.
+
+**NOTE:** If you run into 'conda' is not an external or internal command error. Please launch the .bat file from anaconda prompt. Details below - 
+ - **1.** From startup menu, launch anaconda prompt.
+ - **2.** Inside the prompt, navigate to folder where you installed pynita.
+ - **3.** Type windows_install.bat and run.
+
+
+ **3. Launch Pynita** 
+ - **a.** Launch the **pynita_run.bat** to launch pynita_gui_main.py in your python environment. 
+ 
+ **NOTE:** If your program doesn't launch, you'll again need to launch pynita_run.bat from your anaconda prompt.
+  
+ 
+
+## Old Instructions 
+
+### Note -  Windows users, use these only if above instructions did not work
+
 ## Python Installation: Windows/Mac/Linux
 
 The Python installation instructions here are under Anaconda environment. Anaconda is a free open-source distribution for Python and R, most importantly it simplifies package management. 
