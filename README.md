@@ -16,13 +16,15 @@
 
 
  **3. Launch Pynita** 
- - **a.** Launch the pynita_run.bat to launch pynita_gui_main.py in your python environment. 
+ - **a.** Launch the **pynita_run.bat** to launch pynita_gui_main.py in your python environment. 
  
  **NOTE:** If your program doesn't launch, you'll again need to launch pynita_run.bat from your anaconda prompt.
   
  
 
-## Old Instructions
+## Old Instructions 
+
+### Note -  Windows users, use only if above instructions did not work
 
 ## Python Installation: Windows/Mac/Linux
 
