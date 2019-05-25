@@ -185,8 +185,8 @@ def dateValue(metrics_dic, value_date):
             real_value = interp_pts[:, 1][np.argmin(abs(interp_pts[:, 0] - real_date))] # only first ocurrance will be returned 
         else:
             if not np.isnan(value_date):
-                print('WARNNING: date not in time series, nan returned as value for given date')
-                print(str(start_date) + ' --> ' + str(value_date) + ' --> ' + str(end_date))
+#                print('WARNNING: date not in time series, nan returned as value for given date')
+#               print(str(start_date) + ' --> ' + str(value_date) + ' --> ' + str(end_date))
             real_date = value_date 
             real_value = np.nan
         
