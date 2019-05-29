@@ -584,8 +584,9 @@ class MyQtApp(QtWidgets.QMainWindow, mainV12.Ui_MainWindow):
             title = 'Value Change -'+valChange_date1+' to '+valChange_date2
             label = 'VI Units'
             if valChange_date1 and valChange_date2:
-                nita.MI_valueChange(start_date=int(valChange_date1), end_date=int(valChange_date2), option='diff', plot=self.plot10.isChecked(), 
-                                    save=self.save10.isChecked(), fn='valuechange2.tif', title = title, label=label)
+                filename_plot = 'valuechange2_'+str(valChange_date1)+'_'+str(valChange_date2)+'.tif'
+                nita.MI_valueChange(start_date=int(valChange_date1), end_date=int(valChange_date2), option='diff', plot=self.plot10.isChecked(),
+                                    save=self.save10.isChecked(), fn=filename_plot, title = title, label=label)
                 plt.figure(title).canvas.mpl_connect('button_press_event', self.onclick)
             else:
                 QtWidgets.QMessageBox.about(self, 'text','Error!..10)Specify Date Range')            
