@@ -1,0 +1,12 @@
+<RCC>
+  <qresource prefix="icon_AU">
+    <file>au_logo_1.png</file>
+    <file>au_logo_v_1.png</file>
+    <file>au_logo_h_1.png</file>
+  </qresource>
+  <qresource prefix="icon_OSU">
+    <file>OSU_horizontal.png</file>
+    <file>OSU_horizontal_white.png</file>
+    <file>OSU_vertical.png</file>
+  </qresource>
+</RCC>

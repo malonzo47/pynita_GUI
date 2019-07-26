@@ -31,18 +31,52 @@ class nitaObj:
         self.stack_doy = None
         self.stack_prj = None
         self.compute_mask = None 
-    
+
+    def updateConfig(self, ini):
+        '''
+        Update the configuration, if ini file has been modified and saved via GUI.
+        If update was required, remove saved stack computation.
+        :param ini:
+        :return:
+        '''
+        config_new = ConfigReader(ini)
+        needUpdate = self.cfg.updateData(config_new)
+        if needUpdate:
+            print("needed update")
+            self.cfg = config_new
+            self.pts = None
+            self.stack = None
+            self.stack_dates = None
+            self.stack_doy = None
+            self.stack_prj = None
+            self.compute_mask = None
+
+
     def startLog(self):
+        '''
+        Setup and start log
+        :return:
+        '''
         self.log = True
         self.logger = lg.setupLogger(self.cfg)
         self.logger.info('Start logging...')
         
     def stopLog(self):
+        '''
+        Stop logging.
+        :return:
+        '''
         if self.log:
             self.logger.info('End logging...')
             lg.closeLogger(self.logger)
             
     def loadPts(self, info_column='none', full_table=False):
+        '''
+        Load points from csv file via dataloader.
+        :param info_column: extra columns to be loaded, set as 'Name' for GUI
+        :param full_table: boolean, whether to load full table
+        :return:
+        '''
         dl = dataLoader(self.cfg)
         self.pts = dl.load_pts(info_column, full_table)
         
@@ -53,21 +87,38 @@ class nitaObj:
         
         if self.log:
             self.logger.info('Points file ' + self.cfg.ptsFn + ' loaded.')
-            
+
+    def loadRef(self):
+        '''
+        Load reference table for points data, to show metadata.
+        :return:
+        '''
+        dl = dataLoader(self.cfg)
+        return dl.load_ref()
+
     def loadStack(self):
+        '''
+        Load image stack from dataloader
+        :return:
+        '''
         dl = dataLoader(self.cfg)
         
         FUN_start_time = time.time()
         self.stack, self.stack_dates, self.stack_doy, self.stack_prj, self.stack_geotransform = dl.load_stack()
         FUN_end_time = time.time() 
         
-        # properties
+        # properties, display shape of stack
         self.stack_shape = '{0} rows {1} columns {2} layers'.format(self.stack.shape[1], self.stack.shape[2], self.stack.shape[0])
         
         if self.log:
             self.logger.info('Stack file ' + self.cfg.stackFn + ' loaded. {}s used.'.format(round(FUN_end_time - FUN_start_time, 4)))
             
-    def setMask(self, user_mask):    
+    def setMask(self, user_mask):
+        '''
+        Set up user mask to select points
+        :param user_mask: matrix consisting of 0 and 1 whether to use given point.
+        :return:
+        '''
         if type(user_mask).__name__ != 'ndarray':
             print('convert user_mask into numpy array')
             user_mask = np.array(user_mask)    
@@ -83,6 +134,17 @@ class nitaObj:
     def runPts(self, OBJECTIDs, 
                plot=True, max_plot=25, 
                showdata='fit', colorbar=True, plot_title=True, **param_dic):
+        '''
+        run from list of OBJECTIDs and plot the data points.
+        :param OBJECTIDs: list of OBJECTID's to show or [9999] to show all OBJECTID's
+        :param plot: boolean, whether to plot or not.
+        :param max_plot: maximum number of plots to show
+        :param showdata:
+        :param colorbar: boolean, whether to show colorbar
+        :param plot_title: boolean, whether to show title
+        :param param_dic: parameter dictionary for running points, check default dictionary for list of params.
+        :return:
+        '''
         
         # check to see if pts are loaded 
         if type(self.pts).__name__ == 'NoneType':
@@ -166,7 +228,14 @@ class nitaObj:
             return results_dic  
 
     def runStack(self, parallel=True, workers=2, use_opm_param=False):
-        
+        '''
+        Run full image stack or subset image stack, if subset is selected via GUI, and sets the computed results,
+        as attribute of nita object.
+        :param parallel: boolean, whether to run stack in parallel.
+        :param workers: number of workers to use if parallel.
+        :param use_opm_param: boolean. whether to use optimal parameters
+        :return: None
+        '''
         if use_opm_param:
             try:
                 len(self.the_paramcombo)
@@ -237,8 +306,11 @@ class nitaObj:
             param_dic = copy.deepcopy(self.cfg.param_nita)    
                        
         if parallel:
-            
-            # pack other arguments into a dic 
+            # For running data in parallel, each point in the stack can be run individually,
+            # and so for each worker thread it takes in a chunk of chunksize (1000) points for a single run.
+            # after it finishes one chunk, another chunk is provided to the thread.
+            # This makes sure no redundant copies of data are made during each iteration.
+            # pack other arguments into a dic
             param_dic['date_vec'] = self.stack_dates
             param_dic['doy_vec'] = self.stack_doy
         
@@ -284,7 +356,12 @@ class nitaObj:
             self.logger.info('Stack running time (seconds): {}'.format(FUN_end_time - FUN_start_time))
 
     def getPixelResults(self, xy_pair):
-        
+        '''
+        Retrieves results_dictionary for given x,y point if stack is computed else
+        raises error
+        :param xy_pair: (x, y) pixel, whose results to retrieve.
+        :return: dict, results dictionary.
+        '''
         # check if self.stack_results exists 
         try:
             type(self.stack_results)
@@ -309,7 +386,16 @@ class nitaObj:
                  use_compute_mask=False, 
                  plot=True, showdata='fit', colorbar=True, 
                  **nita_parameters):
-        
+        '''
+        Run a single pixel from the stack, present in (x,y) pair.
+        :param xy_pair: (x, y) pixel, whose results to retrieve.
+        :param use_compute_mask: boolean, whether to use compute mask for the data
+        :param plot: boolean, whether to plot the data point from given pixel
+        :param showdata:
+        :param colorbar: boolean, show color bar or not
+        :param nita_parameters: list of parameter dictionary configuration to use for running a single nita point.
+        :return:
+        '''
         # get n and m 
         n = xy_pair[1]
         m = xy_pair[0]
@@ -827,7 +913,13 @@ class nitaObj:
             self.logger.info('Metrics image - recovery comparison. Filename: {0}. Saved: {1}'.format(fn, str(save)))            
             
     def setOpmParams(self, **param_dic):
-         
+        '''
+        Forms an exhaustive list of possible parameter configurations, from given parameter dictionary list
+        for selecting optimal parameters.
+        :param param_dic: parameter dictionary object which consists of list of configuration for a given type of
+                          parameter, as a key value pair.
+        :return:
+        '''
         default_param_dic = copy.deepcopy(self.cfg.param_opm_set)
         default_param_dic['value_limits'] = [self.cfg.param_nita['value_limits']]
         default_param_dic['doy_limits'] = [self.cfg.param_nita['doy_limits']]
@@ -878,8 +970,14 @@ class nitaObj:
                 self.logger.info(k + ': ' + str(v))
         
     def drawPts(self, OBJECTIDs, plot_title=True):
-        
-        # check to see if pts are loaded 
+        '''
+        Draw trajectories for given OBJECTIDs from the users, shows the plots for given object ID's and prompts
+        user to draw trajectories.
+        :param OBJECTIDs: list of OBJECTIDs
+        :param plot_title: boolean, whether to plot title
+        :return:
+        '''
+        # check to see if pts are loaded
         try:
             type(self.pts)
         except AttributeError:
@@ -948,7 +1046,13 @@ class nitaObj:
             self.logger.info('drawPts end...')
             
     def paramOpm(self, parallel=True, workers=2):
-
+        '''
+        Find optimal parameter configuration among list of configurations. Can be run in parallel, where number of
+        workers should be set to max number of parallel threads to be run.
+        :param parallel: boolean, whether to use multiple workers
+        :param workers: int, number of parallel threads to run
+        :return: dict, best combination of parameters among possible parameter configurations entered via configobj.
+        '''
         # check to see if opm_paramcombos 
         try:
             type(self.opm_paramcombos)
@@ -1068,12 +1172,22 @@ class nitaObj:
         return best_paramcombo
 
     def subsetStack(self, tuple_pts):
+        '''
+        Subset the provided stack in the given range of tuple.
+        :param tuple_pts: (x1, y1), (x2, y2) as top left and bottom right of stack to subset the stack.
+        :return:
+        '''
         x1, y1, x2, y2 = tuple_pts
         self.stack = self.stack[:, y1:y2, x1:x2]
         self.stack_shape = self.stack.shape
 
 
     def leastCloudy(self, title):
+        '''
+        View the least cloudy image in the stack.
+        :param title: title string to show for the plot.
+        :return:
+        '''
         stack_shape = self.stack.shape
         image_size_xy = stack_shape[1]*stack_shape[2]
         good_px_percent = [None]*stack_shape[0]
@@ -1086,7 +1200,7 @@ class nitaObj:
         plt.imshow(self.stack[best_index, :, :])
         # plt.matshow(self.stack[best_index, :, :], fignum=title, extent=[0, stack_shape[2], stack_shape[1], 0])
         plt.suptitle(title)
-        plt.tight_layout()
+        plt.tight_layout(rect=[0, 0.15, 1, 0.95])
 
 
     def addLog(self, message=''):

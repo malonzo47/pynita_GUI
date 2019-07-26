@@ -1,0 +1,271 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>320</width>
+    <height>423</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>MainWindow</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <widget class="QTabWidget" name="tabWidget">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>0</y>
+      <width>320</width>
+      <height>389</height>
+     </rect>
+    </property>
+    <property name="sizePolicy">
+     <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+      <horstretch>0</horstretch>
+      <verstretch>0</verstretch>
+     </sizepolicy>
+    </property>
+    <property name="currentIndex">
+     <number>0</number>
+    </property>
+    <widget class="QWidget" name="Opti">
+     <attribute name="title">
+      <string>Optimized Parameters</string>
+     </attribute>
+     <layout class="QGridLayout" name="gridLayout_2">
+      <item row="0" column="0">
+       <widget class="QFrame" name="frame">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>250</width>
+          <height>290</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>300</width>
+          <height>290</height>
+         </size>
+        </property>
+        <property name="frameShape">
+         <enum>QFrame::WinPanel</enum>
+        </property>
+        <property name="frameShadow">
+         <enum>QFrame::Raised</enum>
+        </property>
+        <layout class="QGridLayout" name="gridLayout">
+         <property name="leftMargin">
+          <number>7</number>
+         </property>
+         <property name="topMargin">
+          <number>7</number>
+         </property>
+         <property name="rightMargin">
+          <number>7</number>
+         </property>
+         <property name="bottomMargin">
+          <number>7</number>
+         </property>
+         <item row="0" column="0">
+          <widget class="QTableWidget" name="popup_table">
+           <property name="enabled">
+            <bool>true</bool>
+           </property>
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="frameShape">
+            <enum>QFrame::WinPanel</enum>
+           </property>
+           <property name="frameShadow">
+            <enum>QFrame::Sunken</enum>
+           </property>
+           <property name="lineWidth">
+            <number>17</number>
+           </property>
+           <attribute name="horizontalHeaderStretchLastSection">
+            <bool>true</bool>
+           </attribute>
+           <attribute name="verticalHeaderDefaultSectionSize">
+            <number>29</number>
+           </attribute>
+           <row>
+            <property name="text">
+             <string>bail_thresh</string>
+            </property>
+            <property name="font">
+             <font>
+              <pointsize>14</pointsize>
+              <italic>true</italic>
+             </font>
+            </property>
+           </row>
+           <row>
+            <property name="text">
+             <string>noise_thresh</string>
+            </property>
+            <property name="font">
+             <font>
+              <pointsize>14</pointsize>
+              <italic>true</italic>
+             </font>
+            </property>
+           </row>
+           <row>
+            <property name="text">
+             <string>penalty</string>
+            </property>
+            <property name="font">
+             <font>
+              <pointsize>14</pointsize>
+              <italic>true</italic>
+             </font>
+            </property>
+           </row>
+           <row>
+            <property name="text">
+             <string>filter_dist</string>
+            </property>
+            <property name="font">
+             <font>
+              <pointsize>14</pointsize>
+              <italic>true</italic>
+             </font>
+            </property>
+           </row>
+           <row>
+            <property name="text">
+             <string>pct</string>
+            </property>
+            <property name="font">
+             <font>
+              <pointsize>14</pointsize>
+              <italic>true</italic>
+             </font>
+            </property>
+           </row>
+           <row>
+            <property name="text">
+             <string>max_complex</string>
+            </property>
+            <property name="font">
+             <font>
+              <pointsize>14</pointsize>
+              <italic>true</italic>
+             </font>
+            </property>
+           </row>
+           <row>
+            <property name="text">
+             <string>min_complex</string>
+            </property>
+            <property name="font">
+             <font>
+              <pointsize>14</pointsize>
+              <italic>true</italic>
+             </font>
+            </property>
+           </row>
+           <row>
+            <property name="text">
+             <string>filter_opt</string>
+            </property>
+            <property name="font">
+             <font>
+              <pointsize>14</pointsize>
+              <italic>true</italic>
+             </font>
+            </property>
+           </row>
+           <column>
+            <property name="text">
+             <string>Optimized Parameters</string>
+            </property>
+            <property name="font">
+             <font>
+              <pointsize>13</pointsize>
+              <weight>75</weight>
+              <bold>true</bold>
+             </font>
+            </property>
+           </column>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <layout class="QHBoxLayout" name="horizontalLayout">
+        <property name="spacing">
+         <number>0</number>
+        </property>
+        <property name="bottomMargin">
+         <number>0</number>
+        </property>
+        <item>
+         <spacer name="horizontalSpacer">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item>
+         <widget class="QPushButton" name="popup_pushButton">
+          <property name="text">
+           <string>Save to Configuration File</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <spacer name="horizontalSpacer_2">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+       </layout>
+      </item>
+     </layout>
+    </widget>
+   </widget>
+  </widget>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>320</width>
+     <height>22</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

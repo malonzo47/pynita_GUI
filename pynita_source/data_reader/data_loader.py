@@ -26,7 +26,12 @@ class dataLoader:
         self.stackFn = cfg.stackFn
         self.stackdateFn = cfg.stackdateFn
         self.user_vi = cfg.user_vi.lower()
-    
+
+    def load_ref(self):
+        pts_path = self.ptsFn
+        self.ref_tb = pd.read_csv(pts_path, usecols=['OBJECTID', 'Name']).drop_duplicates()
+        return self.ref_tb
+
     def load_pts(self, info_column='none', full_table=False):
         col_names_default = ['system:index', 'OBJECTID', 'pixel_qa']
         col_names_rest = ['blue', 'green', 'nir', 'red', 'swir1', 'swir2']
