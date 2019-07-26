@@ -103,6 +103,16 @@ class ConfigReader:
         else:
             raise RuntimeError('ERROR: [ParameterOpmSet] module not found')
 
+    def updateData(self, config):
+        need_update = False
+        for attribute in ['root', 'ProjectName', 'ptsFn', 'stackdateFn', 'stackFn',
+                          'OutDir', 'OutputFolder', 'user_vi', 'param_nita', 'param_metric', 'param_opm_set']:
+            if eval('self.'+attribute)!=eval('config.'+attribute):
+                # eval('self.' + attribute) = eval('config.'+attribute)
+                need_update = True
+
+        return need_update
+
     def createDir(self, pth):
         """
         Check to see if the target path is exists.

@@ -25,25 +25,59 @@ from PyQt5.QtCore import *
 #
 from pynita_ui import mainV12, popup3, resource_logos
 from pynita_source import *
+from pynita_ui.tableV1 import pandasModel
 #
+
+# MyQtApp handles all the GUI elements, and provides controll functionality over all the GUI objects, except for
+# matplotlib elements such as plots and buttons present in the plot window.
+
+# nitaObj class encapsulates all the main algorithmic computation and holds the computed data.
+# It handles the algorithm and provides main abstraction between GUI and actual data processing.
+
+# nita object (instance of nita class) is a global object, which can be referenced from anywhere. It was probably done
+# for persistence of previously computed results, but new NITA object was created whenever nita object was being called,
+# since it needed to be updated whenever config was changed. In order to avoid that, nita object once created, only
+# refreshes the computed stack, whenever configuration is updated.
+
+# NOTE - NITA object will update and lose previously computed results,
+#   upon any change to configuration being saved via the GUI. ##
+
+# Subset parameters are also global context objects , since they need to be modified by both PyQT and matplotlib widgets.
+# and I couldn't find a clean method to reference objects to matplotlib widgets.
+
+
 if hasattr(QtCore.Qt, 'AA_EnableHighDpiScaling'):
-    QtWidgets.QApplication.setAttribute(QtCore.Qt.AA_EnableHighDpiScaling, True)
+    QtWidgets.QApplication.setAttribute(QtCore.Qt.AA_EnableHighDpiScaling, True)  # ALlows for actual GUI scaling to occur
 
 if hasattr(QtCore.Qt, 'AA_UseHighDpiPixmaps'):
-    QtWidgets.QApplication.setAttribute(QtCore.Qt.AA_UseHighDpiPixmaps, True)
+    QtWidgets.QApplication.setAttribute(QtCore.Qt.AA_UseHighDpiPixmaps, True)  # Enables 4K display rendering
 
 
 class popWindow(QtWidgets.QMainWindow, popup3.Ui_MainWindow):
     def __init__(self, parent=None):
+        '''
+        Main popup window used to generate alerts during various parts of user workflow.
+        :param parent:
+        '''
         super(popWindow,self).__init__()
         self.setupUi(self)
-        self.setWindowTitle('pyNITA - Optimization') 
+        self.setWindowTitle('pyNITA - Optimization')
 
 class MyQtApp(QtWidgets.QMainWindow, mainV12.Ui_MainWindow):
     def __init__(self, parent=None):
+        '''
+        Main QT Application class which inherits all the child widgets and attributes present in the GUI.
+        Widgets include various tabs, frames, text labels, buttons etc. Allows for GUI control via the
+        Model-View-Controller Architecture. Allows for manipulation of GUI objects, however actual rendering of GUI
+        takes place in the pynita_UI/mainVxx.py (xx corresponds to version number)
+        :param parent: None
+        '''
         super(MyQtApp,self).__init__()
         self.setupUi(self)
         self.setWindowTitle('pyNITA - Version 1.0')
+        # Sets up display properties, configure various GUI objects to be disabled, and get enabled only
+        # when the user workflow is respected, also set-up triggers for enabling of GUI components such as radio buttons
+        # etc. following the user workflow and the default global parameters for subsetting of data.
         #
         self.popwin = popWindow(self)
         #
@@ -64,12 +98,15 @@ class MyQtApp(QtWidgets.QMainWindow, mainV12.Ui_MainWindow):
         self.Step2a_toolButton.clicked.connect(self.step2a_selectPointsFile)
         self.Step2a_pushButton.clicked.connect(self.step2a_loadPointsFile)
         self.Step2a_pushButton.released.connect(lambda: self.objectid_radioButton.setEnabled(True))
+        self.Step2a_pushButton.released.connect(lambda: self.Step2opt_metadata.setEnabled(True))
         #
         self.Visualize_radioButton.setChecked(True)
         self.objectid_radioButton.toggled.connect(self.Step2b_lineEdit.setEnabled)
         self.objectid_radioButton.toggled.connect(self.Visualize_radioButton.setEnabled)
         self.objectid_radioButton.toggled.connect(self.DrawTraj_radioButton.setEnabled)
-        self.objectid_radioButton.toggled.connect(self.Step2b_pushButton.setEnabled) 
+        self.objectid_radioButton.toggled.connect(self.Step2b_pushButton.setEnabled)
+        #
+        self.Step2opt_metadata.clicked.connect(self.step2opt_showPointMetadata)
         #
         self.Step2b_pushButton.released.connect(lambda: self.Step2c_commandLinkButton.setEnabled(True))
         self.Step2b_pushButton.clicked.connect(self.step2b_plotNITApoints_drawTraj)
@@ -95,14 +132,28 @@ class MyQtApp(QtWidgets.QMainWindow, mainV12.Ui_MainWindow):
         self.Step3b_toolButton.released.connect(lambda: self.Step3ab_pushButton.setEnabled(True))
         self.Step3ab_pushButton.clicked.connect(self.step3ab_loadImageStackAndDatesFile)
         self.Step3ab_pushButton.released.connect(lambda: self.Step3c_radioButton.setEnabled(True))
+        self.Step3ab_pushButton.released.connect(lambda: self.Step3op_clearsubsetButton.setEnabled(True))
+        self.Step3ab_pushButton.released.connect(lambda: self.Step3op_subsetButton.setEnabled(True))
         #
         self.Step3op_subsetButton.clicked.connect(self.step3opt_subsetData)
         self.Step3op_subsetButton.released.connect(lambda: self.Step3op_subsetButton.setEnabled(True))
+
+        # Sets default subset parameters as None, and keeps their reference global, as they will be manipulated by
+        # matplotlib GUI objects as well as pyQT GUI objects, since matplotlib doesn't allow for reference objects
+        # to be passed in, the references are kept global
         global subset_x1, subset_y1, subset_y2, subset_x2
         subset_x1 = None
         subset_y1 = None
         subset_x2 = None
         subset_y2 = None
+        #
+        #
+        # Added in the new subset and clear subset button, which manipulates global context of subset variables
+        # these buttons are also disabled till stack file is not selected.
+        # TODO #1 - Should remove cases where least cloudy image in stack has nan values, and remove the image
+        #   from consideration.
+        self.Step3op_clearsubsetButton.clicked.connect(self.step3opt_clearsubsetData)
+        self.Step3op_clearsubsetButton.released.connect(lambda: self.Step3op_clearsubsetButton.setEnabled(True))
         #
         self.Step3c_radioButton.toggled.connect(self.Step3c_lineEdit.setEnabled)
         self.Step3c_radioButton.toggled.connect(self.Step3c_pushButton.setEnabled)
@@ -112,13 +163,15 @@ class MyQtApp(QtWidgets.QMainWindow, mainV12.Ui_MainWindow):
         #
         self.Step4a_pushButton.clicked.connect(self.step4_PlotAndSave)
         #
-        self.plotAll.setChecked(False) 
-        self.plotAll.stateChanged.connect(self.onState1ChangePrincipal)
+        # # Removed plot all functionality from the user workflow, which could bog down the system when too many
+        # # plots were opened at once.
+        # self.plotAll.setChecked(False)
+        # self.plotAll.stateChanged.connect(self.onState1ChangePrincipal)
         self.plotCheckboxes = [self.plot2, self.plot3, self.plot4, self.plot5, self.plot6, self.plot7, 
                                self.plot8, self.plot9, self.plot10, self.plot10, self.plot11, self.plot12,
                                self.plot13, self.plot14, self.plot15, self.plot16]
-        for plotCheckbox in self.plotCheckboxes:
-            plotCheckbox.stateChanged.connect(self.onState1Change)
+        # for plotCheckbox in self.plotCheckboxes:
+        #     plotCheckbox.stateChanged.connect(self.onState1Change)
         #
         self.saveAll.setChecked(False)
         self.saveAll.stateChanged.connect(self.onState2ChangePrincipal)
@@ -129,6 +182,11 @@ class MyQtApp(QtWidgets.QMainWindow, mainV12.Ui_MainWindow):
             saveCheckbox.stateChanged.connect(self.onState2Change)
            
     def step1a_selectWD(self):
+        '''
+        Display dialog box for selection of working directory by the user.
+        Pop-up of FileDialog, which gets selected as text-label of Step1a.
+        :return:
+        '''
         options = QFileDialog.Options()
         options |= QFileDialog.DontUseNativeDialog
         options |= QFileDialog.ShowDirsOnly
@@ -138,6 +196,10 @@ class MyQtApp(QtWidgets.QMainWindow, mainV12.Ui_MainWindow):
             self.Step1a_lineEdit.setEnabled(True)
             
     def step1a_loadWD(self):
+        '''
+        Load the selected working directory.
+        :return:
+        '''
         name = self.Step1a_lineEdit.text()
         if not name:
             QtWidgets.QMessageBox.about(self, 'text','Oops!..Select Workding Directory')
@@ -147,6 +209,11 @@ class MyQtApp(QtWidgets.QMainWindow, mainV12.Ui_MainWindow):
             QtWidgets.QMessageBox.about(self, 'text','Working Directory: '+'<br>'+name)
         
     def step1b_selectUserConfigFile(self):
+        '''
+        Select the user configuration ini file, and set it as step 1b text label,
+        if the user configures file, it needs to selected again in order to be reloaded.
+        :return:
+        '''
         options = QFileDialog.Options()
         options |= QFileDialog.DontUseNativeDialog
         file_path, ext = QtWidgets.QFileDialog.getOpenFileName(self, 'Select User Configuration File','','*.ini', options=options)
@@ -155,10 +222,16 @@ class MyQtApp(QtWidgets.QMainWindow, mainV12.Ui_MainWindow):
             self.Step1b_lineEdit.setEnabled(True)
     
     def step1b_loadUserConfigFile(self):
+        '''
+        Loads the selected user configuration ini file from above step in configobj, and writes the data from
+        given config file to to step1c table widget for display and editing the values from the selected
+        ini file.
+        :return:
+        '''
         name = self.Step1b_lineEdit.text()
         if name:
             config_name = self.Step1b_lineEdit.text()
-            config = ConfigObj(config_name)
+            config = ConfigObj(config_name) # provides abstraction to config ini read file.
             #
             np = config['NITAParameters']
             mp = config['MetricsParameters']
@@ -185,6 +258,11 @@ class MyQtApp(QtWidgets.QMainWindow, mainV12.Ui_MainWindow):
             self.Step1c_buttonBox.setEnabled(False)
     
     def step1c_saveChanges(self):
+        '''
+        User can make changes to the ini file via the interface and tablewidget in step1c, after which the
+        new configuration ini file gets saved.
+        :return:
+        '''
         name = self.Step1b_lineEdit.text()
         #
         options = QFileDialog.Options()
@@ -197,8 +275,11 @@ class MyQtApp(QtWidgets.QMainWindow, mainV12.Ui_MainWindow):
             fileName = name
         #
         config = ConfigObj(fileName)
-        np = config['NITAParameters']
-        mp = config['MetricsParameters']
+        np = config['NITAParameters']  # Nita parameter dictionary
+        mp = config['MetricsParameters']  # Metric parameter dictionary
+
+        ## Code below updates all configuration through data which is added via
+        ## the GUI tableWidget.
         #
         config['Project']['ProjectName'] = self.Step1c_tableWidget.item(0, 0).text()
         config['VI']['user_vi'] = self.Step1c_tableWidget.item(1, 0).text()
@@ -222,24 +303,33 @@ class MyQtApp(QtWidgets.QMainWindow, mainV12.Ui_MainWindow):
         np['filter_opt'] = self.Step1c_tableWidget.item(12, 0).text()
         mp['vi_change_thresh'] = self.Step1c_tableWidget.item(13, 0).text()
         mp['run_thresh'] = self.Step1c_tableWidget.item(14, 0).text() 
-        config.write()
+        config.write()  # save the new configuration in the file.
         # 
-        self.Step1b_lineEdit.setText(fileName)
+        self.Step1b_lineEdit.setText(fileName) # update the filename
         self.step1b_loadUserConfigFile()
         self.Step1c_buttonBox.setEnabled(False)
         #
         QtWidgets.QMessageBox.about(self, 'text','Wohooo!..Parameters Saved to User Configuration File')
         
     def step1c_restoreDefaults(self):
+        '''
+        Cancels the changed configuration and reloads the orignal.
+        :return:
+        '''
         self.step1b_loadUserConfigFile()
         self.Step1c_buttonBox.setEnabled(False)
     
     def step2a_selectPointsFile(self):
+        '''
+        Selects point extraction file, and sets the path to the file as part of step2a text label,
+        raises QMessageBox error, if user config not specified.
+        :return:
+        '''
         name = self.Step1b_lineEdit.text()
         if name:
             options = QFileDialog.Options()
             options |= QFileDialog.DontUseNativeDialog
-            file_path, ext = QtWidgets.QFileDialog.getOpenFileName(self, 'Select Points Extration File','','*.csv', options=options)
+            file_path, ext = QtWidgets.QFileDialog.getOpenFileName(self, 'Select Points Extraction File','','*.csv', options=options)
             if file_path:
                 self.Step2a_lineEdit.setText(file_path)
                 self.Step2a_lineEdit.setEnabled(True)
@@ -247,25 +337,57 @@ class MyQtApp(QtWidgets.QMainWindow, mainV12.Ui_MainWindow):
             QtWidgets.QMessageBox.about(self, 'text','Oops!..Select User Config File (Step1)')
             
     def step2a_loadPointsFile(self):
+        '''
+        Loads point extraction file, after point extraction file path has been specified.
+        :return:
+        '''
         name = self.Step2a_lineEdit.text()
-        global nita
+        global nita  # NITA object which encapsulates the main data processing and holds the computation stack
         if name:
             config_name = self.Step1b_lineEdit.text()
             config = ConfigObj(config_name)
-            config['Project']['ptsFn'] = name
-            config.write()
-            nita = nitaObj(config_name)
+            config['Project']['ptsFn'] = name  # Sets the points directory in the configuration object
+            config.write()  # Writes the new configuration in the ini file
+            nita = nitaObj(config_name)  # Creates nita object form the updated configuration file.
             QtWidgets.QMessageBox.about(self, 'text','Points Extraction File: '+'<br>'+name)
             #
             self.Step2a_pushButton.setEnabled(False)
-    
+
+    def step2opt_showPointMetadata(self):
+        '''
+        Loads point metadata, which shows unique objectids, along with names in the points file via a reference
+        table of the orignal points file. Useful for referring point objectids in the GUI.
+        :return:
+        '''
+        global nita
+        config_name = self.Step1b_lineEdit.text()
+        # initializes nita object if its not present, else updates it if config is modified.
+        if 'nita' not in globals():
+            nita = nitaObj(config_name)
+        else:
+            nita.updateConfig(config_name)
+        reference_table = nita.loadRef() # Loads the reference table consisting pandas dataframe with unique points
+        self.view = QTableView()  # Initialize a new table
+        model = pandasModel(reference_table)  # GUI interface to populate the above table view.
+        self.view.setModel(model)
+        self.view.resize(250, 600)
+        self.view.show()
+        return
+
     def step2b_plotNITApoints_drawTraj(self):
-        IDs = self.Step2b_lineEdit.text()
+        '''
+        Plot the selected points, where objects ids are taken via the GUI, handles both cases, where user may want
+        to draw trajectories, or view the plots
+        :return:
+        '''
+        IDs = self.Step2b_lineEdit.text()  # Get ID's via GUI
         IDs = [x.strip(' ') for x in IDs.split(",")]
         global nita
         config_name = self.Step1b_lineEdit.text()
         if 'nita' not in globals():
             nita = nitaObj(config_name)
+        else:
+            nita.updateConfig(config_name)
         #
         if IDs:
             #
@@ -283,6 +405,7 @@ class MyQtApp(QtWidgets.QMainWindow, mainV12.Ui_MainWindow):
             #   
             nita.startLog()
             #
+            # If visualize is selected, load points and draw the objects.
             if self.Visualize_radioButton.isChecked() == True:
                 # Load NITA points
                 try:
@@ -294,6 +417,7 @@ class MyQtApp(QtWidgets.QMainWindow, mainV12.Ui_MainWindow):
                     nita.runPts([int(item) for item in obj_ids], plot=True, max_plot=50, showdata='fit', colorbar=False, plot_title=True)
                 except Exception as e:
                     QtWidgets.QMessageBox.about(self, 'text', str(e))
+            # Else allow for drawing the trajectories, for the given points.
             if self.DrawTraj_radioButton.isChecked() == True:
                 nita.loadPts(info_column='Name')
                 # Plot trajectories for selected OBJECTIDs
@@ -307,6 +431,10 @@ class MyQtApp(QtWidgets.QMainWindow, mainV12.Ui_MainWindow):
             QtWidgets.QMessageBox.about(self, 'text','Error! Enter OBJECTIDs')
         
     def step2c_loadParameterSet(self):
+        '''
+        Set up list of parameters present in configuration object to populate the tablewidget.
+        :return:
+        '''
         name = self.Step1b_lineEdit.text()
         if name:
             #
@@ -328,10 +456,20 @@ class MyQtApp(QtWidgets.QMainWindow, mainV12.Ui_MainWindow):
             QtWidgets.QMessageBox.about(self, 'text','Oops!..Select User Config File (Step1)')
             
     def tableList(self,row,col):
+        '''
+        Return value of a specific row, col in step2c table widget.
+        :param row: row index to be used
+        :param col: col index to be used
+        :return: list of values of cell, split by commas
+        '''
         cell = self.Step2c_tableWidget.item(row,col).text()
         return [x.strip(' ') for x in cell.split(",")]
     
     def step2c_saveChanges(self):
+        '''
+        Save parameter configuration changes updated via tablewidget to ini file.
+        :return:
+        '''
         name = self.Step1b_lineEdit.text()
         global nita
         if not name:
@@ -365,28 +503,37 @@ class MyQtApp(QtWidgets.QMainWindow, mainV12.Ui_MainWindow):
             QtWidgets.QMessageBox.about(self, 'text','Wohooo!..Parameter Set Saved to User Configuration File')
             
     def step2c_restoreDefaults(self):
+        '''
+        Reset default parameter configuration, present in the ini file, before updation.
+        :return:
+        '''
         name = self.Step1b_lineEdit.text()
         if name:
             self.Step2c_loadParameterSet()
             self.Step2c_buttonBox.setEnabled(False)
     
     def step2d_runParameterOptimization(self):
+        '''
+        Run for list of possible parameter configurations, to decide the most optimal configuration.
+        :return:
+        '''
         self.Step2d_pushButton.setEnabled(False)
         #
         nita.startLog()
-        nita.setOpmParams()
+        nita.setOpmParams()  # set list of possible optimization configurations
         #
         if self.Step2d_lineEdit.text() == '' or int(self.Step2d_lineEdit.text()) < 2:
             QtWidgets.QMessageBox.about(self, 'text','Error!'+'<br> Minimum = 2'+'<br>Maximum = Check number of cores available on your computer and specify accordingly')
         else:
-            n_workers = int(self.Step2d_lineEdit.text())
+            n_workers = int(self.Step2d_lineEdit.text()) # select number of workers.
             #
             try:
-                opt_out = nita.paramOpm(parallel=True, workers=n_workers)
+                opt_out = nita.paramOpm(parallel=True, workers=n_workers)  # run for all possible configurations
+                # which configuration is the most optimal, and return as a dictionary.
             except Exception as e:
                 QtWidgets.QMessageBox.about(self, 'Error', str(e))
                 return
-            #
+            # display best configuration as a popup window.
             TW_Item = QtWidgets.QTableWidgetItem
             self.popwin.popup_table.setItem(0, 0, TW_Item(str(opt_out['bail_thresh'])))
             self.popwin.popup_table.setItem(1, 0, TW_Item(str(opt_out['noise_thresh'])))
@@ -401,6 +548,10 @@ class MyQtApp(QtWidgets.QMainWindow, mainV12.Ui_MainWindow):
         nita.stopLog()
     
     def Step2d_popup_saveToConfigFile(self):
+        '''
+        Save best configuration, among given configurations to the file.
+        :return:
+        '''
         name = self.Step1b_lineEdit.text()
         config = ConfigObj(name)
         np = config['NITAParameters']
@@ -412,14 +563,18 @@ class MyQtApp(QtWidgets.QMainWindow, mainV12.Ui_MainWindow):
         np['max_complex'] = self.popwin.popup_table.item(5, 0).text()
         np['min_complex'] = self.popwin.popup_table.item(6, 0).text()
         np['filter_opt'] = self.popwin.popup_table.item(7, 0).text()
-        config.write()
+        config.write() # write optimal configuration to file
         global nita
-        nita = nitaObj(name)
+        nita = nitaObj(name) # re-init nita object with optimized configuration.
         self.step1b_loadUserConfigFile()
         #        
         QtWidgets.QMessageBox.about(self, 'text','Wohooo!..Optimized Parameters Saved to User Configuration File')
             
     def step3a_selectImageStackFile(self):
+        '''
+        Select Image stack file from GUI.
+        :return:
+        '''
         name = self.Step1b_lineEdit.text()
         if name:
             options = QFileDialog.Options()
@@ -432,6 +587,10 @@ class MyQtApp(QtWidgets.QMainWindow, mainV12.Ui_MainWindow):
             QtWidgets.QMessageBox.about(self, 'text','Oops!..Select User Config File (Step1)')
     
     def step3b_selectDatesFile(self):
+        '''
+        Select Image Dates file from GUI.
+        :return:
+        '''
         name = self.Step1b_lineEdit.text()
         if name:
             options = QFileDialog.Options()
@@ -444,6 +603,10 @@ class MyQtApp(QtWidgets.QMainWindow, mainV12.Ui_MainWindow):
             QtWidgets.QMessageBox.about(self, 'text','Oops!..Select User Config File (Step1)') 
             
     def step3ab_loadImageStackAndDatesFile(self):
+        '''
+        Loads the image stack and dates file
+        :return:
+        '''
         name1 = self.Step3a_lineEdit.text()
         name2 = self.Step3b_lineEdit.text()
         if name1 and name2:
@@ -457,16 +620,22 @@ class MyQtApp(QtWidgets.QMainWindow, mainV12.Ui_MainWindow):
             self.Step3ab_pushButton.setEnabled(False)
             #
             global nita
-            nita = nitaObj(config_name)
+            nita = nitaObj(config_name)  # reload nita object when new stack file or dates file is selected.
         else:
             QtWidgets.QMessageBox.about(self, 'text','Oops! Select Image Stack and Dates File')
     
     def step3c_runImageStackMetrics(self):
+        '''
+        Run image stack metrics on loaded image stack for given dates file.
+        :return:
+        '''
         self.Step3c_pushButton.setEnabled(False)
         config_name = self.Step1b_lineEdit.text()
         global nita
         if 'nita' not in globals():
             nita = nitaObj(config_name)
+        else:
+            nita.updateConfig(config_name) # update config, if new configuration is used.
         nita.startLog()
         # load image stack
         try:
@@ -474,7 +643,7 @@ class MyQtApp(QtWidgets.QMainWindow, mainV12.Ui_MainWindow):
         except Exception as e:
             QtWidgets.QMessageBox.about(self, 'Error', str(e))
             return
-        #
+        # subset the image stack, if optional subset data region is provided.
         global subset_x1, subset_x2, subset_y1, subset_y2
         if subset_x2:
             subset_x1 = int(subset_x1)
@@ -494,11 +663,17 @@ class MyQtApp(QtWidgets.QMainWindow, mainV12.Ui_MainWindow):
         nita.stopLog()
 
     def step3opt_subsetData(self):
-
+        '''
+        Display least cloudy image from the image stack,
+        and allow user to select a subset of data.
+        :return:
+        '''
         config_name = self.Step1b_lineEdit.text()
         global nita
         if 'nita' not in globals():
             nita = nitaObj(config_name)
+        else:
+            nita.updateConfig(config_name)
         nita.startLog()
         # load image stack
         try:
@@ -508,33 +683,75 @@ class MyQtApp(QtWidgets.QMainWindow, mainV12.Ui_MainWindow):
             return
         nita.stopLog()
         fig, current_ax = plt.subplots()
-        plt.subplots_adjust(bottom=0.4)
+        # fig.set_size_inches(18.5, 10.5)
+        plt.subplots_adjust(bottom=0.1)
         title = 'Drag and select a rectangle to subset, then click Done.'
+        #  retrieve least cloudy image
         nita.leastCloudy(title)
+        # create rectangle selector, which can be used to subset the data.
         toggle_selector.RS = RectangleSelector(current_ax, subsetClick,
-                                               drawtype='box', useblit=True,
+                                               drawtype='box', useblit=False,
                                                button=[1, 3],  # don't use middle button
                                                minspanx=5, minspany=5,
                                                spancoords='pixels',
                                                interactive=True)
         plt.connect('key_press_event', toggle_selector)
-        axdone = plt.axes([0.7, 0.05, 0.1, 0.075])
-        axclear = plt.axes([0.85, 0.05, 0.1, 0.075])
 
+        axdone = plt.axes([0.7, 0.05, 0.1, 0.075])
+        # ip_done = InsetPosition(axdone, [-0.1, -0.5, 0.2, 0.1])
+        # axdone.set_axes_locator(ip_done)
+        axclear = plt.axes([0.81, 0.05, 0.1, 0.075])
+
+        # create done and clear buttons inside the matplotlib plot.
         b_done = Button(axdone, 'Done')
         b_clear = Button(axclear, 'Clear')
 
+        # set triggers for done and clear button as functions subsetClear and subsetClose
         b_done.on_clicked(subsetClose)
         b_clear.on_clicked(subsetClear)
 
         axdone._button = b_done
         axclear._button = b_clear
 
+        # show the plot to select the subset of data.
         plt.show()
+        self.toggle_save_on_subset()
 
+    def step3opt_clearsubsetData(self):
+        '''
+        Clear subset data and allow for plots to be saved.
+        :return:
+        '''
+        subsetClear(self)
+        self.toggle_save_on_subset()
+        return
+
+    def toggle_save_on_subset(self):
+        '''
+        Switch plot saving, if image stack is subsetted, else allow plots to be saved.
+        :return:
+        '''
+        # print("Ran toggle subset")
+        global subset_x2
+        for checkbox in self.saveCheckboxes:
+            if subset_x2:
+                checkbox.setEnabled(False)
+            else:
+                checkbox.setEnabled(True)
+        if subset_x2:
+            self.saveAll.setEnabled(False)
+        else:
+            self.saveAll.setEnabled(True)
+        return
 
     @QtCore.pyqtSlot(int)
     def onclick(self,event):
+        '''
+        Select the single pixel on which to get pixel results.
+        global ix, iy are used, referred in the matplotlib object.
+        :param event:
+        :return:
+        '''
         global ix, iy
         ix, iy = event.xdata, event.ydata
         print('x = %d, y = %d'%(ix, iy))
@@ -544,6 +761,12 @@ class MyQtApp(QtWidgets.QMainWindow, mainV12.Ui_MainWindow):
     
     @QtCore.pyqtSlot(int)
     def onState1ChangePrincipal(self, state):
+        '''
+        Check all plot checkboxes, if plot all is selected.
+        Legacy function not useful now
+        :param state:
+        :return:
+        '''
         if state == QtCore.Qt.Checked:
             for plotCheckbox in self.plotCheckboxes:
                 plotCheckbox.blockSignals(True)
@@ -552,6 +775,11 @@ class MyQtApp(QtWidgets.QMainWindow, mainV12.Ui_MainWindow):
                 
     @QtCore.pyqtSlot(int)
     def onState2ChangePrincipal(self, state):
+        '''
+        Check all save checkboxes, if save all is selected.
+        :param state:
+        :return:
+        '''
         if state == QtCore.Qt.Checked:
             for saveCheckbox in self.saveCheckboxes:
                 saveCheckbox.blockSignals(True)
@@ -560,17 +788,32 @@ class MyQtApp(QtWidgets.QMainWindow, mainV12.Ui_MainWindow):
 
     @QtCore.pyqtSlot(int)
     def onState1Change(self, state):
+        '''
+        Initial setup for plot all
+        Legacy function, not useful now
+        :param state:
+        :return:
+        '''
         self.plotAll.blockSignals(True)
         self.plotAll.setChecked(QtCore.Qt.Unchecked)
         self.plotAll.blockSignals(False)
     
     @QtCore.pyqtSlot(int)
     def onState2Change(self, state):
+        '''
+        Initial setup for save all
+        :param state:
+        :return:
+        '''
         self.saveAll.blockSignals(True)
         self.saveAll.setChecked(QtCore.Qt.Unchecked)
         self.saveAll.blockSignals(False)
         
     def step4_PlotAndSave(self):
+        '''
+        Check which metric image is selected for plot or save, and show/save accordingly.
+        :return:
+        '''
         name = self.Step1b_lineEdit.text()
         if name:
             config = ConfigObj(name)
@@ -578,6 +821,7 @@ class MyQtApp(QtWidgets.QMainWindow, mainV12.Ui_MainWindow):
             outfile = os.path.join(cp['OutputFolder'],cp['ProjectName'], cp['ProjectName']+'_metadata'+'.ini')
             shutil.copy(name, outfile)
         #
+        # Checks which buttons are selected, and plots/saves accordingly.
         if self.plot10.isChecked() == True or self.save10.isChecked() == True:
             valChange_date1 = self.Step4_ValueChange_Date1.text()
             valChange_date2 = self.Step4_ValueChange_Date2.text()
@@ -673,7 +917,14 @@ class MyQtApp(QtWidgets.QMainWindow, mainV12.Ui_MainWindow):
         if plot_flag:
             plt.show()
 
+
 def toggle_selector(event):
+    '''
+    Event configuration setup for subsetting matplotlib functionality.
+    Rectangle selector get point selected is configured.
+    :param event:
+    :return:
+    '''
     print(' Key pressed.')
     if event.key in ['Q', 'q'] and toggle_selector.RS.active:
         print(' RectangleSelector deactivated.')
@@ -683,6 +934,11 @@ def toggle_selector(event):
         toggle_selector.RS.set_active(True)
 
 def subsetClose(self):
+    '''
+    Close subset without selecting points. Closes plots, and defaults to orignal data.
+    :param self:
+    :return:
+    '''
     plt.close('all')
     print('Closing all plots')
     msgbox = QMessageBox()
@@ -696,18 +952,32 @@ def subsetClose(self):
 
 
 def subsetClear(self):
+    '''
+    Clear points selected for subsetting data, if they are configured.
+    :param self:
+    :return:
+    '''
     plt.close('all')
     print('Closing all plots')
     msgbox = QMessageBox()
     msgbox.setText('Cleared the co-ordinates')
     global subset_x1, subset_y1, subset_x2, subset_y2
-    subset_x1 = subset_y1 = subset_y2 = subset_x2 = None
+    subset_x1 = subset_y1 = subset_y2 = subset_x2 = None  # set subset points as None
     msgbox.exec()
+    qt_app.toggle_save_on_subset()
 
 def subsetClick(eclick, erelease):
+    '''
+    Get points selected and released data from RectangleSelector
+    for subset data co-ordinates and disable save option.
+    :param eclick:
+    :param erelease:
+    :return:
+    '''
     global subset_x1, subset_y1, subset_x2, subset_y2
     subset_x1, subset_y1 = eclick.xdata, eclick.ydata
     subset_x2, subset_y2 = erelease.xdata, erelease.ydata
+    qt_app.toggle_save_on_subset()
     # print("(%3.2f, %3.2f) --> (%3.2f, %3.2f)" % (x1, y1, x2, y2))
     # print(" The button you used were: %s %s" % (eclick.button, erelease.button))
 
