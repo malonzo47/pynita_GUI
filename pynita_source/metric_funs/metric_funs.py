@@ -41,8 +41,9 @@ def computeMetrics(results_dic, vi_change_thresh, run_thresh, time_step):
             
             # ---
             # 3. change percent and slope calculation 
-            change_percent = rises/abs(coeffs[0:-1])
-            dist_flags = (change_percent<vi_change_thresh) & (runs_in_days<=run_thresh)
+            #MGA 2/13/2020: getting rid of change_percent because this should be in absolute VI units
+            #change_percent = rises/abs(coeffs[0:-1])
+            dist_flags = (rises<vi_change_thresh) & (runs_in_days<=run_thresh)
             dist_bin = [1 if flag else 0 for flag in dist_flags]
             label, num_features = ndimage.label(dist_bin)
             
@@ -81,7 +82,8 @@ def computeMetrics(results_dic, vi_change_thresh, run_thresh, time_step):
                 cum_mag_dist = sum(dist_mags) # output 
                 
                 dist_mags = np.array(dist_mags)
-                dist_idx = int(np.where(dist_mags==dist_mags.min())[0])            
+                #MGA 2/13/20: changed from dist_mags.min to dist_mags.max
+                dist_idx = int(np.where(dist_mags==dist_mags.max())[0])                        
                 dist_loc = dist_locs[dist_idx]
                 
                 dist_date_before = knots[dist_loc[0]] # output 
