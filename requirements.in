@@ -1,0 +1,9 @@
+numpy
+scipy
+tqdm
+pandas
+configobj
+matplotlib
+PyQt5
+Cython
+GDAL-3.0.4-cp37-cp37m-win32.whl
