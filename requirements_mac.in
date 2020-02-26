@@ -1,0 +1,10 @@
+numpy
+scipy
+tqdm
+pandas
+configobj
+matplotlib
+PyQt5
+Cython
+GDAL
+pyinstaller
