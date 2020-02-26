@@ -27,6 +27,7 @@ from pynita_ui import mainV12, popup3, resource_logos
 from pynita_source import *
 from pynita_ui.tableV1 import pandasModel
 #
+import threading
 
 # MyQtApp handles all the GUI elements, and provides controll functionality over all the GUI objects, except for
 # matplotlib elements such as plots and buttons present in the plot window.
@@ -180,6 +181,136 @@ class MyQtApp(QtWidgets.QMainWindow, mainV12.Ui_MainWindow):
                                self.save13, self.save14, self.save15, self.save16]
         for saveCheckbox in self.saveCheckboxes:
             saveCheckbox.stateChanged.connect(self.onState2Change)
+    
+    def test(self):
+        '''
+        Test using default data. This function is made for deployment test purpose
+        :return:
+        '''
+        self.timer = QtCore.QTimer(self)
+        self.timer.timeout.connect(self.check_messagebox)
+        self.timer.start(1000)
+        self.need_close = False # set to True after finishing test
+        self.close_counter = 0 # count 5 seconds before finish
+
+        ## STEP 1
+        self.tabWidget.setCurrentIndex(1)
+
+        # select working directory
+        print('TEST: setting working directory')
+        work_dir = os.path.join(os.getcwd(), 'demo_dataset')
+        self.Step1a_lineEdit.setText(work_dir)
+        self.step1a_loadWD()
+
+        # select user configuration file
+        print('TEST: setting user configuration file')
+        config_file = os.path.join(os.getcwd(), 'user_configs.ini')
+        self.Step1b_lineEdit.setText(config_file)
+        self.step1b_loadUserConfigFile()
+
+        ## STEP 2
+        self.tabWidget.setCurrentIndex(2)
+
+        # select points extraction file
+        print('TEST: setting points extraction file')
+        pts_file = os.path.join(os.getcwd(), 'input', 'oilpalm_sample_pts.csv')
+        self.Step2a_lineEdit.setText(pts_file)
+        self.step2a_loadPointsFile()
+
+        # select objectids
+        self.Step2b_lineEdit.setText('1:3')
+        # visualize
+        print('TEST: visualization trajectories')
+        self.Visualize_radioButton.setChecked(True)
+        self.step2b_plotNITApoints_drawTraj()
+       
+        # load default set
+        self.Step2c_commandLinkButton.animateClick(100)
+        # change parameters according to the test scenario
+        print('TEST: saving custom user opts configuration')
+        custom_config_file = os.path.join(os.getcwd(), 'user_configs_opt.ini')
+        shutil.copy(config_file, custom_config_file)
+        config = ConfigObj(custom_config_file)
+        po = config['ParameterOpmSet']
+        po['bail_thresh_set']   = ['0.7', '1.0']
+        po['noise_thresh_set']  = ['1', '2']
+        po['penalty_set']       = ['1', '3']
+        po['filt_dist_set']     = ['3', '5']   
+        po['pct_set']           = ['80', '90']
+        po['max_complex_set']   = ['10', '15']    
+        po['min_complex_set']   = ['3', '5']  
+        po['filter_opt_set'] = 'sgolay'
+        config.write()
+        nita = nitaObj(custom_config_file)
+
+        self.Step1b_lineEdit.setText(custom_config_file)
+        self.step1b_loadUserConfigFile()
+
+         # draw trajectories
+        self.Visualize_radioButton.setChecked(False)
+        self.DrawTraj_radioButton.setChecked(True)
+        self.step2b_plotNITApoints_drawTraj()
+
+        # Prallel optimization
+        print('TEST: parallel optimization')
+        self.Step2d_lineEdit.setText('8')
+        self.step2d_runParameterOptimization()
+        self.popwin.close()
+
+        # save the optimization result
+        print('TEST: parallel optimization')
+        self.Step2d_popup_saveToConfigFile()
+
+        # check the optimization result
+        self.Visualize_radioButton.setChecked(True)
+        self.DrawTraj_radioButton.setChecked(False)
+        self.step2b_plotNITApoints_drawTraj()
+
+        ## STEP 3
+        self.tabWidget.setCurrentIndex(3)
+        # select image stack file
+        img_stack_file = os.path.join(os.getcwd(), 'input', 'oilpalm_sample_nbr_stack.tif')
+        self.Step3a_lineEdit.setText(img_stack_file)
+
+        # select dates file
+        img_dates_file = os.path.join(os.getcwd(), 'input', 'oilpalm_sample_stack_dates.csv')
+        self.Step3b_lineEdit.setText(img_dates_file)
+        
+        # load image stack and date files
+        self.step3ab_loadImageStackAndDatesFile()
+        self.step3opt_subsetData()
+        
+        # parallelize
+        self.Step3c_lineEdit.setText('8')
+        self.step3c_runImageStackMetrics()
+
+        ## STEP 4
+        self.tabWidget.setCurrentIndex(4)
+        # linear error
+        self.plot14.setChecked(True)
+        self.step4_PlotAndSave()
+
+        # disturbance date
+        self.plot3.setChecked(True)
+        self.step4_PlotAndSave()
+
+        ## All steps done, finally wait for some seconds and close
+        print('TEST: All test flow finished. Will close soon.')
+        self.need_close = True
+    
+    def check_messagebox(self):
+        '''
+        Helper function for unit test
+        It eliminates messageboxes and close smoothly after all test is done
+        :return:
+        '''
+        messagebox = self.findChild(QtWidgets.QMessageBox)
+        if messagebox is not None:
+            messagebox.close()
+        if self.need_close:
+            self.close_counter += 1
+            if self.close_counter == 10:
+                sys.exit()
            
     def step1a_selectWD(self):
         '''
@@ -986,5 +1117,10 @@ if __name__ == '__main__':
     app = QtWidgets.QApplication(sys.argv)
     qt_app = MyQtApp()
     qt_app.show()
+
+    # for test automation
+    if(len(sys.argv) > 1 and sys.argv[1] == 'test'):
+        qt_app.test()    
+
     app.exec_()
 
