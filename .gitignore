@@ -136,3 +136,4 @@ dmypy.json
 
 #
 *.ini
+demo_dataset/user_configs.ini
