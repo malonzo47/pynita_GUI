@@ -1,4 +1,8 @@
 version: '3.1'
+networks:
+  default:
+    external:
+      name: pynita-network
 services:
   pynita:
     build: .
@@ -6,4 +10,5 @@ services:
       - /tmp/.X11-unix:/tmp/.X11-unix
       - ./:/app
     user: root
-    environment: DISPLAY=$DISPLAY
+    environment: 
+      - DISPLAY=$DISPLAY
