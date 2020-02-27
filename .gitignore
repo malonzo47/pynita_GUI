@@ -133,3 +133,6 @@ dmypy.json
 
 # sqlite database
 *.db
+
+#
+*.ini
