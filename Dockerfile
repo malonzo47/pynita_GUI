@@ -1,4 +1,4 @@
-FROM pyqtgdal:latest
+FROM freelancedev217/pyqtgdal:latest
 
 # install python packages
 # ADD . /app
