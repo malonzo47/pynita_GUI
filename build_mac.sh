@@ -1,1 +1,0 @@
-pyinstaller --onefile --windowed --hidden-import pkg_resources.py2_warn --distpath dist/mac pynita_gui_main_mac.spec
