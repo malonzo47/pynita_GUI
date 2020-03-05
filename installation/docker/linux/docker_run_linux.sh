@@ -4,4 +4,4 @@ docker run -it \
         -e DISPLAY=$DISPLAY \
         --user user \
         -v $(pwd):/app \
-        pynita python3 pynita_gui_main.py
+        pynita
