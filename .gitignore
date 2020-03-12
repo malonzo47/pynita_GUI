@@ -145,4 +145,8 @@ pynita_source/nita_funs/distance_funs/distance_funs_cython.c
 # cython build result
 *.c
 
+# distribution build
 dist
+
+# output files
+**/output

@@ -221,15 +221,17 @@ class MyQtApp(QtWidgets.QMainWindow, mainV12.Ui_MainWindow):
         self.step2a_loadPointsFile()
 
         # select objectids
-        self.Step2b_lineEdit.setText('1:3')
+        self.Step2b_lineEdit.setText('9')
         # visualize
         print('TEST: visualization trajectories')
         self.Visualize_radioButton.setChecked(True)
         self.step2b_plotNITApoints_drawTraj()
+        # self.finish_test()
+        # return
        
         # load default set
-        # self.Step2c_commandLinkButton.animateClick(100)
         self.step2c_loadParameterSet()
+
         # change parameters according to the test scenario
         print('TEST: saving custom user opts configuration')
         custom_config_file = os.path.join(os.getcwd(), 'user_configs_opt.ini')
@@ -290,14 +292,24 @@ class MyQtApp(QtWidgets.QMainWindow, mainV12.Ui_MainWindow):
 
         ## STEP 4
         self.tabWidget.setCurrentIndex(4)
-        # linear error
-        self.plot14.setChecked(True)
+        for saveCheckbox in self.saveCheckboxes:
+            saveCheckbox.blockSignals(True)
+            saveCheckbox.setCheckState(QtCore.Qt.Checked)
+            saveCheckbox.blockSignals(False)
         self.step4_PlotAndSave()
 
-        # disturbance date
-        self.plot3.setChecked(True)
-        self.step4_PlotAndSave()
+        # # linear error
+        # self.plot14.setChecked(True)
+        # self.step4_PlotAndSave()
 
+        # # disturbance date
+        # self.plot3.setChecked(True)
+        # self.step4_PlotAndSave()
+
+        # finish test
+        self.finish_test()
+
+    def finish_test(self):
         ## All steps done, finally wait for some seconds and close
         print('TEST: All test flow finished. Will close soon.')
         self.need_close = True
@@ -981,17 +993,17 @@ class MyQtApp(QtWidgets.QMainWindow, mainV12.Ui_MainWindow):
         if self.plot2.isChecked() == True or self.save2.isChecked() == True:
             title = 'Complexity'
             label = 'Low < -- Complexity -- > High'
-            nita.MI_complexity(plot=self.plot2.isChecked(), save=self.save2.isChecked(), fn='complexity.tiff', title = title, label=label)
+            nita.MI_complexity(plot=self.plot2.isChecked(), save=self.save2.isChecked(), fn='complexity.tif', title = title, label=label)
             plt.figure(title).canvas.mpl_connect('button_press_event', self.onclick)
         if self.plot3.isChecked() == True or self.save3.isChecked() == True:
             title = 'Disturbance Date'
             label = 'Year of disturbance'
-            nita.MI_distDate(option='middle', plot=self.plot3.isChecked(), save=self.save3.isChecked(), fn='distdate.tiff', title = title, label=label)
+            nita.MI_distDate(option='middle', plot=self.plot3.isChecked(), save=self.save3.isChecked(), fn='distdate.tif', title = title, label=label)
             plt.figure(title).canvas.mpl_connect('button_press_event', self.onclick)
         if self.plot4.isChecked() == True or self.save4.isChecked() == True:
             title = 'Disturbance Duration'
             label = 'Number of days'
-            nita.MI_distDuration(plot=self.plot4.isChecked(), save=self.save4.isChecked(), fn='distduration.tiff', title = title, label=label)                            
+            nita.MI_distDuration(plot=self.plot4.isChecked(), save=self.save4.isChecked(), fn='distduration.tif', title = title, label=label)                            
             plt.figure(title).canvas.mpl_connect('button_press_event', self.onclick)
         if self.plot5.isChecked() == True or self.save5.isChecked() == True:   
             title = 'Disturbance Magnitude'
@@ -1123,8 +1135,8 @@ if __name__ == '__main__':
     qt_app.show()
 
     # for test automation
-    if(len(sys.argv) > 1 and sys.argv[1] == 'test'):
-        qt_app.test()    
+    # if(len(sys.argv) > 1 and sys.argv[1] == 'test'):
+    qt_app.test()    
 
     app.exec_()
 
