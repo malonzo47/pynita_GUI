@@ -1136,7 +1136,7 @@ if __name__ == '__main__':
 
     # for test automation
     # if(len(sys.argv) > 1 and sys.argv[1] == 'test'):
-    qt_app.test()    
+    # qt_app.test()    
 
     app.exec_()
 
