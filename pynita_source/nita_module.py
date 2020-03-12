@@ -321,7 +321,7 @@ class nitaObj:
             pool = Pool(workers)
             results_dics_1d = []
             max_len = len(iterable)
-            for iter in tqdm(pool.imap(nf.nita_stack_tuple_wrapper, iterable, chunksize=1000), total = max_len):
+            for iter in tqdm(pool.imap(nf.nita_stack_tuple_wrapper, iterable), total = max_len):
                 results_dics_1d.append(iter)
             pool.close()
             pool.join()
@@ -479,7 +479,7 @@ class nitaObj:
             pool = Pool(workers)
             max_len = len(iterable)
             metrics_dics_1d = []
-            for iter in tqdm(pool.imap(mf.computMetrics_wrapper, iterable, chunksize=3000), total=max_len):
+            for iter in tqdm(pool.imap(mf.computMetrics_wrapper, iterable), total=max_len):
                 metrics_dics_1d.append(iter)
                 # print("\rCompleted running stack {:.2f}%".format(i*100/max_len))
             pool.close()
@@ -1144,7 +1144,7 @@ class nitaObj:
             iterable = [(param_combo, OBJECTIDs, self.handdraw_trajs, self.pts, user_vi, compute_mask) for param_combo in self.opm_paramcombos]
             pool = Pool(workers)
             param_opm_res = []
-            for iter in tqdm(pool.imap(nf.paramcomboCmp_wrapper, iterable, chunksize=3000), total=len(iterable)):
+            for iter in tqdm(pool.imap(nf.paramcomboCmp_wrapper, iterable), total=len(iterable)):
                 param_opm_res.append(iter)
             # param_opm_res = pool.starmap(nf.paramcomboCmp, iterable)
             pool.close()
