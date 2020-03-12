@@ -1,9 +1,0 @@
-numpy>=1.14
-scipy>=1.0
-tqdm>=4.23
--c conda-forge gdal
-pandas>=0.22
-configobj>=5.0
-matplotlib>=2.1
-PyQt5>=5.9.2
-Cython>=0.29.2
