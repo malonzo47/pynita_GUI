@@ -1117,13 +1117,10 @@ if __name__ == '__main__':
     app = QtWidgets.QApplication(sys.argv)
     qt_app = MyQtApp()
     qt_app.show()
-<<<<<<< HEAD
-=======
 
     # for test automation
     if(len(sys.argv) > 1 and sys.argv[1] == 'test'):
         qt_app.test()    
 
->>>>>>> fd9efc6e87fefc3d03f1ea0fd0a79ee75bb8e53a
     app.exec_()
 
