@@ -141,3 +141,6 @@ pynita_source/nita_funs/distance_funs/distance_funs_cython.c
 
 #mac
 .DS_Store
+
+# cython build result
+*.c
