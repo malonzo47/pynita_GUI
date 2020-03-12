@@ -440,7 +440,7 @@ def viewNITA(px, date_vec, doy_vec,
         if colorbar:
             fig.colorbar(mappable, label = 'Day of year')
         print('bail_cut = {0} \nfit_count = {1}'.format(bail_cut, fit_count))
-        plt.show()
+        plt.show(block = False)
 
     except TypeError:
         plt.cla()
@@ -448,7 +448,7 @@ def viewNITA(px, date_vec, doy_vec,
         ax.set_ylim([0, 1])
         ax.text(0.3, 0.3, 'something wrong in nita')
         ax.set_title(title)
-        plt.show()
+        plt.show(block = False)
 
     except:
         plt.cla()
@@ -456,7 +456,7 @@ def viewNITA(px, date_vec, doy_vec,
         ax.set_ylim([0, 1])
         ax.text(0.3, 0.3, 'something\'s wrong')
         ax.set_title(title)    
-        plt.show()
+        plt.show(block = False)
 #%%           
 def nita_stack_wrapper(pix, compute_mask_1d, param_dic, i):
     

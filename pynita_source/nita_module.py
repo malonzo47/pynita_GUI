@@ -21,6 +21,8 @@ from .nita_funs import nita_funs as nf
 from .metric_funs import metric_funs as mf
 from .utils import logging as lg
 
+import traceback
+
 class nitaObj:
     
     def __init__(self, ini):
@@ -977,73 +979,78 @@ class nitaObj:
         :param plot_title: boolean, whether to plot title
         :return:
         '''
-        # check to see if pts are loaded
+
         try:
-            type(self.pts)
-        except AttributeError:
-            raise RuntimeError('ERROR: pts not loaded yet')
+            # check to see if pts are loaded
+            try:
+                type(self.pts)
+            except AttributeError:
+                raise RuntimeError('ERROR: pts not loaded yet')
 
-#        if self.log:
-#            self.logger.info('drawPts start...')
-    
-        user_vi = self.cfg.user_vi
-        doy_limits = self.cfg.param_nita['doy_limits']
-        value_limits = self.cfg.param_nita['value_limits']
-        date_limits = self.cfg.param_nita['date_limits']
+    #        if self.log:
+    #            self.logger.info('drawPts start...')
         
-        if OBJECTIDs == [9999]:
-            OBJECTIDs = list(set(self.pts['OBJECTID']))
-        
-        OBJECTIDs = OBJECTIDs[0:25]
-        
-        handdraw_trajs = []
-        for OBJECTID in OBJECTIDs:
+            user_vi = self.cfg.user_vi
+            doy_limits = self.cfg.param_nita['doy_limits']
+            value_limits = self.cfg.param_nita['value_limits']
+            date_limits = self.cfg.param_nita['date_limits']
             
-            fig, ax = plt.subplots()
-            try:
-                plot_y = self.pts.loc[self.pts['OBJECTID'] == OBJECTID][user_vi].values
-            except IndexError:
-                raise RuntimeError("Selected user_vi doesn't exist in the data.")
-            try:
-                plot_x = self.pts.loc[self.pts['OBJECTID'] == OBJECTID]['date_dist'].values
-            except IndexError:
-                raise RuntimeError("Selected date_dist values are invalid.")
-            try:
-                plot_doy = self.pts.loc[self.pts['OBJECTID'] == OBJECTID]['doy'].values
-            except IndexError:
-                raise RuntimeError("Selected doy values are invalid.")
-            if plot_title:
-                info_line = self.ref_pts.loc[self.ref_pts['OBJECTID'] == OBJECTID]
-                title = ''.join([str(item)+' ' for item in list(info_line.values.flatten())])
-            else:
-                title = ''
+            if OBJECTIDs == [9999]:
+                OBJECTIDs = list(set(self.pts['OBJECTID']))
+            
+            OBJECTIDs = OBJECTIDs[0:25]
+            
+            handdraw_trajs = []
+            for OBJECTID in OBJECTIDs:
                 
-            plot_x, plot_y, plot_doy = nf.filterLimits(plot_x, plot_y, plot_doy, value_limits, date_limits, doy_limits)
+                fig, ax = plt.subplots()
+                try:
+                    plot_y = self.pts.loc[self.pts['OBJECTID'] == OBJECTID][user_vi].values
+                except IndexError:
+                    raise RuntimeError("Selected user_vi doesn't exist in the data.")
+                try:
+                    plot_x = self.pts.loc[self.pts['OBJECTID'] == OBJECTID]['date_dist'].values
+                except IndexError:
+                    raise RuntimeError("Selected date_dist values are invalid.")
+                try:
+                    plot_doy = self.pts.loc[self.pts['OBJECTID'] == OBJECTID]['doy'].values
+                except IndexError:
+                    raise RuntimeError("Selected doy values are invalid.")
+                if plot_title:
+                    info_line = self.ref_pts.loc[self.ref_pts['OBJECTID'] == OBJECTID]
+                    title = ''.join([str(item)+' ' for item in list(info_line.values.flatten())])
+                else:
+                    title = ''
+                    
+                plot_x, plot_y, plot_doy = nf.filterLimits(plot_x, plot_y, plot_doy, value_limits, date_limits, doy_limits)
 
-            doy_limit =  doy_limits[0]
-            mappable = ax.scatter(plot_x, plot_y, c=plot_doy, vmin=doy_limit[0], vmax=doy_limit[1])
-            ax.set_xlim([plot_x.min(), plot_x.max()])
-            ax.set_ylim([plot_y.min(), plot_y.max()])
-            ax.set_title(title)
-            plt.ylabel('VI Units')
-            #
-            xticks_lables = ax.get_xticks().tolist()
-            xticks_lables = [str(xticks_label)[0:4] for xticks_label in xticks_lables]
-            ax.set_xticklabels(xticks_lables)
-            #
-            fig.colorbar(mappable, label = 'Day of year')
-            ginput_res = plt.ginput(n=-1, timeout=0)
-            handdraw_traj = {'OBJECTID': OBJECTID,
-                             'traj': ginput_res}
-            handdraw_trajs.append(handdraw_traj)
+                doy_limit =  doy_limits[0]
+                mappable = ax.scatter(plot_x, plot_y, c=plot_doy, vmin=doy_limit[0], vmax=doy_limit[1])
+                ax.set_xlim([plot_x.min(), plot_x.max()])
+                ax.set_ylim([plot_y.min(), plot_y.max()])
+                ax.set_title(title)
+                plt.ylabel('VI Units')
+                #
+                xticks_lables = ax.get_xticks().tolist()
+                xticks_lables = [str(xticks_label)[0:4] for xticks_label in xticks_lables]
+                ax.set_xticklabels(xticks_lables)
+                #
+                fig.colorbar(mappable, label = 'Day of year')
+                ginput_res = plt.ginput(n=-1, timeout=0)
+                handdraw_traj = {'OBJECTID': OBJECTID,
+                                'traj': ginput_res}
+                handdraw_trajs.append(handdraw_traj)
+            
+            self.handdraw_trajs = handdraw_trajs
+            
+            plt.close('all')
         
-        self.handdraw_trajs = handdraw_trajs
-        
-        plt.close('all')
-      
-        if self.log:
-            self.logger.info('total {} OBJECTIDs drew: ' + str(OBJECTIDs).format(len(OBJECTIDs)))
-            self.logger.info('drawPts end...')
+            if self.log:
+                self.logger.info('total {} OBJECTIDs drew: ' + str(OBJECTIDs).format(len(OBJECTIDs)))
+                self.logger.info('drawPts end...')
+        except Exception as e:
+            print('Exception in drawing pts', str(e))
+            traceback.print_exc()
             
     def paramOpm(self, parallel=True, workers=2):
         '''

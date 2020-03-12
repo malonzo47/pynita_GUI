@@ -10,6 +10,9 @@ License: MIT
 Copyright (c)
 
 """
+import multiprocessing
+multiprocessing.freeze_support()
+
 import sys
 import os
 import shutil
@@ -225,7 +228,8 @@ class MyQtApp(QtWidgets.QMainWindow, mainV12.Ui_MainWindow):
         self.step2b_plotNITApoints_drawTraj()
        
         # load default set
-        self.Step2c_commandLinkButton.animateClick(100)
+        # self.Step2c_commandLinkButton.animateClick(100)
+        self.step2c_loadParameterSet()
         # change parameters according to the test scenario
         print('TEST: saving custom user opts configuration')
         custom_config_file = os.path.join(os.getcwd(), 'user_configs_opt.ini')
