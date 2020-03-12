@@ -4,7 +4,7 @@
  Binary releases are available and it is also possible to run from source.
 
 # Binary distribution
-The binary  of pynita_GUI for Windows and MacOS can be found in [Releases](https://github.com/FreelanceDev217/pynita_GUI/releases).
+The binary  of pynita_GUI for Windows and MacOS can be found in [Releases](https://github.com/malonzo47/pynita_GUI/releases).
 
 **NOTE**: The binary releases only work after GDAL installataion. If you do not have or have a different version of GDAL, please make sure to follow the below steps to install the appropriate version of GDAL.
 
