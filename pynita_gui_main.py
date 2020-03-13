@@ -679,6 +679,7 @@ class MyQtApp(QtWidgets.QMainWindow, mainV12.Ui_MainWindow):
                 # which configuration is the most optimal, and return as a dictionary.
             except Exception as e:
                 QtWidgets.QMessageBox.about(self, 'Error', str(e))
+                self.Step2d_pushButton.setEnabled(True) # enable back the optimize button after finish
                 return
             # display best configuration as a popup window.
             TW_Item = QtWidgets.QTableWidgetItem
@@ -693,6 +694,8 @@ class MyQtApp(QtWidgets.QMainWindow, mainV12.Ui_MainWindow):
             self.popwin.show()
             #
         nita.stopLog()
+
+        self.Step2d_pushButton.setEnabled(True) # enable back the optimize button after finish
     
     def Step2d_popup_saveToConfigFile(self):
         '''
@@ -789,6 +792,7 @@ class MyQtApp(QtWidgets.QMainWindow, mainV12.Ui_MainWindow):
             nita.loadStack()
         except Exception as e:
             QtWidgets.QMessageBox.about(self, 'Error', str(e))
+            self.Step3c_pushButton.setEnabled(True)
             return
         # subset the image stack, if optional subset data region is provided.
         global subset_x1, subset_x2, subset_y1, subset_y2
@@ -808,6 +812,8 @@ class MyQtApp(QtWidgets.QMainWindow, mainV12.Ui_MainWindow):
             QtWidgets.QMessageBox.about(self, 'Metrics','Image Metrics Created!')
         #    
         nita.stopLog()
+
+        self.Step3c_pushButton.setEnabled(True) # enable back the button after finish
 
     def step3opt_subsetData(self):
         '''
@@ -1135,8 +1141,8 @@ if __name__ == '__main__':
     qt_app.show()
 
     # for test automation
-    # if(len(sys.argv) > 1 and sys.argv[1] == 'test'):
-    # qt_app.test()    
+    if(len(sys.argv) > 1 and sys.argv[1] == 'test'):
+        qt_app.test()    
 
     app.exec_()
 

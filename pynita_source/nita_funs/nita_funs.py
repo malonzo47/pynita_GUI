@@ -5,6 +5,7 @@ import copy
 import math
 from scipy import stats, signal
 import matplotlib.pyplot as plt
+import matplotlib.ticker as mticker
 
 from .distance_funs.distance_funs import distancePointEdge_wrapper
 #%%
@@ -406,6 +407,7 @@ def viewNITA(px, date_vec, doy_vec,
              fig=None, ax=None):
     # decide the existence of fig and ax (only check one of them is enough)
     if type(fig).__name__ == 'NoneType':
+        print('recreated fig/ax in viewNITA')
         fig, ax = plt.subplots()
 
     try: 
@@ -434,9 +436,8 @@ def viewNITA(px, date_vec, doy_vec,
         ax.set_xlim([plot_x.min(), plot_x.max()])
         ax.set_ylim([np.nanmin(plot_y), np.nanmax(plot_y)])
         ax.set_title(title) 
-        xticks_lables = ax.get_xticks().tolist()
-        xticks_lables = [str(xticks_label)[0:4] for xticks_label in xticks_lables]
-        ax.set_xticklabels(xticks_lables)
+        ax.xaxis.set_major_formatter(mticker.FuncFormatter(lambda x, pos: str(x)[:4]))
+
         if colorbar:
             fig.colorbar(mappable, label = 'Day of year')
         print('bail_cut = {0} \nfit_count = {1}'.format(bail_cut, fit_count))
@@ -457,6 +458,8 @@ def viewNITA(px, date_vec, doy_vec,
         ax.text(0.3, 0.3, 'something\'s wrong')
         ax.set_title(title)    
         plt.show(block = False)
+# %%
+
 #%%           
 def nita_stack_wrapper(pix, compute_mask_1d, param_dic, i):
     

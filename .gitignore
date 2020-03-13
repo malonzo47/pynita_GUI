@@ -136,7 +136,7 @@ dmypy.json
 
 #
 *.ini
-/demo_dataset/user_configs.ini
+demo_dataset/user_configs.ini
 /pynita_source/nita_funs/distance_funs/distance_funs_cython.c
 
 #mac
@@ -150,3 +150,5 @@ dist
 
 # output files
 **/output
+
+demo_dataset/user_configs.ini
