@@ -5,6 +5,9 @@
 
 # Binary distribution
 The binary  of pynita_GUI for Windows and MacOS can be found in [Releases](https://github.com/malonzo47/pynita_GUI/releases).
+1. Click on the latest release and then choose the .zip file for your win/mac operating system.
+2. Extract that file on your computer and double-click the .exe file to run
+3. Demo dataset (point locations, an image stack) can be downloaded from the demo_dataset folder above (3 files).
 
 **NOTE**: The binary releases only work after GDAL installataion. If you do not have or have a different version of GDAL, please make sure to follow the below steps to install the appropriate version of GDAL.
 
