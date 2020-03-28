@@ -3,7 +3,7 @@
 
  Binary releases are available and it is also possible to run from source.
 
-# Binary distribution
+# Binary distribution (i.e., a simple, double-click executable file)
 The binary  of pynita_GUI for Windows and MacOS can be found in [Releases](https://github.com/malonzo47/pynita_GUI/releases).
 1. Click on the latest release and then choose the .zip file for your win/mac operating system.
 2. Extract that file on your computer and double-click the .exe file to run
@@ -31,8 +31,8 @@ Unfortunately, at the moment, there is no universal, out-of-the-box Docker way t
 ### Windows
 1. Clone the repository 
 2. Within the pynita_GUI folder, copy all files from **/installation/docker/windows** to the project root folder (the same level with pynita_gui_main.py)
-3. Run `prerequisites.bat` as an administrator privilege.
-4. Run `docker_run_windows.bat`.
+3. Run CMD (Command) as Administrator then run `prerequisites.bat`.
+4. While in CMD, run `docker_run_windows.bat`. This will start the pyNITA program.
 
 ### MacOS
 1. Copy all files from **/installation/docker/macos** to the project root folder.
