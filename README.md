@@ -3,8 +3,11 @@
 
  Binary releases are available and it is also possible to run from source.
 
-# Binary distribution
-The binary  of pynita_GUI for Windows and MacOS can be found in [Releases](https://github.com/FreelanceDev217/pynita_GUI/releases).
+# Binary distribution (i.e., a simple, double-click executable file)
+The binary  of pynita_GUI for Windows and MacOS can be found in [Releases](https://github.com/malonzo47/pynita_GUI/releases).
+1. Click on the latest release and then choose the .zip file for your win/mac operating system.
+2. Extract that file on your computer and double-click the .exe file to run
+3. Demo dataset (point locations, an image stack, user_confis.ini) can be downloaded from the demo_dataset folder above.
 
 **NOTE**: The binary releases only work after GDAL installataion. If you do not have or have a different version of GDAL, please make sure to follow the below steps to install the appropriate version of GDAL.
 
@@ -26,9 +29,10 @@ If you do not have Docker installed on your machine, please [install Docker firs
 
 Unfortunately, at the moment, there is no universal, out-of-the-box Docker way to show GUI. So we need to use different docker run commands for MacOS, Windows, and Linux.
 ### Windows
-1. Copy all files from **/installation/docker/windows** to the project root folder (the same level with pynita_gui_main.py)
-2. Run `prerequisites.bat` as an administrator privilege.
-3. Run `docker_run_windows.bat`.
+1. Clone the repository 
+2. Within the pynita_GUI folder, copy all files from **/installation/docker/windows** to the project root folder (the same level with pynita_gui_main.py)
+3. Run CMD (Command) as Administrator then run `prerequisites.bat`.
+4. While in CMD, run `docker_run_windows.bat`. This will start the pyNITA program.
 
 ### MacOS
 1. Copy all files from **/installation/docker/macos** to the project root folder.
