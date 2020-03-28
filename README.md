@@ -29,9 +29,10 @@ If you do not have Docker installed on your machine, please [install Docker firs
 
 Unfortunately, at the moment, there is no universal, out-of-the-box Docker way to show GUI. So we need to use different docker run commands for MacOS, Windows, and Linux.
 ### Windows
-1. Copy all files from **/installation/docker/windows** to the project root folder (the same level with pynita_gui_main.py)
-2. Run `prerequisites.bat` as an administrator privilege.
-3. Run `docker_run_windows.bat`.
+1. Clone the repository 
+2. Within the pynita_GUI folder, copy all files from **/installation/docker/windows** to the project root folder (the same level with pynita_gui_main.py)
+3. Run `prerequisites.bat` as an administrator privilege.
+4. Run `docker_run_windows.bat`.
 
 ### MacOS
 1. Copy all files from **/installation/docker/macos** to the project root folder.
