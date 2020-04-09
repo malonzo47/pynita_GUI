@@ -1019,7 +1019,8 @@ class MyQtApp(QtWidgets.QMainWindow, mainV12.Ui_MainWindow):
             if spec_date:
                 title = 'Date Value - '+spec_date
                 label = 'VI Units'
-                nita.MI_dateValue(int(spec_date), plot=self.plot11.isChecked(), save=self.save11.isChecked(), fn='datevalue.tif', title = title, label=label)
+                filename_plot = 'datevalue_'+str(spec_date)+'.tif'
+                nita.MI_dateValue(int(spec_date), plot=self.plot11.isChecked(), save=self.save11.isChecked(), fn=filename_plot, title = title, label=label)
                 plt.figure(title).canvas.mpl_connect('button_press_event', self.onclick)
             else:
                 QtWidgets.QMessageBox.about(self,'text','Error!..11)Specify Date')   
@@ -1062,7 +1063,7 @@ class MyQtApp(QtWidgets.QMainWindow, mainV12.Ui_MainWindow):
             title = 'Value Change - Entire time period'
             label = 'VI Units'
             nita.MI_valueChange(start_date=-9999, end_date=9999, option='diff', plot=self.plot9.isChecked(), 
-                                save=self.save9.isChecked(), fn='valuechange1.tif', title = title, label=label)
+                                save=self.save9.isChecked(), fn='valueChangeTotal.tif', title = title, label=label)
             plt.figure(title).canvas.mpl_connect('button_press_event', self.onclick)
         if self.plot12.isChecked() == True or self.save12.isChecked() == True:
             title = 'Recovery'
