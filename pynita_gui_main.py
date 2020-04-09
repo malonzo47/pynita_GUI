@@ -26,7 +26,8 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
 #
-from pynita_ui import mainV12, popup3, resource_logos
+import mainV12
+from pynita_ui import popup3, resource_logos
 from pynita_source import *
 from pynita_ui.tableV1 import pandasModel
 #
@@ -128,6 +129,7 @@ class MyQtApp(QtWidgets.QMainWindow, mainV12.Ui_MainWindow):
         self.Step2d_lineEdit.textChanged.connect(lambda: self.Step2d_pushButton.setEnabled(True))
         self.Step2d_pushButton.clicked.connect(self.step2d_runParameterOptimization)
         self.popwin.popup_pushButton.clicked.connect(self.Step2d_popup_saveToConfigFile)  
+        self.Step2d_progress.hide()
         #
         self.Step3a_toolButton.clicked.connect(self.step3a_selectImageStackFile) 
         self.Step3a_lineEdit.textChanged.connect(lambda: self.Step3ab_pushButton.setEnabled(True))
@@ -138,6 +140,7 @@ class MyQtApp(QtWidgets.QMainWindow, mainV12.Ui_MainWindow):
         self.Step3ab_pushButton.released.connect(lambda: self.Step3c_radioButton.setEnabled(True))
         self.Step3ab_pushButton.released.connect(lambda: self.Step3op_clearsubsetButton.setEnabled(True))
         self.Step3ab_pushButton.released.connect(lambda: self.Step3op_subsetButton.setEnabled(True))
+        self.Step3c_progress.hide()
         #
         self.Step3op_subsetButton.clicked.connect(self.step3opt_subsetData)
         self.Step3op_subsetButton.released.connect(lambda: self.Step3op_subsetButton.setEnabled(True))
@@ -348,7 +351,7 @@ class MyQtApp(QtWidgets.QMainWindow, mainV12.Ui_MainWindow):
         :return:
         '''
         name = self.Step1a_lineEdit.text()
-        if not name:
+        if not name or not os.path.exists(name):
             QtWidgets.QMessageBox.about(self, 'text','Oops!..Select Workding Directory')
         else:
             os.chdir(name)
@@ -529,6 +532,8 @@ class MyQtApp(QtWidgets.QMainWindow, mainV12.Ui_MainWindow):
         '''
         IDs = self.Step2b_lineEdit.text()  # Get ID's via GUI
         IDs = [x.strip(' ') for x in IDs.split(",")]
+        if len(IDs) == 0:
+            return
         global nita
         config_name = self.Step1b_lineEdit.text()
         if 'nita' not in globals():
@@ -665,6 +670,7 @@ class MyQtApp(QtWidgets.QMainWindow, mainV12.Ui_MainWindow):
         :return:
         '''
         self.Step2d_pushButton.setEnabled(False)
+        self.Step2d_progress.show()
         #
         nita.startLog()
         nita.setOpmParams()  # set list of possible optimization configurations
@@ -675,7 +681,7 @@ class MyQtApp(QtWidgets.QMainWindow, mainV12.Ui_MainWindow):
             n_workers = int(self.Step2d_lineEdit.text()) # select number of workers.
             #
             try:
-                opt_out = nita.paramOpm(parallel=True, workers=n_workers)  # run for all possible configurations
+                opt_out = nita.paramOpm(parallel=True, workers=n_workers, progress_notifier=self.set_progress_step2d)  # run for all possible configurations
                 # which configuration is the most optimal, and return as a dictionary.
             except Exception as e:
                 QtWidgets.QMessageBox.about(self, 'Error', str(e))
@@ -696,6 +702,7 @@ class MyQtApp(QtWidgets.QMainWindow, mainV12.Ui_MainWindow):
         nita.stopLog()
 
         self.Step2d_pushButton.setEnabled(True) # enable back the optimize button after finish
+        self.Step2d_progress.hide()
     
     def Step2d_popup_saveToConfigFile(self):
         '''
@@ -779,6 +786,7 @@ class MyQtApp(QtWidgets.QMainWindow, mainV12.Ui_MainWindow):
         Run image stack metrics on loaded image stack for given dates file.
         :return:
         '''
+        self.Step3c_progress.show()
         self.Step3c_pushButton.setEnabled(False)
         config_name = self.Step1b_lineEdit.text()
         global nita
@@ -808,12 +816,31 @@ class MyQtApp(QtWidgets.QMainWindow, mainV12.Ui_MainWindow):
         else:
             n_workers = int(self.Step3c_lineEdit.text())
             nita.runStack(parallel=True, workers=n_workers)
-            nita.computeStackMetrics(parallel=True, workers=n_workers)
+            nita.computeStackMetrics(parallel=True, workers=n_workers, progress_notifier=self.set_progress_step3c)
             QtWidgets.QMessageBox.about(self, 'Metrics','Image Metrics Created!')
         #    
         nita.stopLog()
 
         self.Step3c_pushButton.setEnabled(True) # enable back the button after finish
+        self.Step3c_progress.hide()
+
+    def set_progress_step2d(self, cur, total):
+        '''
+        Notify the current progress on the GUI (step 2d)
+        :return:
+        '''
+        per = cur / total
+        self.Step2d_progress.setValue(per * 100)
+        QCoreApplication.processEvents()
+
+    def set_progress_step3c(self, cur, total):
+        '''
+        Notify the current progress on the GUI (step 3c)
+        :return:
+        '''
+        per = cur / total
+        self.Step3c_progress.setValue(per * 100)
+        QCoreApplication.processEvents()
 
     def step3opt_subsetData(self):
         '''

@@ -455,7 +455,7 @@ class nitaObj:
         
         return results_dic    
     
-    def computeStackMetrics(self, parallel=True, workers=2):
+    def computeStackMetrics(self, parallel=True, workers=2, progress_notifier = None):
         
         # check if self.stack_results exists 
         try:
@@ -479,17 +479,25 @@ class nitaObj:
             pool = Pool(workers)
             max_len = len(iterable)
             metrics_dics_1d = []
+            cur = 0
             for iter in tqdm(pool.imap(mf.computMetrics_wrapper, iterable), total=max_len):
                 metrics_dics_1d.append(iter)
-                # print("\rCompleted running stack {:.2f}%".format(i*100/max_len))
+                cur += 1
+                if progress_notifier is not None:
+                    progress_notifier(cur, max_len)
             pool.close()
             pool.join()
         
         if not parallel: 
             metrics_dics_1d = []
+            cur = 0
+            max_len = len(self.stack_results)
             for results_dic in self.stack_results:
                 metrics_dic = mf.computeMetrics(results_dic, self.cfg.param_metric['vi_change_thresh'], self.cfg.param_metric['run_thresh'], self.cfg.param_metric['time_step'])
                 metrics_dics_1d.append(metrics_dic)
+                cur += 1
+                if progress_notifier is not None:
+                    progress_notifier(cur, max_len)
         
         self.stack_metrics = metrics_dics_1d
 
@@ -1052,7 +1060,7 @@ class nitaObj:
             print('Exception in drawing pts', str(e))
             traceback.print_exc()
             
-    def paramOpm(self, parallel=True, workers=2):
+    def paramOpm(self, parallel=True, workers=2, progress_notifier=None):
         '''
         Find optimal parameter configuration among list of configurations. Can be run in parallel, where number of
         workers should be set to max number of parallel threads to be run.
@@ -1087,6 +1095,8 @@ class nitaObj:
             paramcombo_rmse_mean = []
             paramcombo_rmse_median = []
             paramcombo_pct95err_mean = []
+            total = len(self.opm_paramcombos)
+            cur = 0
             for param_combo in self.opm_paramcombos:
                 OBJETID_rmse = []
                 OBJECTID_pct95_err = []
@@ -1136,6 +1146,10 @@ class nitaObj:
                     OBJETID_rmse.append(rmse)
                     OBJECTID_pct95_err.append(pct95_err)
                 
+                cur += 1
+                if progress_notifier is not None:
+                    progress_notifier(cur, total) # notify the progress on the UI
+
                 paramcombo_rmse_mean.append(np.mean(OBJETID_rmse))
                 paramcombo_rmse_median.append(np.median(OBJETID_rmse))
                 paramcombo_pct95err_mean.append(np.mean(OBJETID_rmse))
@@ -1144,8 +1158,13 @@ class nitaObj:
             iterable = [(param_combo, OBJECTIDs, self.handdraw_trajs, self.pts, user_vi, compute_mask) for param_combo in self.opm_paramcombos]
             pool = Pool(workers)
             param_opm_res = []
+            cur = 0
             for iter in tqdm(pool.imap(nf.paramcomboCmp_wrapper, iterable), total=len(iterable)):
                 param_opm_res.append(iter)
+                cur += 1
+                if progress_notifier is not None:
+                    progress_notifier(cur, len(iterable)) # notify the progress on the UI
+
             # param_opm_res = pool.starmap(nf.paramcomboCmp, iterable)
             pool.close()
             pool.join()
