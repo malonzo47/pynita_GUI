@@ -815,7 +815,7 @@ class MyQtApp(QtWidgets.QMainWindow, mainV12.Ui_MainWindow):
             QtWidgets.QMessageBox.about(self, 'text','Error!'+'<br> Minimum = 2'+'<br>Maximum = Check number of cores available on your computer and specify accordingly')
         else:
             n_workers = int(self.Step3c_lineEdit.text())
-            nita.runStack(parallel=True, workers=n_workers)
+            nita.runStack(parallel=True, workers=n_workers, progress_notifier=self.set_progress_step3c)
             nita.computeStackMetrics(parallel=True, workers=n_workers, progress_notifier=self.set_progress_step3c)
             QtWidgets.QMessageBox.about(self, 'Metrics','Image Metrics Created!')
         #    
@@ -1067,12 +1067,14 @@ class MyQtApp(QtWidgets.QMainWindow, mainV12.Ui_MainWindow):
         if self.plot12.isChecked() == True or self.save12.isChecked() == True:
             title = 'Recovery'
             label = 'VI Units'
-            nita.MI_recovery(1, option='diff', plot=self.plot12.isChecked(), save=self.save12.isChecked(), fn='recovery.tif', title = title, label=label)
+            years = int(self.Step4_RecoveryYears.text())
+            nita.MI_recovery(years, option='diff', plot=self.plot12.isChecked(), save=self.save12.isChecked(), fn='recovery.tif', title = title, label=label)
             plt.figure(title).canvas.mpl_connect('button_press_event', self.onclick)                          
         if self.plot13.isChecked() == True or self.save13.isChecked() == True:
             title = 'RecoverCmp'
             label = 'VI Units'
-            nita.MI_recoveryCmp(1, plot=self.plot13.isChecked(), save=self.save13.isChecked(), fn='recoverycmp.tif', title = title, label=label)                            
+            years = int(self.Step4_RecoveryCMPYears.text())
+            nita.MI_recoveryCmp(years, plot=self.plot13.isChecked(), save=self.save13.isChecked(), fn='recoverycmp.tif', title = title, label=label)                            
         if self.plot14.isChecked() == True or self.save14.isChecked() == True:
             title = 'Linear Error'
             label = 'Mean Absolute Error'

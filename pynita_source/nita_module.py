@@ -229,7 +229,7 @@ class nitaObj:
         if len(OBJECTIDs) == 1:
             return results_dic  
 
-    def runStack(self, parallel=True, workers=2, use_opm_param=False):
+    def runStack(self, parallel=True, workers=2, use_opm_param=False, progress_notifier = None):
         '''
         Run full image stack or subset image stack, if subset is selected via GUI, and sets the computed results,
         as attribute of nita object.
@@ -321,8 +321,12 @@ class nitaObj:
             pool = Pool(workers)
             results_dics_1d = []
             max_len = len(iterable)
+            cur = 0
             for iter in tqdm(pool.imap(nf.nita_stack_tuple_wrapper, iterable), total = max_len):
                 results_dics_1d.append(iter)
+                cur += 1
+                if progress_notifier is not None:
+                    progress_notifier(cur, max_len)
             pool.close()
             pool.join()
         
