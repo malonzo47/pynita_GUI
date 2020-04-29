@@ -74,7 +74,9 @@ class ConfigReader:
                                 'pct': float(np['pct']),
                                 'max_complex': int(np['max_complex']),
                                 'min_complex': int(np['min_complex']),
-                                'filter_opt': np['filter_opt']}
+                                'filter_opt': np['filter_opt'],
+                                'dist_date_pos': np['dist_date_pos']
+                                }
             # TODO: add value check in here
         else: 
             raise RuntimeError('ERROR: [NITAParameters] module not found')

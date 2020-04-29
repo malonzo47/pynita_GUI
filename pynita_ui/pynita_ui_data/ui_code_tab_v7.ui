@@ -730,6 +730,17 @@
                </font>
               </property>
              </row>
+             <row>
+              <property name="text">
+               <string>16. dist_date position</string>
+              </property>
+              <property name="font">
+               <font>
+                <pointsize>14</pointsize>
+                <italic>true</italic>
+               </font>
+              </property>
+             </row>
              <column>
               <property name="text">
                <string>Parameters</string>
@@ -753,22 +764,6 @@
            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:14pt; font-weight:600; color:#0f80ff;&quot;&gt;Step1: Configure NITA Parameters&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
          </widget>
-        </item>
-        <item row="4" column="0">
-         <spacer name="verticalSpacer_5">
-          <property name="orientation">
-           <enum>Qt::Vertical</enum>
-          </property>
-          <property name="sizeType">
-           <enum>QSizePolicy::Fixed</enum>
-          </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>20</width>
-            <height>5</height>
-           </size>
-          </property>
-         </spacer>
         </item>
        </layout>
       </widget>
