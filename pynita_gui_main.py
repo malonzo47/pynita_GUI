@@ -1068,16 +1068,22 @@ class MyQtApp(QtWidgets.QMainWindow, mainV12.Ui_MainWindow):
                                 save=self.save9.isChecked(), fn='valueChangeTotal.tif', title = title, label=label)
             plt.figure(title).canvas.mpl_connect('button_press_event', self.onclick)
         if self.plot12.isChecked() == True or self.save12.isChecked() == True:
-            title = 'Recovery'
             label = 'VI Units'
-            years = int(self.Step4_RecoveryYears.text())
-            nita.MI_recovery(years, option='diff', plot=self.plot12.isChecked(), save=self.save12.isChecked(), fn='recovery.tif', title = title, label=label)
+            years_str = self.Step4_RecoveryYears.text()
+            splits = [x.strip() for x in years_str.split(',')]
+            years = [int(x) for x in splits if x != '']
+            for yrs in years:
+                title = 'Recovery %d'%yrs
+                nita.MI_recovery(yrs, option='diff', plot=self.plot12.isChecked(), save=self.save12.isChecked(), fn='recovery.tif', title = title, label=label)
             plt.figure(title).canvas.mpl_connect('button_press_event', self.onclick)                          
         if self.plot13.isChecked() == True or self.save13.isChecked() == True:
-            title = 'RecoverCmp'
             label = 'VI Units'
-            years = int(self.Step4_RecoveryCMPYears.text())
-            nita.MI_recoveryCmp(years, plot=self.plot13.isChecked(), save=self.save13.isChecked(), fn='recoverycmp.tif', title = title, label=label)                            
+            years_str = self.Step4_RecoveryCMPYears.text()
+            splits = [x.strip() for x in years_str.split(',')]
+            years = [int(x) for x in splits if x != '']
+            for yrs in years:
+                title = 'RecoverCmp %d'%yrs
+                nita.MI_recoveryCmp(yrs, plot=self.plot13.isChecked(), save=self.save13.isChecked(), fn='recoverycmp.tif', title = title, label=label)                            
         if self.plot14.isChecked() == True or self.save14.isChecked() == True:
             title = 'Linear Error'
             label = 'Mean Absolute Error'
