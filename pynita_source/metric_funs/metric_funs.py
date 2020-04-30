@@ -161,7 +161,7 @@ def calDistDate(metrics_dic, option='middle'):
         dist_date = dist_date_nadir
     else: 
         raise RuntimeError('ERROR: invalid option!')
-    
+
     return dist_date
 
 #%%

@@ -74,8 +74,7 @@ class ConfigReader:
                                 'pct': float(np['pct']),
                                 'max_complex': int(np['max_complex']),
                                 'min_complex': int(np['min_complex']),
-                                'filter_opt': np['filter_opt'],
-                                'dist_date_pos': np['dist_date_pos']
+                                'filter_opt': np['filter_opt']
                                 }
             # TODO: add value check in here
         else: 

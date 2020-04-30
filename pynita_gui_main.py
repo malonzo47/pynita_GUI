@@ -401,7 +401,7 @@ class MyQtApp(QtWidgets.QMainWindow, mainV12.Ui_MainWindow):
             self.Step1c_tableWidget.setItem(12, 0, TW_Item(np['filter_opt']))
             self.Step1c_tableWidget.setItem(13, 0, TW_Item(mp['vi_change_thresh']))
             self.Step1c_tableWidget.setItem(14, 0, TW_Item(mp['run_thresh']))
-            self.Step1c_tableWidget.setItem(15, 0, TW_Item(np['dist_date_pos']))
+            self.Step1c_tableWidget.setItem(15, 0, TW_Item(mp['dist_date_pos']))
             #
             config['Project']['RootDir'] = self.Step1a_lineEdit.text()
             config.write()
@@ -454,7 +454,7 @@ class MyQtApp(QtWidgets.QMainWindow, mainV12.Ui_MainWindow):
         np['filter_opt'] = self.Step1c_tableWidget.item(12, 0).text()
         mp['vi_change_thresh'] = self.Step1c_tableWidget.item(13, 0).text()
         mp['run_thresh'] = self.Step1c_tableWidget.item(14, 0).text() 
-        np['dist_date_pos'] = self.Step1c_tableWidget.item(15, 0).text() 
+        mp['dist_date_pos'] = self.Step1c_tableWidget.item(15, 0).text() 
         config.write()  # save the new configuration in the file.
         # 
         self.Step1b_lineEdit.setText(fileName) # update the filename
@@ -1034,7 +1034,7 @@ class MyQtApp(QtWidgets.QMainWindow, mainV12.Ui_MainWindow):
         if self.plot3.isChecked() == True or self.save3.isChecked() == True:
             title = 'Disturbance Date'
             label = 'Year of disturbance'
-            nita.MI_distDate(option=cp['dist_date_pos'], plot=self.plot3.isChecked(), save=self.save3.isChecked(), fn='distdate.tif', title = title, label=label)
+            nita.MI_distDate(option=config['MetricsParameters']['dist_date_pos'], plot=self.plot3.isChecked(), save=self.save3.isChecked(), fn='distdate.tif', title = title, label=label)
             plt.figure(title).canvas.mpl_connect('button_press_event', self.onclick)
         if self.plot4.isChecked() == True or self.save4.isChecked() == True:
             title = 'Disturbance Duration'
