@@ -57,5 +57,5 @@ Unfortunately, at the moment, there is no universal, out-of-the-box Docker way t
 ### Mac
 1. Copy all files from **/installation/source/macos** to the project root folder.
 2. Run `source install_mac.sh`.
-3. Run `python pynita_gui_main.py
+3. Run `python pynita_gui_main.py`.
 4. To build a standalone executable, run `source build_release_mac.sh`
