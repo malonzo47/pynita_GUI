@@ -2309,6 +2309,29 @@
              </item>
              <item row="0" column="0">
               <layout class="QGridLayout" name="gridLayout_51">
+               <item row="0" column="1">
+                <widget class="QLabel" name="label_45">
+                 <property name="text">
+                  <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; color:#0f80ff;&quot;&gt;Years:&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="0" column="0">
+                <spacer name="horizontalSpacer_53">
+                 <property name="orientation">
+                  <enum>Qt::Horizontal</enum>
+                 </property>
+                 <property name="sizeType">
+                  <enum>QSizePolicy::Fixed</enum>
+                 </property>
+                 <property name="sizeHint" stdset="0">
+                  <size>
+                   <width>10</width>
+                   <height>20</height>
+                  </size>
+                 </property>
+                </spacer>
+               </item>
                <item row="0" column="2">
                 <widget class="QLineEdit" name="Step4_RecoveryCMPYears">
                  <property name="sizePolicy">
@@ -2316,6 +2339,12 @@
                    <horstretch>0</horstretch>
                    <verstretch>0</verstretch>
                   </sizepolicy>
+                 </property>
+                 <property name="maximumSize">
+                  <size>
+                   <width>41</width>
+                   <height>16777215</height>
+                  </size>
                  </property>
                  <property name="font">
                   <font>
@@ -2336,13 +2365,13 @@
                  </property>
                 </widget>
                </item>
-               <item row="0" column="0">
-                <spacer name="horizontalSpacer_53">
+               <item row="0" column="3">
+                <spacer name="horizontalSpacer_56">
                  <property name="orientation">
                   <enum>Qt::Horizontal</enum>
                  </property>
                  <property name="sizeType">
-                  <enum>QSizePolicy::Fixed</enum>
+                  <enum>QSizePolicy::Expanding</enum>
                  </property>
                  <property name="sizeHint" stdset="0">
                   <size>
@@ -2351,13 +2380,6 @@
                   </size>
                  </property>
                 </spacer>
-               </item>
-               <item row="0" column="1">
-                <widget class="QLabel" name="label_45">
-                 <property name="text">
-                  <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; color:#0f80ff;&quot;&gt;Years:&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-                 </property>
-                </widget>
                </item>
               </layout>
              </item>
@@ -2912,22 +2934,6 @@
                  </property>
                 </widget>
                </item>
-               <item row="0" column="0">
-                <spacer name="horizontalSpacer_51">
-                 <property name="orientation">
-                  <enum>Qt::Horizontal</enum>
-                 </property>
-                 <property name="sizeType">
-                  <enum>QSizePolicy::Fixed</enum>
-                 </property>
-                 <property name="sizeHint" stdset="0">
-                  <size>
-                   <width>13</width>
-                   <height>20</height>
-                  </size>
-                 </property>
-                </spacer>
-               </item>
                <item row="0" column="2">
                 <widget class="QLineEdit" name="Step4_RecoveryYears">
                  <property name="sizePolicy">
@@ -2935,6 +2941,12 @@
                    <horstretch>0</horstretch>
                    <verstretch>0</verstretch>
                   </sizepolicy>
+                 </property>
+                 <property name="maximumSize">
+                  <size>
+                   <width>41</width>
+                   <height>16777215</height>
+                  </size>
                  </property>
                  <property name="font">
                   <font>
@@ -2947,6 +2959,9 @@
                  <property name="toolTipDuration">
                   <number>-1</number>
                  </property>
+                 <property name="text">
+                  <string/>
+                 </property>
                  <property name="frame">
                   <bool>true</bool>
                  </property>
@@ -2954,6 +2969,38 @@
                   <string/>
                  </property>
                 </widget>
+               </item>
+               <item row="0" column="0">
+                <spacer name="horizontalSpacer_51">
+                 <property name="orientation">
+                  <enum>Qt::Horizontal</enum>
+                 </property>
+                 <property name="sizeType">
+                  <enum>QSizePolicy::Fixed</enum>
+                 </property>
+                 <property name="sizeHint" stdset="0">
+                  <size>
+                   <width>10</width>
+                   <height>20</height>
+                  </size>
+                 </property>
+                </spacer>
+               </item>
+               <item row="0" column="3">
+                <spacer name="horizontalSpacer_55">
+                 <property name="orientation">
+                  <enum>Qt::Horizontal</enum>
+                 </property>
+                 <property name="sizeType">
+                  <enum>QSizePolicy::Expanding</enum>
+                 </property>
+                 <property name="sizeHint" stdset="0">
+                  <size>
+                   <width>13</width>
+                   <height>20</height>
+                  </size>
+                 </property>
+                </spacer>
                </item>
               </layout>
              </item>
