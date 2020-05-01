@@ -568,7 +568,7 @@ class MyQtApp(QtWidgets.QMainWindow, mainV12.Ui_MainWindow):
                     QtWidgets.QMessageBox.about(self, 'text', str(e))
                 # Plot for selected OBJECTIDs
                 try:
-                    nita.runPts([int(item) for item in obj_ids], plot=True, max_plot=50, showdata='fit', colorbar=False, plot_title=True)
+                    nita.runPts([int(item) for item in obj_ids], plot=True, max_plot=50, showdata='fit', colorbar=True, plot_title=True)
                 except Exception as e:
                     QtWidgets.QMessageBox.about(self, 'text', str(e))
             # Else allow for drawing the trajectories, for the given points.

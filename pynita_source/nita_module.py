@@ -211,8 +211,12 @@ class nitaObj:
                     title = ''.join([str(item)+' ' for item in list(info_line.values.flatten())])
                 else:
                     title = ''
-                    
-                nf.viewNITA(px, date_vec, doy_vec, results_dic, showdata=showdata, colorbar=colorbar, title = title, fig=fig, ax=ax.flatten()[i])               
+                
+                if i == 0: # we draw the colorbar only once
+                    draw_colorbar = True
+                else:
+                    draw_colorbar = False
+                nf.viewNITA(px, date_vec, doy_vec, results_dic, showdata=showdata, colorbar=draw_colorbar, title = title, fig=fig, ax=ax.flatten()[i])               
         if plot:
             plt.show()
         if self.log:
