@@ -11,6 +11,7 @@ Copyright (c)
 import numpy as np 
 from scipy import ndimage
 import matplotlib.pyplot as plt
+import matplotlib.ticker as ticker
 
 def computMetrics_wrapper(tuple_input_args):
     results_dic, vi_change_thresh, run_thresh, time_step = tuple_input_args
@@ -234,7 +235,7 @@ def stretchMI(vals_1d, low_high=[2, 98]):
 
 def plotMI(MI_2d, title, label):
     mappable = plt.matshow(MI_2d,fignum=title, extent=[0, MI_2d.shape[1], MI_2d.shape[0], 0])
-    plt.colorbar(mappable, label=label)
+    plt.colorbar(mappable, label=label, format=ticker.FuncFormatter(lambda x, pos:'%d%d'%(x//1000,np.mod(x,1000)/1000*365)))
     plt.suptitle(title)
     plt.tight_layout()
 
