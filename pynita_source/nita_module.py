@@ -600,7 +600,7 @@ class nitaObj:
         vals_2d_adj = mf.stretchMI(vals_2d)
         
         if plot: 
-            mf.plotMI(vals_2d_adj, title, label)
+            mf.plotMI_date(vals_2d_adj, title, label)
         
         if save:
             dw.saveMI(vals_2d, self.stack_prj, self.stack_geotransform,
@@ -875,7 +875,7 @@ class nitaObj:
         vals_2d_adj = mf.stretchMI(vals_2d)
         
         if plot: 
-            mf.plotMI(vals_2d_adj, title, label)
+            mf.plotMI_float(vals_2d_adj, title, label)
         
         if save:
             dw.saveMI(vals_2d, self.stack_prj, self.stack_geotransform,

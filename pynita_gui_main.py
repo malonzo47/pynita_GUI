@@ -996,118 +996,122 @@ class MyQtApp(QtWidgets.QMainWindow, mainV12.Ui_MainWindow):
         Check which metric image is selected for plot or save, and show/save accordingly.
         :return:
         '''
-        name = self.Step1b_lineEdit.text()
-        if name:
-            config = ConfigObj(name)
-            cp = config['Project']
-            outfile = os.path.join(cp['OutputFolder'],cp['ProjectName'], cp['ProjectName']+'_metadata'+'.ini')
-            shutil.copy(name, outfile)
-        #
-        # Checks which buttons are selected, and plots/saves accordingly.
-        if self.plot10.isChecked() == True or self.save10.isChecked() == True:
-            valChange_date1 = self.Step4_ValueChange_Date1.text()
-            valChange_date2 = self.Step4_ValueChange_Date2.text()
-            title = 'Value Change -'+valChange_date1+' to '+valChange_date2
-            label = 'VI Units'
-            if valChange_date1 and valChange_date2:
-                filename_plot = 'valuechange2_'+str(valChange_date1)+'_'+str(valChange_date2)+'.tif'
-                nita.MI_valueChange(start_date=int(valChange_date1), end_date=int(valChange_date2), option='diff', plot=self.plot10.isChecked(),
-                                    save=self.save10.isChecked(), fn=filename_plot, title = title, label=label)
-                plt.figure(title).canvas.mpl_connect('button_press_event', self.onclick)
-            else:
-                QtWidgets.QMessageBox.about(self, 'text','Error!..10)Specify Date Range')            
-        if self.plot11.isChecked() == True or self.save11.isChecked() == True:
-            spec_date = self.Step4_DateValue.text()#2005000
-            if spec_date:
-                title = 'Date Value - '+spec_date
+        try:
+            name = self.Step1b_lineEdit.text()
+            if name:
+                config = ConfigObj(name)
+                cp = config['Project']
+                outfile = os.path.join(cp['OutputFolder'],cp['ProjectName'], cp['ProjectName']+'_metadata'+'.ini')
+                shutil.copy(name, outfile)
+            #
+            # Checks which buttons are selected, and plots/saves accordingly.
+            if self.plot10.isChecked() == True or self.save10.isChecked() == True:
+                valChange_date1 = self.Step4_ValueChange_Date1.text()
+                valChange_date2 = self.Step4_ValueChange_Date2.text()
+                title = 'Value Change -'+valChange_date1+' to '+valChange_date2
                 label = 'VI Units'
-                filename_plot = 'datevalue_'+str(spec_date)+'.tif'
-                nita.MI_dateValue(int(spec_date), plot=self.plot11.isChecked(), save=self.save11.isChecked(), fn=filename_plot, title = title, label=label)
+                if valChange_date1 and valChange_date2:
+                    filename_plot = 'valuechange2_'+str(valChange_date1)+'_'+str(valChange_date2)+'.tif'
+                    nita.MI_valueChange(start_date=int(valChange_date1), end_date=int(valChange_date2), option='diff', plot=self.plot10.isChecked(),
+                                        save=self.save10.isChecked(), fn=filename_plot, title = title, label=label)
+                    plt.figure(title).canvas.mpl_connect('button_press_event', self.onclick)
+                else:
+                    QtWidgets.QMessageBox.about(self, 'text','Error!..10)Specify Date Range')            
+            if self.plot11.isChecked() == True or self.save11.isChecked() == True:
+                spec_date = self.Step4_DateValue.text()#2005000
+                if spec_date:
+                    title = 'Date Value - '+spec_date
+                    label = 'VI Units'
+                    filename_plot = 'datevalue_'+str(spec_date)+'.tif'
+                    nita.MI_dateValue(int(spec_date), plot=self.plot11.isChecked(), save=self.save11.isChecked(), fn=filename_plot, title = title, label=label)
+                    plt.figure(title).canvas.mpl_connect('button_press_event', self.onclick)
+                else:
+                    QtWidgets.QMessageBox.about(self,'text','Error!..11)Specify Date')   
+            if self.plot2.isChecked() == True or self.save2.isChecked() == True:
+                title = 'Complexity'
+                label = 'Low < -- Complexity -- > High'
+                nita.MI_complexity(plot=self.plot2.isChecked(), save=self.save2.isChecked(), fn='complexity.tif', title = title, label=label)
                 plt.figure(title).canvas.mpl_connect('button_press_event', self.onclick)
-            else:
-                QtWidgets.QMessageBox.about(self,'text','Error!..11)Specify Date')   
-        if self.plot2.isChecked() == True or self.save2.isChecked() == True:
-            title = 'Complexity'
-            label = 'Low < -- Complexity -- > High'
-            nita.MI_complexity(plot=self.plot2.isChecked(), save=self.save2.isChecked(), fn='complexity.tif', title = title, label=label)
-            plt.figure(title).canvas.mpl_connect('button_press_event', self.onclick)
-        if self.plot3.isChecked() == True or self.save3.isChecked() == True:
-            title = 'Disturbance Date'
-            label = 'Year of disturbance'
-            nita.MI_distDate(option=config['MetricsParameters']['dist_date_pos'], plot=self.plot3.isChecked(), save=self.save3.isChecked(), fn='distdate.tif', title = title, label=label)
-            plt.figure(title).canvas.mpl_connect('button_press_event', self.onclick)
-        if self.plot4.isChecked() == True or self.save4.isChecked() == True:
-            title = 'Disturbance Duration'
-            label = 'Number of days'
-            nita.MI_distDuration(plot=self.plot4.isChecked(), save=self.save4.isChecked(), fn='distduration.tif', title = title, label=label)                            
-            plt.figure(title).canvas.mpl_connect('button_press_event', self.onclick)
-        if self.plot5.isChecked() == True or self.save5.isChecked() == True:   
-            title = 'Disturbance Magnitude'
-            label = 'VI Units'
-            nita.MI_distMag(plot=self.plot5.isChecked(), save=self.save5.isChecked(), fn='distMag.tif', title = title, label=label)    
-            plt.figure(title).canvas.mpl_connect('button_press_event', self.onclick)                       
-        if self.plot6.isChecked() == True or self.save6.isChecked() == True:
-            title = 'Disturbance Slope'
-            label = 'Slope (degrees)'
-            nita.MI_distSlope(plot=self.plot6.isChecked(), save=self.save6.isChecked(), fn='distSlope.tif', title = title, label=label)
-            plt.figure(title).canvas.mpl_connect('button_press_event', self.onclick)
-        if self.plot7.isChecked() == True or self.save7.isChecked() == True:
-            title = 'Post-Disturbance Slope'
-            label = 'Slope (degrees)'
-            nita.MI_postDistSlope(plot=self.plot7.isChecked(), save=self.save7.isChecked(), fn='postdistslope.tif', title = title, label=label)
-            plt.figure(title).canvas.mpl_connect('button_press_event', self.onclick)                             
-        if self.plot8.isChecked() == True or self.save8.isChecked() == True:
-            title = 'Post-Disturbance Magnitude'
-            label = 'VI Units'
-            nita.MI_postDistMag(plot=self.plot8.isChecked(), save=self.save8.isChecked(), fn='postdistmag.tif', title = title, label=label)
-            plt.figure(title).canvas.mpl_connect('button_press_event', self.onclick)
-        if self.plot9.isChecked() == True or self.save9.isChecked() == True:
-            title = 'Value Change - Entire time period'
-            label = 'VI Units'
-            nita.MI_valueChange(start_date=-9999, end_date=9999, option='diff', plot=self.plot9.isChecked(), 
-                                save=self.save9.isChecked(), fn='valueChangeTotal.tif', title = title, label=label)
-            plt.figure(title).canvas.mpl_connect('button_press_event', self.onclick)
-        if self.plot12.isChecked() == True or self.save12.isChecked() == True:
-            label = 'VI Units'
-            years_str = self.Step4_RecoveryYears.text()
-            splits = [x.strip() for x in years_str.split(',')]
-            years = [int(x) for x in splits if x != '']
-            for yrs in years:
-                title = 'Recovery %d'%yrs
-                nita.MI_recovery(yrs, option='diff', plot=self.plot12.isChecked(), save=self.save12.isChecked(), fn='recovery.tif', title = title, label=label)
-            plt.figure(title).canvas.mpl_connect('button_press_event', self.onclick)                          
-        if self.plot13.isChecked() == True or self.save13.isChecked() == True:
-            label = 'VI Units'
-            years_str = self.Step4_RecoveryCMPYears.text()
-            splits = [x.strip() for x in years_str.split(',')]
-            years = [int(x) for x in splits if x != '']
-            for yrs in years:
-                title = 'RecoverCmp %d'%yrs
-                nita.MI_recoveryCmp(yrs, plot=self.plot13.isChecked(), save=self.save13.isChecked(), fn='recoverycmp.tif', title = title, label=label)                            
-        if self.plot14.isChecked() == True or self.save14.isChecked() == True:
-            title = 'Linear Error'
-            label = 'Mean Absolute Error'
-            nita.MI_linearError(plot=self.plot14.isChecked(), save=self.save14.isChecked(), fn='linerror.tif', title = title, label=label)
-            plt.figure(title).canvas.mpl_connect('button_press_event', self.onclick)
-        if self.plot15.isChecked() == True or self.save15.isChecked() == True:
-            title = 'Noise'
-            label = 'Forward Finite Difference'
-            nita.MI_noise(plot=self.plot15.isChecked(), save=self.save15.isChecked(), fn='noise.tif', title = title, label=label)
-            plt.figure(title).canvas.mpl_connect('button_press_event', self.onclick)
-        if self.plot16.isChecked() == True or self.save16.isChecked() == True:
-            title = 'Bailcut'
-            label = 'Noise Normalized Linear Error'
-            nita.MI_bailcut(plot=self.plot16.isChecked(), save=self.save16.isChecked(), fn='bailcut.tif', title = title, label=label)
-            plt.figure(title).canvas.mpl_connect('button_press_event', self.onclick)
-        # Check if any of the plot buttons is selected and display the figures for all the radio buttons pressed.
-        plot_flag = False
-        for i in range(2, 17):
-            if eval('self.plot'+str(i)+'.isChecked()')==True:
-                plot_flag = True
-                break
-        if plot_flag:
-            plt.show()
-
+            if self.plot3.isChecked() == True or self.save3.isChecked() == True:
+                title = 'Disturbance Date'
+                label = 'Year of disturbance'
+                nita.MI_distDate(option=config['MetricsParameters']['dist_date_pos'], plot=self.plot3.isChecked(), save=self.save3.isChecked(), fn='distdate.tif', title = title, label=label)
+                plt.figure(title).canvas.mpl_connect('button_press_event', self.onclick)
+            if self.plot4.isChecked() == True or self.save4.isChecked() == True:
+                title = 'Disturbance Duration'
+                label = 'Number of days'
+                nita.MI_distDuration(plot=self.plot4.isChecked(), save=self.save4.isChecked(), fn='distduration.tif', title = title, label=label)                            
+                plt.figure(title).canvas.mpl_connect('button_press_event', self.onclick)
+            if self.plot5.isChecked() == True or self.save5.isChecked() == True:   
+                title = 'Disturbance Magnitude'
+                label = 'VI Units'
+                nita.MI_distMag(plot=self.plot5.isChecked(), save=self.save5.isChecked(), fn='distMag.tif', title = title, label=label)    
+                plt.figure(title).canvas.mpl_connect('button_press_event', self.onclick)                       
+            if self.plot6.isChecked() == True or self.save6.isChecked() == True:
+                title = 'Disturbance Slope'
+                label = 'Slope (degrees)'
+                nita.MI_distSlope(plot=self.plot6.isChecked(), save=self.save6.isChecked(), fn='distSlope.tif', title = title, label=label)
+                plt.figure(title).canvas.mpl_connect('button_press_event', self.onclick)
+            if self.plot7.isChecked() == True or self.save7.isChecked() == True:
+                title = 'Post-Disturbance Slope'
+                label = 'Slope (degrees)'
+                nita.MI_postDistSlope(plot=self.plot7.isChecked(), save=self.save7.isChecked(), fn='postdistslope.tif', title = title, label=label)
+                plt.figure(title).canvas.mpl_connect('button_press_event', self.onclick)                             
+            if self.plot8.isChecked() == True or self.save8.isChecked() == True:
+                title = 'Post-Disturbance Magnitude'
+                label = 'VI Units'
+                nita.MI_postDistMag(plot=self.plot8.isChecked(), save=self.save8.isChecked(), fn='postdistmag.tif', title = title, label=label)
+                plt.figure(title).canvas.mpl_connect('button_press_event', self.onclick)
+            if self.plot9.isChecked() == True or self.save9.isChecked() == True:
+                title = 'Value Change - Entire time period'
+                label = 'VI Units'
+                nita.MI_valueChange(start_date=-9999, end_date=9999, option='diff', plot=self.plot9.isChecked(), 
+                                    save=self.save9.isChecked(), fn='valueChangeTotal.tif', title = title, label=label)
+                plt.figure(title).canvas.mpl_connect('button_press_event', self.onclick)
+            if self.plot12.isChecked() == True or self.save12.isChecked() == True:
+                label = 'VI Units'
+                years_str = self.Step4_RecoveryYears.text()
+                splits = [x.strip() for x in years_str.split(',')]
+                years = [int(x) for x in splits if x != '']
+                for yrs in years:
+                    title = 'Recovery %d'%yrs
+                    nita.MI_recovery(yrs, option='diff', plot=self.plot12.isChecked(), save=self.save12.isChecked(), fn='recovery.tif', title = title, label=label)
+                plt.figure(title).canvas.mpl_connect('button_press_event', self.onclick)                          
+            if self.plot13.isChecked() == True or self.save13.isChecked() == True:
+                label = 'VI Units'
+                years_str = self.Step4_RecoveryCMPYears.text()
+                splits = [x.strip() for x in years_str.split(',')]
+                years = [int(x) for x in splits if x != '']
+                for yrs in years:
+                    title = 'RecoverCmp %d'%yrs
+                    nita.MI_recoveryCmp(yrs, plot=self.plot13.isChecked(), save=self.save13.isChecked(), fn='recoverycmp.tif', title = title, label=label)                            
+            if self.plot14.isChecked() == True or self.save14.isChecked() == True:
+                title = 'Linear Error'
+                label = 'Mean Absolute Error'
+                nita.MI_linearError(plot=self.plot14.isChecked(), save=self.save14.isChecked(), fn='linerror.tif', title = title, label=label)
+                plt.figure(title).canvas.mpl_connect('button_press_event', self.onclick)
+            if self.plot15.isChecked() == True or self.save15.isChecked() == True:
+                title = 'Noise'
+                label = 'Forward Finite Difference'
+                nita.MI_noise(plot=self.plot15.isChecked(), save=self.save15.isChecked(), fn='noise.tif', title = title, label=label)
+                plt.figure(title).canvas.mpl_connect('button_press_event', self.onclick)
+            if self.plot16.isChecked() == True or self.save16.isChecked() == True:
+                title = 'Bailcut'
+                label = 'Noise Normalized Linear Error'
+                nita.MI_bailcut(plot=self.plot16.isChecked(), save=self.save16.isChecked(), fn='bailcut.tif', title = title, label=label)
+                plt.figure(title).canvas.mpl_connect('button_press_event', self.onclick)
+            # Check if any of the plot buttons is selected and display the figures for all the radio buttons pressed.
+            plot_flag = False
+            for i in range(2, 17):
+                if eval('self.plot'+str(i)+'.isChecked()')==True:
+                    plot_flag = True
+                    break
+            if plot_flag:
+                plt.show()
+        except Exception as ex:
+            msgbox = QMessageBox()
+            msgbox.setText(str(ex))
+            msgbox.exec()
 
 def toggle_selector(event):
     '''

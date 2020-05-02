@@ -235,7 +235,21 @@ def stretchMI(vals_1d, low_high=[2, 98]):
 
 def plotMI(MI_2d, title, label):
     mappable = plt.matshow(MI_2d,fignum=title, extent=[0, MI_2d.shape[1], MI_2d.shape[0], 0])
+    plt.colorbar(mappable, label=label)
+    plt.suptitle(title)
+    plt.tight_layout()
+
+#%%
+def plotMI_date(MI_2d, title, label):
+    mappable = plt.matshow(MI_2d,fignum=title, extent=[0, MI_2d.shape[1], MI_2d.shape[0], 0])
     plt.colorbar(mappable, label=label, format=ticker.FuncFormatter(lambda x, pos:'%d%03d'%(x//1000,np.mod(x,1000)/1000*365)))
+    plt.suptitle(title)
+    plt.tight_layout()
+
+#%%
+def plotMI_float(MI_2d, title, label):
+    mappable = plt.matshow(MI_2d,fignum=title, extent=[0, MI_2d.shape[1], MI_2d.shape[0], 0])
+    plt.colorbar(mappable, label=label, format=ticker.FuncFormatter(lambda x, pos:'%.02f'%(x)))
     plt.suptitle(title)
     plt.tight_layout()
 
