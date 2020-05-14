@@ -48,14 +48,21 @@ Unfortunately, at the moment, there is no universal, out-of-the-box Docker way t
 **NOTE**: For this project, a dedicated docker image (pyqtgdal) was built and available at [DockerHub](https://hub.docker.com/repository/docker/freelancedev217/pyqtgdal).
 
 ## 2. Using PIP Without Docker
+First of all, make sure you have Python 3.7.x installed.
+You can download Python installer from the [official website](https://www.python.org/downloads/).
+To ensure processing big input data, you need to install 64-bit Python. Also, add Python to the system PATH on installation as follows.
+![Add Python to PATH](images/python_installation.png)
+
 ### Windows
 1. Copy all files from **/installation/source/windows** to the project root folder.
-2. Run `install_win.bat`.
+2. Run **as an administrator**  `install_win32.bat` or `install_win64.bat` depending on your Python architecture.
+You can check your Python architecture as follows.
+![Python Architecture](images/python_architecture.png)
+
 3. Run `python pynita_gui_main.py`.
-4. To build a standalone executable, run `build_release_win.bat`
+
 
 ### Mac
 1. Copy all files from **/installation/source/macos** to the project root folder.
 2. Run `source install_mac.sh`.
 3. Run `python pynita_gui_main.py`.
-4. To build a standalone executable, run `source build_release_mac.sh`
