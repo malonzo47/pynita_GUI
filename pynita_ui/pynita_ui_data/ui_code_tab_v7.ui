@@ -46,7 +46,7 @@
        <bool>false</bool>
       </property>
       <property name="currentIndex">
-       <number>0</number>
+       <number>1</number>
       </property>
       <property name="usesScrollButtons">
        <bool>false</bool>
@@ -489,7 +489,7 @@
               <number>30</number>
              </property>
              <property name="text">
-              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Step1c: Specify Control Parameters&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Step1c: Set Parameters (hover mouse over each for tips)&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
              </property>
              <property name="indent">
               <number>-1</number>
@@ -569,6 +569,9 @@
               <property name="text">
                <string>1. ProjectName</string>
               </property>
+              <property name="toolTip">
+               <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Set a name for your project. This will create a new folder within your Outputs folder to help keep you organized.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+              </property>
               <property name="font">
                <font>
                 <pointsize>14</pointsize>
@@ -579,6 +582,9 @@
              <row>
               <property name="text">
                <string>2. user_vi</string>
+              </property>
+              <property name="toolTip">
+               <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Set your spectral index. Only nbr and ndvi currently available.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
               </property>
               <property name="font">
                <font>
@@ -591,6 +597,9 @@
               <property name="text">
                <string>3. value_limits</string>
               </property>
+              <property name="toolTip">
+               <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Limit the range of values allowed in your spectral index (e.g., &amp;quot;0,1&amp;quot; is reasonable for terrestrial NDVI)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+              </property>
               <property name="font">
                <font>
                 <pointsize>14</pointsize>
@@ -601,6 +610,9 @@
              <row>
               <property name="text">
                <string>4. doy_limits</string>
+              </property>
+              <property name="toolTip">
+               <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;DOY ranges to allow. Can be all (&amp;quot;1,366&amp;quot;), some (e.g., &amp;quot;200,314&amp;quot;) or multiple (e.g., to span year &amp;quot;330,366,1,50&amp;quot;)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
               </property>
               <property name="font">
                <font>
@@ -613,6 +625,9 @@
               <property name="text">
                <string>5. date_limits</string>
               </property>
+              <property name="toolTip">
+               <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Only use desired image date range (e.g., &amp;quot;1999000,9999&amp;quot; would be 1999 to last available)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+              </property>
               <property name="font">
                <font>
                 <pointsize>14</pointsize>
@@ -623,6 +638,9 @@
              <row>
               <property name="text">
                <string>6. bail_thresh</string>
+              </property>
+              <property name="toolTip">
+               <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Set very high (e.g., &amp;quot;10&amp;quot;) to always &amp;quot;bail out&amp;quot; of pyNITA build such that trajectory is only a single-line fit. Set very low (e.g., &amp;quot;0.1&amp;quot;) to always run pyNITA on every point. You can decide on an optimal number by running first using &amp;quot;10&amp;quot; and then analyzing the bailcut image result. Higher numbers generally assume noisier images.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
               </property>
               <property name="font">
                <font>
@@ -635,6 +653,9 @@
               <property name="text">
                <string>7. noise_thresh</string>
               </property>
+              <property name="toolTip">
+               <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Deprecated. Do not change.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+              </property>
               <property name="font">
                <font>
                 <pointsize>14</pointsize>
@@ -645,6 +666,9 @@
              <row>
               <property name="text">
                <string>8. penalty</string>
+              </property>
+              <property name="toolTip">
+               <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Integer between 1 and 10. Penalizes model complexity so higher number results in lower number of segments in pixel trajectory.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
               </property>
               <property name="font">
                <font>
@@ -657,6 +681,9 @@
               <property name="text">
                <string>9. filter_dist</string>
               </property>
+              <property name="toolTip">
+               <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Integer values for smoothing filter. Lower (e.g., &amp;quot;3&amp;quot;) for high quality data and desire to track acute disturbances and higher (e.g., &amp;quot;7&amp;quot;) for noisier data, more for capturing broader trends or large disturbances.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+              </property>
               <property name="font">
                <font>
                 <pointsize>14</pointsize>
@@ -667,6 +694,9 @@
              <row>
               <property name="text">
                <string>10. pct</string>
+              </property>
+              <property name="toolTip">
+               <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Percent value for quantile fit. Value like &amp;quot;90&amp;quot; optimizes fit for 90th quantile (good for NDVI with atmospheric issues). Value like &amp;quot;50&amp;quot; centers fit, possibly more appropriate for NBR.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
               </property>
               <property name="font">
                <font>
@@ -679,6 +709,9 @@
               <property name="text">
                <string>11. max_complex</string>
               </property>
+              <property name="toolTip">
+               <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Maximum complexity of fit in terms of number of segments. Higher numbers like &amp;quot;12&amp;quot; can nicely characterize multiple changes for good datasets. Lower numbers like &amp;quot;7&amp;quot; maybe more appropriate for noisy datasets to avoid fitting noise.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+              </property>
               <property name="font">
                <font>
                 <pointsize>14</pointsize>
@@ -689,6 +722,9 @@
              <row>
               <property name="text">
                <string>12. min_complex</string>
+              </property>
+              <property name="toolTip">
+               <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Minimum number segments that must remain after segment removal via Bayesian Information Criterion. Using &amp;quot;1&amp;quot; is best for exploratory analysis. Higher numbers (e.g., &amp;quot;3&amp;quot;) can help to pick up known disturbances.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
               </property>
               <property name="font">
                <font>
@@ -701,6 +737,9 @@
               <property name="text">
                <string>13. filter_opt</string>
               </property>
+              <property name="toolTip">
+               <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Which smoothing filter to use. Only current options are &amp;quot;movcv&amp;quot; (moving coefficient of variation) and &amp;quot;sgolay&amp;quot; (Savitsky-Golay). The latter can be nice for picking up acute disturbances.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+              </property>
               <property name="font">
                <font>
                 <pointsize>14</pointsize>
@@ -711,6 +750,9 @@
              <row>
               <property name="text">
                <string>14. vi_change_thresh</string>
+              </property>
+              <property name="toolTip">
+               <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;How much must a spectral index (or VI = vegetation index) change to be considered a disturbance? Could be a number like &amp;quot;-0.3&amp;quot; to indicate a 0.3 decline in NDVI or NBR.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
               </property>
               <property name="font">
                <font>
@@ -723,6 +765,9 @@
               <property name="text">
                <string>15. run_thesh</string>
               </property>
+              <property name="toolTip">
+               <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;How quickly must the spectral index value change to be considered disturbance rather than decline? This is entered as an integer number of days. For landsat data you may want to allow for a few years given data gaps (e.g., &amp;quot;1000&amp;quot; days is about 3 years).&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+              </property>
               <property name="font">
                <font>
                 <pointsize>14</pointsize>
@@ -733,6 +778,9 @@
              <row>
               <property name="text">
                <string>16. dist_date position</string>
+              </property>
+              <property name="toolTip">
+               <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Should the disturbance date be evaluated based on the &amp;quot;beginning&amp;quot;, &amp;quot;middle&amp;quot; (average), or &amp;quot;end&amp;quot; of the disturbance segment. Default of &amp;quot;middle&amp;quot; generally ok.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
               </property>
               <property name="font">
                <font>
