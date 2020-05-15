@@ -54,15 +54,14 @@ To ensure processing big input data, you need to install 64-bit Python. Also, ad
 ![Add Python to PATH](images/python_installation.png)
 
 ### Windows
-1. Copy all files from **/installation/source/windows** to the project root folder.
+1. Go to subdirectory **/installation/source/windows**.
 2. Run **as an administrator**  `install_win32.bat` or `install_win64.bat` depending on your Python architecture.
 You can check your Python architecture as follows.
 ![Python Architecture](images/python_architecture.png)
-
-3. Run `python pynita_gui_main.py`.
+3. Go back to the root directory that contains `pynita_gui_main.py` and run `python pynita_gui_main.py`.
 
 
 ### Mac
-1. Copy all files from **/installation/source/macos** to the project root folder.
+1. Go to subdirectory **/installation/source/macos**.
 2. Run `source install_mac.sh`.
-3. Run `python pynita_gui_main.py`.
+3. Go back to the root directory and run `python pynita_gui_main.py`.
