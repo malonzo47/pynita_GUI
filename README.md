@@ -1,5 +1,7 @@
-# pynita_GUI
- **pynita_GUI** is the python implementation of Noise Insensitive Trajectory Algorithm (NITA). Please refer to the [Scientific Reports](https://www.nature.com/articles/srep35129) article for detailed description of NITA and its application. The below steps here will walk you through the installation procedure and package requirements necessary for pynita_GUI. 
+# pyNITA 
+ **pyNITA** is the python implementation of Noise Insensitive Trajectory Algorithm (NITA). It can be run from a user-friendly GUI (graphical user interface) or from control scripts.
+ 
+ Please refer to the [Scientific Reports](https://www.nature.com/articles/srep35129) article for detailed description of NITA and its application. The below steps here will walk you through the installation procedure and package requirements necessary for pynita_GUI. 
 
  Binary releases are available and it is also possible to run from source.
  
@@ -12,16 +14,6 @@ The binary  of pynita_GUI for Windows and MacOS can be found in [Releases](https
 3. Demo dataset (point locations, an image stack) can be downloaded from the demo_dataset folder above (3 data files + user_config.ini).
 
 **NOTE**: The binary releases only work after GDAL installataion. If you do not have or have a different version of GDAL, please make sure to follow the below steps to install the appropriate version of GDAL.
-
-# Prerequisite: GDAL installation
-### Windows
-1. Download and install Microsoft Visual C++ Redistributable for Visual Studio 2017. 
-<https://aka.ms/vs/15/release/VC_redist.x86.exe>
-2. Download and install GDAL 3.0.4 Win32.
-Downloads can be found in <http://www.gisinternals.com/release.php> and follow the instructions from <https://sandbox.idre.ucla.edu/sandbox/tutorials/installing-gdal-for-windows>
-
-### Mac
-Run `brew install gdal` from terminal.
 
 # Running from source
 First of all, clone this repository using `git clone`.
