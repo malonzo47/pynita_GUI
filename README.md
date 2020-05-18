@@ -13,7 +13,7 @@ The binary  of pynita_GUI for Windows and MacOS can be found in [Releases](https
 2. Extract that file on your computer and double-click the .exe file to run
 3. Demo dataset (point locations, an image stack) can be downloaded from the demo_dataset folder above (3 data files + user_config.ini). Just click into the folders and click on each file's link to get a "download" button.
 
-#STOP HERE UNLESS YOU WANT TO DO FANCY PYTHON CODE THINGS
+# STOP HERE UNLESS YOU WANT TO DO FANCY PYTHON CODE THINGS
 
 # Running from source
 First of all, clone this repository using `git clone`.
