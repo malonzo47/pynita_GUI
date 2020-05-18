@@ -1,25 +1,20 @@
-# pynita_GUI
- **pynita_GUI** is the python implementation of Noise Insensitive Trajectory Algorithm (NITA). Please refer to the [Scientific Reports](https://www.nature.com/articles/srep35129) article for detailed description of NITA and its application. The below steps here will walk you through the installation procedure and package requirements necessary for pynita_GUI. 
+# pyNITA 
+ **pyNITA** is the python implementation of Noise Insensitive Trajectory Algorithm (NITA). It can be run from a user-friendly GUI (graphical user interface) or from control scripts. This software is for analysis of satellite imagery time series. One can establish pixel histories at every pixel at every available image date for Landsat imagery (and Sentinel-2 in beta). This can allow for mapping of phenomena such as disturbance (e.g., deforestation, fire), degradation (e.g., drought, charcoal harvest), and recovery.
+ 
+ Please refer to the [Scientific Reports](https://www.nature.com/articles/srep35129) article for detailed description of NITA and its application. The below steps here will walk you through the installation procedure and package requirements necessary for pynita_GUI. 
 
  Binary releases are available and it is also possible to run from source.
+ 
+ **If you don't know what any of this means, you should follow the "Binary distribution" instructions.**
 
 # Binary distribution (i.e., a simple, double-click executable file)
 The binary  of pynita_GUI for Windows and MacOS can be found in [Releases](https://github.com/malonzo47/pynita_GUI/releases).
 1. Click on the latest release and then choose the .zip file for your win/mac operating system.
 2. Extract that file on your computer and double-click the .exe file to run
-3. Demo dataset (point locations, an image stack) can be downloaded from the demo_dataset folder above (3 data files + user_config.ini).
+3. Demo dataset (point locations, an image stack) can be downloaded from the demo_dataset folder above (3 data files + user_config.ini). Just click into the folders and click on each file's link to get a "download" button.
 
-**NOTE**: The binary releases only work after GDAL installataion. If you do not have or have a different version of GDAL, please make sure to follow the below steps to install the appropriate version of GDAL.
 
-# Prerequisite: GDAL installation
-### Windows
-1. Download and install Microsoft Visual C++ Redistributable for Visual Studio 2017. 
-<https://aka.ms/vs/15/release/VC_redist.x86.exe>
-2. Download and install GDAL 3.0.4 Win32.
-Downloads can be found in <http://www.gisinternals.com/release.php> and follow the instructions from <https://sandbox.idre.ucla.edu/sandbox/tutorials/installing-gdal-for-windows>
-
-### Mac
-Run `brew install gdal` from terminal.
+# STOP HERE UNLESS YOU WANT TO DIG INTO PYTHON CODE
 
 # Running from source
 First of all, clone this repository using `git clone`.
@@ -54,15 +49,14 @@ To ensure processing big input data, you need to install 64-bit Python. Also, ad
 ![Add Python to PATH](images/python_installation.png)
 
 ### Windows
-1. Copy all files from **/installation/source/windows** to the project root folder.
+1. Go to subdirectory **/installation/source/windows**.
 2. Run **as an administrator**  `install_win32.bat` or `install_win64.bat` depending on your Python architecture.
 You can check your Python architecture as follows.
 ![Python Architecture](images/python_architecture.png)
-
-3. Run `python pynita_gui_main.py`.
+3. Go back to the root directory that contains `pynita_gui_main.py` and run `python pynita_gui_main.py`.
 
 
 ### Mac
-1. Copy all files from **/installation/source/macos** to the project root folder.
+1. Go to subdirectory **/installation/source/macos**.
 2. Run `source install_mac.sh`.
-3. Run `python pynita_gui_main.py`.
+3. Go back to the root directory and run `python pynita_gui_main.py`.

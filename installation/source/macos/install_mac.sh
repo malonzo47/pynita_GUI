@@ -1,8 +1,9 @@
 brew install python
 pip3 install virtualenv
-virtualenv venv
-source env/bin/activate
+virtualenv ../../../venv
+source ../../../venv/bin/activate
 pip install --upgrade pip
 pip install -r requirements_mac.txt
-cd pynita_source/nita_funs/distance_funs
+cd ../../../pynita_source/nita_funs/distance_funs
 python setup.py build_ext --inplace
+cd ../../../

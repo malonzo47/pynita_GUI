@@ -3,7 +3,7 @@
 block_cipher = None
 
 
-a = Analysis(['pynita_gui_main.py'],
+a = Analysis(['../../../pynita_gui_main.py'],
              binaries=[],
              datas=[],
              hiddenimports=['pkg_resources.py2_warn'],
