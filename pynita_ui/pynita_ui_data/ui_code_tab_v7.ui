@@ -46,7 +46,7 @@
        <bool>false</bool>
       </property>
       <property name="currentIndex">
-       <number>1</number>
+       <number>0</number>
       </property>
       <property name="usesScrollButtons">
        <bool>false</bool>
@@ -165,7 +165,7 @@
            <enum>QFrame::Raised</enum>
           </property>
           <property name="text">
-           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-size:24pt; font-weight:600; text-decoration: underline; color:#0f80ff;&quot;&gt;pyNITA&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-size:14pt;&quot;&gt;Welcome to pyNITA user interface(UI), a python implementation of Noise Insensitive Trajectory Algorithm (NITA). The pyNITA UI enables a step-by-step approach to parameterize NITA input parameters, hand draw phenological trajectories, optimize input parameters, and compute image stack metrics for time-series satellite remote sensing data. &lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-size:14pt; font-weight:600;&quot;&gt;Reference: &lt;/span&gt;&lt;span style=&quot; font-size:14pt;&quot;&gt;Scientific Reports &lt;/span&gt;&lt;a href=&quot;https://www.nature.com/articles/srep35129&quot;&gt;&lt;span style=&quot; font-size:14pt; text-decoration: underline; color:#0000ff;&quot;&gt;Article&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-size:14pt; font-weight:600;&quot;&gt;Source Code:&lt;/span&gt;&lt;span style=&quot; font-size:14pt;&quot;&gt; Available from GitHub, &lt;/span&gt;&lt;a href=&quot;https://github.com/pytoPN/pynita_GUI/tree/master/pynita_source&quot;&gt;&lt;span style=&quot; font-size:14pt; text-decoration: underline; color:#0000ff;&quot;&gt;Click here&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-size:24pt; font-weight:600; color:#1b1283;&quot;&gt;pyNITA&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-size:14pt;&quot;&gt;Welcome to the pyNITA user interface (UI), a python implementation of the Noise Insensitive Trajectory Algorithm (NITA). This UI enables a step-by-step approach to parameterize pyNITA input parameters, hand draw pixel trajectories, optimize input parameters, and compute image stack metrics for time-series satellite remote sensing data. &lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-size:14pt; font-weight:600;&quot;&gt;Reference: &lt;/span&gt;&lt;span style=&quot; font-size:14pt;&quot;&gt;Scientific Reports &lt;/span&gt;&lt;a href=&quot;https://www.nature.com/articles/srep35129&quot;&gt;&lt;span style=&quot; font-size:14pt; text-decoration: underline; color:#0000ff;&quot;&gt;Article&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-size:14pt; font-weight:600;&quot;&gt;Source Code:&lt;/span&gt;&lt;span style=&quot; font-size:14pt;&quot;&gt; Available from GitHub, &lt;/span&gt;&lt;a href=&quot;https://github.com/malonzo47/pynita_GUI&quot;&gt;&lt;span style=&quot; font-size:14pt; text-decoration: underline; color:#0000ff;&quot;&gt;Click here&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
           <property name="wordWrap">
            <bool>true</bool>
@@ -184,37 +184,14 @@
         <item row="2" column="0">
          <layout class="QHBoxLayout" name="horizontalLayout_11">
           <item>
-           <spacer name="horizontalSpacer_48">
-            <property name="orientation">
-             <enum>Qt::Horizontal</enum>
-            </property>
-            <property name="sizeHint" stdset="0">
-             <size>
-              <width>40</width>
-              <height>20</height>
-             </size>
-            </property>
-           </spacer>
-          </item>
-          <item>
            <widget class="QLabel" name="label_35">
             <property name="text">
-             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-family:'Arial'; font-size:11pt;&quot;&gt;© 2018-2019 American University. All Rights Reserved&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-family:'Arial'; font-size:12pt;&quot;&gt;© 2018-2020 American University. All Rights Reserved&lt;/span&gt;&lt;/p&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-family:'Arial'; font-size:12pt;&quot;&gt;This project was made possible through support from the National Socio-Environmental Synthesis Center (&lt;/span&gt;&lt;span style=&quot; font-family:'Arial'; font-size:12pt; font-weight:600;&quot;&gt;SESYNC&lt;/span&gt;&lt;span style=&quot; font-family:'Arial'; font-size:12pt;&quot;&gt;) in the form of funding for a collaborative, &amp;quot;Data Intensive Pursuit&amp;quot; in 2018.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+            </property>
+            <property name="wordWrap">
+             <bool>true</bool>
             </property>
            </widget>
-          </item>
-          <item>
-           <spacer name="horizontalSpacer_49">
-            <property name="orientation">
-             <enum>Qt::Horizontal</enum>
-            </property>
-            <property name="sizeHint" stdset="0">
-             <size>
-              <width>40</width>
-              <height>20</height>
-             </size>
-            </property>
-           </spacer>
           </item>
          </layout>
         </item>
@@ -954,11 +931,11 @@
              <attribute name="horizontalHeaderStretchLastSection">
               <bool>true</bool>
              </attribute>
-             <attribute name="verticalHeaderMinimumSectionSize">
-              <number>21</number>
-             </attribute>
              <attribute name="verticalHeaderDefaultSectionSize">
               <number>25</number>
+             </attribute>
+             <attribute name="verticalHeaderMinimumSectionSize">
+              <number>21</number>
              </attribute>
              <row>
               <property name="text">
