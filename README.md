@@ -2,6 +2,8 @@
  **pynita_GUI** is the python implementation of Noise Insensitive Trajectory Algorithm (NITA). Please refer to the [Scientific Reports](https://www.nature.com/articles/srep35129) article for detailed description of NITA and its application. The below steps here will walk you through the installation procedure and package requirements necessary for pynita_GUI. 
 
  Binary releases are available and it is also possible to run from source.
+ 
+ **If you don't know what any of this means, you should follow the "Binary distribution" instructions.**
 
 # Binary distribution (i.e., a simple, double-click executable file)
 The binary  of pynita_GUI for Windows and MacOS can be found in [Releases](https://github.com/malonzo47/pynita_GUI/releases).
