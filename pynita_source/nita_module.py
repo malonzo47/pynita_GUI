@@ -1,7 +1,7 @@
 """
 Created on Jun 4, 2018
 @author: Leyang Feng
-@email: feng@american.edu
+@email: alonzo@american.edu
 @Project: pynita
 License:  
 Copyright (c) 

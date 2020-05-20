@@ -355,12 +355,22 @@ def MI_recovery(metrics_dics, time_passed, option='diff'):
 #%%
 def MI_recoveryCmp(metrics_dics, time_passed):
     
+    '''
+    Calculate the fraction of VI recovery after a user-specified number of years following
+    the disturbance nadir. This funtion returns a 1-D vector of these fractions to be reshaped 
+    elsewhere. I don't honestly remember what "Cmp" means...
+    '''
+    
     vals_1d = []
     for metrics_dic in metrics_dics: 
         dist_coeff_before = metrics_dic['dist_coeff_before']
         start_date = metrics_dic['dist_date_nadir']
         end_date = start_date + time_passed*1000
+        #get spectral index value at specified date
         junk_output, end_date_val = dateValue(metrics_dic, end_date)
+        #calculate the VI value at the last date (user specified) divided 
+        #by the VI value before the disturbance to see what fraction of original
+        #value has been recovered by that time.
         val = end_date_val / dist_coeff_before
         vals_1d.append(val)
     vals_1d = np.array(vals_1d)
