@@ -50,7 +50,7 @@ To ensure processing big input data, you need to install 64-bit Python. Also, ad
 
 ### Windows
 1. Go to subdirectory **/installation/source/windows**.
-2. Run **as an administrator**  `install_win32.bat` or `install_win64.bat` depending on your Python architecture.
+2. Run CMD (command prompt) **as an administrator**  `install_win32.bat` or `install_win64.bat` depending on your Python architecture.
 You can check your Python architecture as follows.
 ![Python Architecture](images/python_architecture.png)
 3. Go back to the root directory that contains `pynita_gui_main.py` and run `python pynita_gui_main.py`.
