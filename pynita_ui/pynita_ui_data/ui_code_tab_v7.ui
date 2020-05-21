@@ -46,7 +46,7 @@
        <bool>false</bool>
       </property>
       <property name="currentIndex">
-       <number>0</number>
+       <number>1</number>
       </property>
       <property name="usesScrollButtons">
        <bool>false</bool>
@@ -786,7 +786,7 @@
         <item row="0" column="0">
          <widget class="QLabel" name="Step1_label_3">
           <property name="text">
-           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:14pt; font-weight:600; color:#0f80ff;&quot;&gt;Step1: Configure NITA Parameters&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:14pt; font-weight:600; color:#1b1283;&quot;&gt;Step1: Configure NITA Parameters&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
          </widget>
         </item>
@@ -1615,7 +1615,7 @@
         <item row="0" column="0">
          <widget class="QLabel" name="Step1_label_6">
           <property name="text">
-           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:14pt; font-weight:600; color:#0f80ff;&quot;&gt;Step2: NITA Parameter Optimization&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:14pt; font-weight:600; color:#1b1283;&quot;&gt;Step2: NITA Parameter Optimization&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
          </widget>
         </item>
@@ -1667,31 +1667,13 @@
              </property>
             </widget>
            </item>
-           <item row="1" column="0" colspan="2">
-            <widget class="QLabel" name="label_39">
-             <property name="text">
-              <string>Choose small subset for diagnostic purposes.</string>
+           <item row="6" column="1">
+            <widget class="QPushButton" name="Step3op_clearsubsetButton">
+             <property name="enabled">
+              <bool>false</bool>
              </property>
-            </widget>
-           </item>
-           <item row="2" column="0" colspan="2">
-            <widget class="QLabel" name="label_40">
              <property name="text">
-              <string>You will be presented with least cloudy image from</string>
-             </property>
-            </widget>
-           </item>
-           <item row="3" column="0">
-            <widget class="QLabel" name="label_42">
-             <property name="text">
-              <string>full time series.</string>
-             </property>
-            </widget>
-           </item>
-           <item row="4" column="0" colspan="2">
-            <widget class="QLabel" name="label_43">
-             <property name="text">
-              <string>Note: Subset outputs can be viewed but not saved.</string>
+              <string>Clear Subset</string>
              </property>
             </widget>
            </item>
@@ -1705,13 +1687,31 @@
              </property>
             </widget>
            </item>
-           <item row="6" column="1">
-            <widget class="QPushButton" name="Step3op_clearsubsetButton">
-             <property name="enabled">
-              <bool>false</bool>
-             </property>
+           <item row="4" column="0" colspan="2">
+            <widget class="QLabel" name="label_43">
              <property name="text">
-              <string>Clear Subset</string>
+              <string>Note: Subset outputs can be viewed but not saved.</string>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="0" colspan="2">
+            <widget class="QLabel" name="label_39">
+             <property name="text">
+              <string>Choose small subset for diagnostic purposes.</string>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="0" colspan="2">
+            <widget class="QLabel" name="label_40">
+             <property name="text">
+              <string>You will be presented with least cloudy image from full time series.</string>
+             </property>
+            </widget>
+           </item>
+           <item row="3" column="0">
+            <widget class="QLabel" name="label_42">
+             <property name="text">
+              <string>-</string>
              </property>
             </widget>
            </item>
@@ -1721,7 +1721,7 @@
         <item row="0" column="0">
          <widget class="QLabel" name="Step1_label_7">
           <property name="text">
-           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:14pt; font-weight:600; color:#0f80ff;&quot;&gt;Step3: Compute Image Stack Metrics&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:14pt; font-weight:600; color:#1b1283;&quot;&gt;Step3: Compute Image Stack Metrics&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
          </widget>
         </item>
@@ -2034,7 +2034,7 @@
         <item>
          <widget class="QLabel" name="Step1_label_8">
           <property name="text">
-           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:14pt; font-weight:600; color:#0f80ff;&quot;&gt;Step4: Image Stack Metric Outputs&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:14pt; font-weight:600; color:#1b1283;&quot;&gt;Step4: Image Stack Metric Outputs&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
          </widget>
         </item>
@@ -2519,7 +2519,7 @@
              <item row="0" column="0">
               <widget class="QLabel" name="label_20">
                <property name="text">
-                <string>8. Post-Dist Magnitude</string>
+                <string>8. Post-Disturbance Magnitude</string>
                </property>
               </widget>
              </item>
@@ -2726,7 +2726,7 @@
              <item row="0" column="0">
               <widget class="QLabel" name="label_19">
                <property name="text">
-                <string>7. Post-Dist Slope</string>
+                <string>7. Post-Disturbance Slope</string>
                </property>
               </widget>
              </item>
@@ -2795,7 +2795,7 @@
              <item row="0" column="0">
               <widget class="QLabel" name="label_13">
                <property name="text">
-                <string>5. Dist Magnitude</string>
+                <string>5. Disturbance Magnitude</string>
                </property>
               </widget>
              </item>
@@ -2917,7 +2917,7 @@
              <item row="1" column="0">
               <widget class="QLabel" name="label_29">
                <property name="text">
-                <string>13. Recovery CMP</string>
+                <string>13. Recovery Fraction</string>
                </property>
               </widget>
              </item>
@@ -3150,7 +3150,7 @@
              <item row="0" column="0">
               <widget class="QLabel" name="label_12">
                <property name="text">
-                <string>4. Dist Duration</string>
+                <string>4. Disturbance Duration</string>
                </property>
               </widget>
              </item>
@@ -3335,7 +3335,7 @@
              <item row="0" column="0">
               <widget class="QLabel" name="label_14">
                <property name="text">
-                <string>6. Dist Slope</string>
+                <string>6. Disturbance Slope</string>
                </property>
               </widget>
              </item>
@@ -3473,7 +3473,7 @@
              <item row="0" column="0">
               <widget class="QLabel" name="label_9">
                <property name="text">
-                <string>3. Dist Date</string>
+                <string>3. Disturbance Date</string>
                </property>
               </widget>
              </item>

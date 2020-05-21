@@ -1083,8 +1083,8 @@ class MyQtApp(QtWidgets.QMainWindow, mainV12.Ui_MainWindow):
                 splits = [x.strip() for x in years_str.split(',')]
                 years = [int(x) for x in splits if x != '']
                 for yrs in years:
-                    title = 'RecoverCmp %d'%yrs
-                    nita.MI_recoveryCmp(yrs, plot=self.plot13.isChecked(), save=self.save13.isChecked(), fn='recoverycmp.tif', title = title, label=label)                            
+                    title = 'RecoverFrac %d'%yrs
+                    nita.MI_recoveryCmp(yrs, plot=self.plot13.isChecked(), save=self.save13.isChecked(), fn='recoveryfrac.tif', title = title, label=label)                            
             if self.plot14.isChecked() == True or self.save14.isChecked() == True:
                 title = 'Linear Error'
                 label = 'Mean Absolute Error'
