@@ -11,7 +11,7 @@
 The binary  of pynita_GUI for Windows and MacOS can be found in [Releases](https://github.com/malonzo47/pynita_GUI/releases).
 1. Click on the latest release and then choose the .zip file for your win/mac operating system.
 2. Extract that file on your computer and double-click the .exe file to run
-3. Demo dataset (point locations, an image stack) can be downloaded from here: https://drive.google.com/file/d/1J8Q1VVfvevbJ5suLHDArOHbOpvu_SKN_/view?usp=sharing.
+3. Demo dataset (user config file, point locations, an image stack with image dates) can be downloaded from here: https://drive.google.com/file/d/1J8Q1VVfvevbJ5suLHDArOHbOpvu_SKN_/view?usp=sharing.
 
 
 # STOP HERE UNLESS YOU WANT TO DIG INTO PYTHON CODE
