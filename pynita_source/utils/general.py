@@ -9,6 +9,16 @@ Copyright (c)
 """
 import datetime 
 
+#allows user to enter date in multiple ways
+def try_parsing_date(text):
+    for fmt in ('%Y-%m-%d', '%Y.%m.%d', '%Y/%m/%d', '%Y%m%d', '%m/%d/%Y',
+                '%d/%m/%Y', '%m-%d-%Y', '%d-%m-%Y','%d.%m.%Y'):
+        try:
+            return datetime.datetime.strptime(text, fmt)
+        except ValueError:
+            pass
+    raise ValueError('no valid date format found')
+
 def SystemIndexBreaker(system_index_str):
     #options:
     #1. pass 'sat' identifier parameter into function
@@ -49,9 +59,25 @@ def SystemIndexBreaker(system_index_str):
         yyyy = yyyymmdd[0:4]
         #mm = yyyymmdd[4:6]
         #dd = yyyymmdd[6:8]
-
         dt = datetime.datetime.strptime(yyyymmdd,'%Y%m%d')
         doy = dt.timetuple().tm_yday
         date_dist = int(yyyy) * 1000 + round(1000 * doy/365)
             
     return sensor, pathrow, yyyymmdd, doy, date_dist
+
+
+#this function is called if the user has only loaded a csv with one column
+#containing dates (i.e., no system:index)
+def ConvertDateCol(yyyymmdd):
+    #options:
+    #1. pass 'sat' identifier parameter into function
+    #2. encode a new field in the EE csv output that included a satellite identifier
+    #3. parse existing field(s) to find discrete flag <-- let's try this one
+        
+        dt = try_parsing_date(yyyymmdd)
+        #dt = datetime.datetime.strptime(yyyymmdd,'%Y-%m-%d')
+        yyyy = dt.timetuple().tm_year
+        doy = dt.timetuple().tm_yday
+        date_dist = int(yyyy) * 1000 + round(1000 * doy/365)
+  
+        return yyyymmdd, doy, date_dist

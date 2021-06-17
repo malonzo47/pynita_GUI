@@ -12,6 +12,7 @@ import pandas as pd
 import numpy as np
 from osgeo import gdal
 from pynita_source.utils import general 
+import datetime
 
 
 class dataLoader:
@@ -73,13 +74,21 @@ class dataLoader:
     def load_stack(self): 
         stack_path = self.stackFn
         stackdate_path = self.stackdateFn
-        
         # deal with stackdate first
         stackdate_tb = pd.read_csv(stackdate_path)
-        sis = list(stackdate_tb['system:index']) # system_index_s       
-        all_info = [general.SystemIndexBreaker(si) for si in sis]  
-        doy_vec = np.array([item[3] for item in all_info])
-        date_vec = np.array([item[4] for item in all_info]) # in distributed date 
+        
+        #user can submit standard GEE output which includes system index
+        #or they can just submit a vector of image dates as single column
+        if len(stackdate_tb.columns) != 1:
+            sis = list(stackdate_tb['system:index']) # system_index_s       
+            all_info = [general.SystemIndexBreaker(si) for si in sis]  
+            doy_vec = np.array([item[3] for item in all_info])
+            date_vec = np.array([item[4] for item in all_info]) # in distributed date 
+        else: #assumes that there is ONLY a date column
+            yyyymmdd = list(stackdate_tb[stackdate_tb.columns[0]])
+            all_info = [general.ConvertDateCol(image_date) for image_date in yyyymmdd]  
+            doy_vec = np.array([item[1] for item in all_info])
+            date_vec = np.array([item[2] for item in all_info]) # in distributed date 
         
         # then deal with stack 
         fc = gdal.Open(stack_path)
