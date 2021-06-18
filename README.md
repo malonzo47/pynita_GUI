@@ -5,10 +5,12 @@
  
 **First, some general resources:**
 + **Demo dataset** (user config file, point locations, an image stack with image dates) can be downloaded from here: https://drive.google.com/file/d/1J8Q1VVfvevbJ5suLHDArOHbOpvu_SKN_/view?usp=sharing
-+ Videos
++ **Videos**
     1. **Quick Start:** Watch a video (8 min) that shows basic pyNITA workflow on this demo dataset (https://www.youtube.com/watch?v=dCpLtOsVfC0&t=4s)
-    2. **Data prep:** How to make shapefiles of you areas of interest and then use our Google Earth Engine code to extract data to your computer for use in pyNITA (https://www.youtube.com/watch?v=qSG34xOW84k&feature=youtu.be)
- --(NOTE): Our standard data-assembly workflow involves Google Earth Engine but users can process image stacks (but not points) without GEE; they just need a valid image stack of spectral indices and an accompanying csv file (single column) containing the dates of each image.
+    2. **Data prep:** How to make shapefiles of you areas of interest and then use our Google Earth Engine code to extract data to your computer for use in pyNITA (https://www.youtube.com/watch?v=qSG34xOW84k&feature=youtu.be) \
+     -- (NOTE): Our standard data-assembly workflow involves Google Earth Engine but users can process image stacks (but not points) without GEE; they just need a valid image stack of spectral indices and an accompanying csv file (single column) containing the dates of each image. \
+     -- Link to GEE code for point (aka single pixel) extraction: https://bit.ly/3vvLB1r \
+     -- Link to GEE code for polygon (full image stack) extraction: https://bit.ly/3gE8gDm
     3. **DOY Range Example:** How to set day of year ranges to minimize the influence of unwanted “noise” such as phenology, also brief treatment of other key parameters ( https://www.youtube.com/watch?v=Brkor7VwNnU)
     4. **Other key parameters:** Helps you determine when to model pixels using pyNITA for nonlinear processes vs. just using a simple linear fit (https://www.youtube.com/watch?v=090rO5aIj9s)
     5. **pyNITA Parameter Optimization:** This is an **experimental** feature but might help to optimize pyNITA parameters based on hand-drawing a few pixel histories (https://www.youtube.com/watch?v=D7phlqrXF0Y)
