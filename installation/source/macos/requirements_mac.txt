@@ -14,6 +14,6 @@ pyqt5-sip==12.7.1
 pyqt5==5.14.1             
 python-dateutil==2.8.1    
 pytz==2019.3              
-scipy==1.4.1              
+scipy==1.10.0              
 six==1.14.0               
 tqdm==4.43.0              
